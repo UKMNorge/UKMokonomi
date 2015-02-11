@@ -1,0 +1,13 @@
+set autoread
+set ignorecase
+set incsearch
+set encoding=utf8
+set nobackup
+set nowb
+set noswapfile
+set expandtab
+set smarttab
+set shiftwidth=4
+set tabstop=4
+map <space> /
+map <c-space> ?

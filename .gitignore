@@ -1,0 +1,29 @@
+.vagrant*
+
+# Bootstrap
+server_data/app/bootstrap*
+
+# App
+server_data/web/js
+server_data/web/css
+
+# Symfony directories
+server_data//build/
+server_data/vendor/*
+server_data/*/logs/*
+server_data/*/cache/*
+server_data/web/uploads/*
+server_data/web/bundles/*
+server_data//bin/*
+!server_data/bin/console
+!server_data/bin/symfony_requirements
+
+# Configuration files
+server_data/app/config/parameters.ini
+server_data/app/config/parameters.yml
+
+# Composer
+server_data/composer.phar
+
+/temp
+!server_data/temp/.gitkeep
