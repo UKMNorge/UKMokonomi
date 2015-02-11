@@ -1,0 +1,12 @@
+{% extends "errorBase.html.twig" %}
+
+{% block body %}
+	{% if status_code == 403 %}
+	    <h1>Ingen tilgang!</h1>
+	    <p class="lead">Du har ikke rettigheter til denne siden. Vennligst logg inn, eller ta kontakt med administrator for å få opphøyet tilgang (administrator-rettigheter)</p>
+	
+	{% else %}
+	    <h1>Beklager, en feil har oppstått!</h1>
+	    <p class="lead">Serveren returnerte følgende feilmelding: "{{ status_code }} {{ status_text }}".</p>
+	{% endif %}
+{% endblock %}

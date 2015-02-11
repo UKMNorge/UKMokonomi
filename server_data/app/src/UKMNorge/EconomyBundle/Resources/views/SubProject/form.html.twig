@@ -1,0 +1,54 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{% if subproject == false %}Legg til nytt prosjekt{% else %}Rediger "{{ subproject.getName() }}"{% endif %}{% endblock %}
+
+{% block body %}    
+	<form role="form" method="post" action="{{ subproject == false ? url( 'UKMeco_subproject_doCreate', {'project': project.getId(), 'budget': budget.getId()} ) :  url( 'UKMeco_subproject_doEdit', {'project': project.getId(), 'budget': budget.getId(), 'id': subproject.getId() } ) }}">
+		<input type="hidden" id="subproject_id" name="subproject_id" value="{{ subproject == false ? 'new' : subproject.getId() }}" />
+		<input type="hidden" id="budget_id" name="budget_id" value="{{ budget.getId() }}" />
+		<input type="hidden" id="project_id" name="project_id" value="{{ project.getId() }}" />
+		<fieldset class="col-xs-12 col-md-6">
+			<legend>Info om del-prosjekt</legend>
+			
+			<div class="form-group">
+				<label for="name">Navn på del-prosjekt</label>
+				<input value="{{ subproject == false ? '': subproject.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn prosjektnavn..." />
+			</div>
+			
+			<div class="form-group">
+				<label for="description">Beskrivelse</label>
+				<input value="{{ subproject == false ? '': subproject.getDescription()}}" type="text" class="form-control" id="description" name="description" placeholder="Eventuell beskrivelse" />
+			</div>
+		</fieldset>
+
+		<div class="clearfix"></div>
+		
+		<fieldset class="col-xs-12">
+			<legend>Budsjett</legend>
+			{% for i in yearspan.start..yearspan.stop %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-2">
+					<label for="amount_{{ i }}">{{ i }} </label>
+					<input value="{{ allocatedAmounts[ i ] }}" type="number" class="form-control" id="amount_{{ i }}" name="amount_{{ i }}" placeholder="kr ..." />
+				</div>
+			{% endfor %}
+		</fieldset>
+						
+		<div class="clearfix"></div>
+		
+		<p>&nbsp;</p>
+		<button class="btn btn-lg btn-success" type="submit">
+	    	{% if subproject == false %}
+			Opprett prosjekt
+			{% else %}
+			Lagre endringer
+			{% endif %}
+		</button>
+		 &nbsp;
+		eller <a href=" {{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId()}) }}">avbryt</a>
+		<p>&nbsp;</p>
+				
+		<div class="clearfix"></div>
+
+	</form>
+
+{% endblock %}

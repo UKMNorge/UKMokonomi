@@ -1,0 +1,18 @@
+{% if user == false %}
+	<h2>Legg til ny bruker</h2>
+{% else %}
+	<h2>{{ user.getUsername() }} <small>{{mode}}</small></h2>
+{% endif %}
+    
+<p></p>
+<ul class="nav nav-tabs" role="tablist">
+	<li {% if mode == 'Rediger' %}class="active"{% endif %}>
+		<a href="{{ url('UKMeco_users_edit', {'username': user == false ? 'new' : user.getUsername() }) }}">Rediger</a>
+	</li>
+	{% if user != false %}
+		<li {% if mode == 'Deaktivér' %}class="active"{% endif %}>
+			<a href="{{ url('UKMeco_users_deactivate', {'username': user.getUsername() }) }}">Deaktivér</a>
+		</li>
+	{% endif %}
+</ul>
+<p>&nbsp;</p>

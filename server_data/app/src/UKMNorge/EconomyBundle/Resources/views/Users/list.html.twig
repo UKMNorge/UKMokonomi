@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Brukere{% endblock %}
+
+{% block body %}	
+	<div class="pull-right">
+		<p></p>
+		<a href="{{ url( 'UKMeco_users_create' ) }}">
+			<button class="btn btn-success"><i class="icon-pencil"></i> Legg til ny bruker</button>
+		</a>
+	</div>
+	
+    <h2>Administratorer</h2>
+    {% embed "UKMecoBundle:Users:table.html.twig" with {'list': users.admins } %}{% endembed %}
+    
+    
+    <h2>Brukere</h2>
+    {% embed "UKMecoBundle:Users:table.html.twig" with {'list': users.users } %}{% endembed %}
+
+
+	
+
+{% endblock %}

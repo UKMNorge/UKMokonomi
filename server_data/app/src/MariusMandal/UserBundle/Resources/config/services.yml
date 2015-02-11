@@ -1,0 +1,6 @@
+services:
+    mm.userservice:
+        class:  MariusMandal\UserBundle\Services\UserService
+        arguments:
+            - @fos_user.user_manager
+            - @service_container

@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Rediger "{{ user.getUsername() }}"{% endblock %}
+
+{% block body %}
+{% javascripts '@UKMecoBundle/Resources/public/js/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+    {% embed "UKMecoBundle:Users:tabs.html.twig" with {'mode': 'Deaktivér'} %}{% endembed %}
+
+	<input type="hidden" id="username" name="username" value="{{ user.getUsername() }}" />
+
+	<p>
+		Hvis du deaktiverer brukeren kan han/hun ikke lengre logg inn.
+	</p>
+	<p>
+		Kontroll-appen vil fungere, men brukeren får ikke tilgang til å synkronisere informasjon med serveren.
+	</p>
+
+	<p>&nbsp;</p>
+
+	<button class="btn btn-md btn-danger" id="userDeactivate">Deaktiver bruker</button>
+	 &nbsp;
+	eller <a href=" {{ url('UKMeco_users_homepage') }}">avbryt</a>
+	<p>&nbsp;</p>
+
+
+{% endblock %}

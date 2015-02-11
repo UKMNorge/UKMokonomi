@@ -1,0 +1,124 @@
+UKMeco_homepage:
+    path:     /admin/
+    defaults: { _controller: UKMecoBundle:Default:index }
+
+
+UKMeco_budget_homepage:
+    path: /admin/budget/
+    defaults: { _controller: UKMecoBundle:Budget:list }
+    methods: [GET]
+UKMeco_budget_create:
+    path: /admin/budget/create/
+    defaults: { _controller: UKMecoBundle:Budget:create }
+    methods: [GET]
+UKMeco_budget_doCreate:
+    path: /admin/budget/create/
+    defaults: { _controller: UKMecoBundle:Budget:doCreate }
+    methods: [POST]
+UKMeco_budget_edit:
+    path: /admin/budget-{id}/edit/
+    defaults: { _controller: UKMecoBundle:Budget:edit }
+    methods: [GET]
+UKMeco_budget_doEdit:
+    path: /admin/budget-{id}/edit/
+    defaults: { _controller: UKMecoBundle:Budget:doEdit }
+    methods: [POST]
+
+
+UKMeco_project_homepage:
+    path: /admin/budget/{budget}/
+    defaults: { _controller: UKMecoBundle:Project:list }
+    methods: [GET]
+UKMeco_project_create:
+    path: /admin/budget/{budget}/project-create/
+    defaults: { _controller: UKMecoBundle:Project:create }
+    methods: [GET]
+UKMeco_project_doCreate:
+    path: /admin/budget/{budget}/project-create/
+    defaults: { _controller: UKMecoBundle:Project:doCreate }
+    methods: [POST]
+UKMeco_project_edit:
+    path: /admin/budget/{budget}/project-{id}/edit/
+    defaults: { _controller: UKMecoBundle:Project:edit }
+    methods: [GET]
+UKMeco_project_doEdit:
+    path: /admin/budget/{budget}/project-{id}/edit/
+    defaults: { _controller: UKMecoBundle:Project:doEdit }
+    methods: [POST]
+
+
+UKMeco_subproject_homepage:
+    path: /admin/budget/{budget}/project-{project}/
+    defaults: { _controller: UKMecoBundle:SubProject:list }
+    methods: [GET]
+UKMeco_subproject_create:
+    path: /admin/budget/{budget}/project-{project}/subproject/create/
+    defaults: { _controller: UKMecoBundle:SubProject:create }
+    methods: [GET]
+UKMeco_subproject_doCreate:
+    path: /admin/budget/{budget}/project-{project}/subproject/create/
+    defaults: { _controller: UKMecoBundle:SubProject:doCreate }
+    methods: [POST]
+UKMeco_subproject_edit:
+    path: /admin/budget/{budget}/project-{project}/subproject/{id}/edit/
+    defaults: { _controller: UKMecoBundle:SubProject:edit }
+    methods: [GET]
+UKMeco_subproject_doEdit:
+    path: /admin/budget/{budget}/project-{project}/subproject/{id}/edit/
+    defaults: { _controller: UKMecoBundle:SubProject:doEdit }
+    methods: [POST]
+
+
+UKMeco_transaction_homepage:
+    path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/
+    defaults: { _controller: UKMecoBundle:Transaction:list }
+    methods: [GET]
+UKMeco_transaction_create:
+    path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/transaction/create/
+    defaults: { _controller: UKMecoBundle:Transaction:create }
+    methods: [GET]
+UKMeco_transaction_doCreate:
+    path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/transaction/create/
+    defaults: { _controller: UKMecoBundle:Transaction:doCreate }
+    methods: [POST]
+UKMeco_transaction_edit:
+    path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/transaction/edit/{id}/
+    defaults: { _controller: UKMecoBundle:Transaction:edit }
+    methods: [GET]
+UKMeco_transaction_doEdit:
+    path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/transaction/edit/{id}/
+    defaults: { _controller: UKMecoBundle:Transaction:doEdit }
+    methods: [POST]
+
+
+UKMeco_users_homepage:
+    path: /admin/users/list/all/
+    defaults: { _controller: UKMecoBundle:Users:list }
+
+UKMeco_users_create:
+    path: /admin/users/create/all/
+    defaults: { _controller: UKMecoBundle:Users:create }
+    methods: [GET]
+
+UKMeco_users_edit:
+    path: /admin/users/edit/{username}/
+    defaults: { _controller: UKMecoBundle:Users:edit }
+
+UKMeco_users_deactivate:
+    path: /admin/users/deactivate/{username}/
+    defaults: { _controller: UKMecoBundle:Users:deactivate }
+    methods: [GET]
+    
+UKMeco_users_doDeactivate:
+    path: /admin/users/deactivate_do/{username}/
+    defaults: { _controller: UKMecoBundle:Users:doDeactivate }
+
+UKMeco_users_doCreate:
+    path: /admin/users/create/new/
+    defaults: { _controller: UKMecoBundle:Users:doCreate }
+    methods: [POST]
+
+UKMeco_users_doUpdate:
+    path: /admin/users/update/{username}/
+    defaults: { _controller: UKMecoBundle:Users:doUpdate }
+    methods: [POST]

@@ -1,0 +1,32 @@
+<table class="table table-striped">
+	{% if list|length > 0 %}
+	<thead>
+		<tr>
+			<th class="hidden-xs hidden-sm"></th>
+			<th>Brukernavn</th>
+			<th>Mobil</th>
+			<th class="hidden-xs">E-postadresse</th>
+		</tr>
+	</thead>
+	{% endif %}
+	<tbody>
+{% for user in list %}
+	<tr>
+		<td class="hidden-xs hidden-sm">
+			<a href=" {{ url( 'UKMeco_users_edit', {'username': user.getUsername() } ) }}"><span class="icon-pencil"></span></a>
+		</td>
+		<td>
+			<a href=" {{ url( 'UKMeco_users_edit', {'username': user.getUsername() } ) }}">{{ user.getUsername() }}</a>
+		</td>
+		<td>{{ user.getPhone() }}</td>
+		<td class="hidden-xs">{{ user.getEmail() }}</td>
+	</tr>
+{% else %}
+	<tr>
+		<td class="alert alert-error" colspan="4">
+			Ingen brukere i denne listen
+		</td>
+	</tr>
+{% endfor %}
+	</tbody>
+</table>

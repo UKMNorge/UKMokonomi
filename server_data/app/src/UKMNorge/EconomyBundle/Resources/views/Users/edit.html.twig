@@ -1,0 +1,115 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{% if user == false %}Legg til ny bruker{% else %}Rediger "{{ user.getUsername() }}"{% endif %}{% endblock %}
+
+{% block body %}
+
+
+<script language='javascript' type='text/javascript'>
+	$(document).on('keyUp', '.passwordConfirm', function() {
+		var pwdID = $(this).val('id').replace('_confirm','');
+		var pwdIDConfirm = pwdID + '_confirm';
+		
+		if( $(pwdID).val() != $(pwdIDConfirm).val() ) {
+			$(pwdID).setCustomValidity('Password Must be Matching.');
+		} else {
+			$(pwdID).setCustomValidity('');
+		}
+	});
+</script>
+
+    {% embed "UKMecoBundle:Users:tabs.html.twig" with {'mode': 'Rediger'} %}{% endembed %}
+	
+	<form role="form" method="post" action="{{ user == false ? url( 'UKMeco_users_doCreate' ) :  url( 'UKMeco_users_doUpdate', {'username': user.getUsername()} ) }}">
+		<input type="hidden" id="user_id" name="user_id" value="{{ user == false ? 'new' : user.getId() }}" />
+		<fieldset class="col-xs-12 col-md-6">
+			<legend>Brukerinformasjon</legend>
+
+			<div class="form-group">
+				<label for="username">Brukernavn</label>
+				{% if user == false %}
+					<input type="text" class="form-control" id="username" pattern="[A-Za-z0-9_-]+" name="username" placeholder="Skriv inn brukernavn.." required />
+					<p class="help-block">Brukernavn kan KUN bestå av bokstavene A-Z, a-z, tallene 0-9, samt - og _</p>
+				{% else %}
+					<input value="{{user.getUsername()}}" type="text" class="form-control" id="username" name="username" readonly="readonly" />
+				{% endif %}
+			</div>
+
+			<div class="form-group">
+				<label for="email">E-postadresse</label>
+				<input value="{{ user == false ? '': user.getEmail()}}" type="tel" class="form-control" id="email" name="email" placeholder="Brukerens e-postadresse.." required />
+			</div>
+
+			<div class="form-group">
+				<label for="firstname">Fornavn</label>
+				<input value="{{ user == false ? '': user.getFirstname()}}" type="text" class="form-control" id="firstname" name="firstname" placeholder="Skriv inn fornavn" required />
+			</div>
+
+			<div class="form-group">
+				<label for="lastname">Etternavn</label>
+				<input value="{{ user == false ? '': user.getLastname()}}" type="text" class="form-control" id="lastname" name="lastname" placeholder="Skriv inn etternavn" required />
+			</div>
+
+			<div class="form-group">
+				<label for="phone">Telefon (mobil)</label>
+				<input value="{{ user == false ? '': user.getPhone()}}" type="tel" class="form-control" id="phone" name="phone" placeholder="Brukerens telefonnummer.." required />
+			</div>
+			
+		</fieldset>
+		
+		
+		<fieldset class="col-xs-12 col-md-6">
+			<legend>Passord</legend>
+			
+			{% if user != false %}
+				<p>Hvis du ønsker å bytte passord på brukeren oppgir du nytt passord. Skal passordet være uendret lar du feltene stå tomme.</p>
+			{% endif %}
+
+			<div class="form-group">
+				<label for="password">Passord</label>
+				<input value="" type="password" class="form-control passwordConfirm" id="password" name="password" placeholder="Skriv inn {{ user == false ? 'evt nytt' :''}} passord" {{ user == false ? 'required' : '' }} />
+			</div>
+
+			<div class="form-group">
+				<label for="password_confirm">Bekreft passord</label>
+				<input value="" type="password" class="form-control passwordConfirm" id="password_confirm" name="password_confirm" placeholder="Skriv inn {{ user == false ? 'evt nytt' :''}} passord en gang til" {{ user == false ? 'required' : '' }} />
+			</div>
+			
+		</fieldset>
+		
+		<p>&nbsp;</p>
+		<fieldset class="col-xs-12 col-md-6">
+			<legend>Tilgang</legend>
+			<p>Angi hvilket tilgangsnivå brukeren skal ha til systemet</p>
+			
+			{% if (user != false and user.getID() != app.user.getID()) or user == false %}
+				<div class="form-group">
+					<select name="usergroup" id="usergroup">
+						<option {{ user != false and user.hasRole('ROLE_ADMIN') == false ? 'selected="selected"' : ''}} value="ROLE_USER">Bruker</option>
+						<option {{ user != false and user.hasRole('ROLE_ADMIN') == true ? 'selected="selected"' : ''}} value="ROLE_ADMIN">Administrator</option>
+					</select>
+				</div>
+			{% else %}
+				<p class="alert alert-info">Du kan ikke endre dine egne rettigheter. Ta kontakt med en annen administrator</p>
+			{% endif %}
+		</fieldset>
+		
+		<div class="clearfix"></div>
+		
+		<p>&nbsp;</p>
+		<button class="btn btn-lg btn-success" type="submit">
+	    	{% if user == false %}
+			Opprett bruker
+			{% else %}
+			Lagre endringer
+			{% endif %}
+		</button>
+		 &nbsp;
+		eller <a href=" {{ url('UKMeco_users_homepage') }}">avbryt</a>
+		<p>&nbsp;</p>
+				
+		<div class="clearfix"></div>
+
+	</form>
+
+{% endblock %}

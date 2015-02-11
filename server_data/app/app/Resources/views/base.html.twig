@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<title>{% block title %}{% endblock %} :: Økonomikontroll</title>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+		<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+		{% stylesheets '../app/Resources/public/css/*' %}
+		<link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
+		{% endstylesheets %}        
+		{#<link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/fb0823d3-6662-4ca9-8f3c-1d5c04d6b531.css" />#}
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		{% javascripts '../app/Resources/public/js/*' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}        
+
+		{# JQUERY UI #}
+		<script src="/js/modernizr.min.js"></script>
+
+		{# JQUERY UI #}
+		<script src="/jquery-ui/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="/jquery-ui/jquery-ui.min.css" />
+		<link rel="stylesheet" href="/jquery-ui/jquery-ui.structure.min.css" />
+		<link rel="stylesheet" href="/jquery-ui/jquery-ui.theme.min.css" />
+	</head>
+	<body onunload="showLoader();">
+		
+		<nav class="navbar navbar-inverse navbar-top">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">UKM økonomi</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<div class="navbar-right">
+						<button type="button" class="btn btn-success" id="UKMeco_menu_button">MENY</button>
+					</div>
+				</div><!--/.navbar-collapse -->
+			</div>
+		</nav>
+		
+		<div class="clearfix">
+		    <div class="container hidden-xs" id="UKMeco_menu" style="display:none;">
+				<ol class="list-unstyled navigation">
+					{% render( controller( 'UKMecoBundle:Layout:menu', {'class_li': 'block' } ) ) %}
+				</ol>
+		    </div>
+		</div>
+
+		<div class="container" id="UKMeco_content">
+			<div class="row">
+				{% block body %}{% endblock %}
+			</div>
+		</div>
+		
+		<div class="container" id="UKMeco_loader" style="display:none;">
+			<h3 align="center">Laster inn...</h3>
+			<img src="/web/img/ajax-loader.gif" />
+		</div>
+	</body>
+</html>

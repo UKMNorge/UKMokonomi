@@ -1,0 +1,18 @@
+services:
+    UKMeco.budget:
+        class:  UKMNorge\EconomyBundle\Services\BudgetService
+        arguments: [@service_container]
+    UKMeco.project:
+        class:  UKMNorge\EconomyBundle\Services\ProjectService
+        arguments: [@service_container]
+    UKMeco.subproject:
+        class:  UKMNorge\EconomyBundle\Services\SubProjectService
+        arguments: [@service_container]
+    UKMeco.transaction:
+        class:  UKMNorge\EconomyBundle\Services\TransactionService
+        arguments: [@service_container]
+    app.twig_extension:
+        class: UKMNorge\EconomyBundle\Twig\KronerExtension
+        public: false
+        tags:
+            - { name: twig.extension }

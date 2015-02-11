@@ -1,0 +1,82 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Hjem{% endblock %}
+
+{% block body %}
+	<div class="pull-right">
+		<p></p>
+		<a href="{{ url( 'UKMeco_subproject_create', {'project': project.getId(), 'budget': budget.getId() } ) }}">
+			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt del-prosjekt</button>
+		</a>
+	</div>
+	
+	<h1>
+		<a href="{{ url( 'UKMeco_budget_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a>:
+		{{ project.getName() }}
+	</h1>
+	<p class="lead">Viser alle del-prosjekter</p>
+	
+	<table class="table table-striped subproject">
+		<thead>
+			<tr>
+				<th class="col-xs-3">Budsjettpost</th>
+				{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
+					{% if loop.index == 2 %}
+						<th class="col-xs-1 active kroner">B{{ i }}</th>
+						<th class="col-xs-1 warning kroner">R{{ i }}</th>
+					{% else %}
+						<th class="col-xs-1 kroner">
+							<small>{{ i }}</small>
+						</th>
+					{% endif %}
+				{% endfor %}
+				<th class="col-xs-1"></th>
+			</tr>
+		</thead>
+		{% for subproject in subprojects %}
+			<tr>
+				<td>
+					<a href="{{ url('UKMeco_transaction_homepage', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">{{ subproject.getName() }}</a>
+				</td>
+				{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
+					{% if loop.index == 2 %}
+						<td class="active kroner b">{{ subproject.getAllocatedAmount( i )|kroner }},-</td>
+						<td class="warning kroner"> - </td>
+					{% else %}
+						<td class="kroner">
+							<small>{{ subproject.getAllocatedAmount( i )|kroner }},-</small>
+						</td>
+					{% endif %}
+				{% endfor %}
+				
+				<td>
+					<div class="dropdown" align="right">
+						<button class="btn btn-default dropdown-toggle btn-sm" type="button" id="actionsSubProject_{{ subproject.getId() }}" data-toggle="dropdown" aria-expanded="true">
+							Handlinger
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="actionsSubProject_{{ subproject.getId() }}">
+							<li role="presentation">
+								<a href="{{ url('UKMeco_subproject_edit', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Rediger</a>
+							</li>
+							<li role="presentation">
+								<a href="{{ url('UKMeco_subproject_edit', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Hurtigrediger budsjett</a>
+							</li>
+							<li role="presentation">
+								<a href="{{ url('UKMeco_transaction_homepage', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Vis transaksjoner</a>
+							</li>
+
+						</ul>
+					</div>
+				</td>
+			</tr>
+		{% else %}
+			<tr class="error error-warning">
+				<td>
+				Det er ikke lagt til noen del-prosjekter i {{ project.getName() }} enda. 
+				<a href="{{ url( 'UKMeco_subproject_create', {'project': project.getId(), 'budget': budget.getId() } ) }}">Start med å legge til et</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

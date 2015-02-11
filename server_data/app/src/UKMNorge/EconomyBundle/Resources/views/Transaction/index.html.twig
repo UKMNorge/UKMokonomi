@@ -1,0 +1,81 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Hjem{% endblock %}
+
+{% block body %}
+	<div class="pull-right">
+		<p></p>
+		<a href="{{ url( 'UKMeco_transaction_create', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">
+			<button class="btn btn-success"><i class="icon-add"></i> Legg til ny transaksjon</button>
+		</a>
+	</div>
+	
+	<h1>
+		{{ budget.getName() }}: 
+		{{ project.getName() }}:
+		{{ subproject.getName() }}
+	</h1>
+		
+	<div class="col-xs-12 col-sm-6">
+		<div>
+			<p class="pull-right">40.000,-</p>
+			<p>Tildelt budsjett</p>
+		</div>
+		<div>
+			<p class="pull-right">11.000,-</p>
+			<p>Tilgjengelig</p>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6">
+		<small>
+			<div>
+				<div class="pull-right">9.000,-</div>
+				Akkumulert budsjett
+			</div>
+			<div>
+				<div class="pull-right">10.000,-</div>
+				Gjennomførte transaksjoner
+			</div>
+			<div>
+				<div class="pull-right">19.000,-</div>
+				Akkumulert budsjett + gjennomført
+			</div>
+		</small>
+	</div>
+	<div class="clearfix"></div>
+	
+	
+	<p class="lead">Viser alle transaksjoner</p>
+
+	{% if transactions|length == 0 %}
+		<div class="alert alert-warning">
+			Det er ikke lagt til noen transaksjoner i {{ project.getName() }}: {{ subproject.getName() }} enda. 
+			<a href="{{ url( 'UKMeco_transaction_create', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">
+				Start med å legge til et
+			</a>
+		</div>
+	{% else %}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Transaksjon</th>
+					<th>Budsjettert</th>
+					<th>Gjennomført</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for transaction in transactions %}
+				<tr>
+					<td>
+						<a href="{{ url( 'UKMeco_transaction_edit', {'id': transaction.getId(), 'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">
+							{{ transaction.getName() }}
+						</a>
+					</td>
+					<td>{{ transaction.getType() == 'Budget' ? transaction.getAmount() : 0 }},-</td>
+					<td>{{ transaction.getType() != 'Budget' ? transaction.getAmount() : 0 }},-</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

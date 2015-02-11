@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{% if budget == false %}Legg til nytt område{% else %}Rediger "{{ budget.getName() }}"{% endif %}{% endblock %}
+
+{% block body %}    
+	<form role="form" method="post" action="{{ budget == false ? url( 'UKMeco_budget_doCreate' ) :  url( 'UKMeco_budget_doEdit', {'id': budget.getId()} ) }}">
+		<input type="hidden" id="budget_id" name="budget_id" value="{{ budget == false ? 'new' : budget.getId() }}" />
+		<fieldset class="col-xs-12 col-md-6">
+			<legend>Områdeinformasjon</legend>
+			
+			<div class="form-group">
+				<label for="name">Navn</label>
+				<input value="{{ budget == false ? '': budget.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn områdenavn..." />
+			</div>
+			
+			<div class="form-group">
+				<label for="description">Beskrivelse</label>
+				<input value="{{ budget == false ? '': budget.getDescription()}}" type="text" class="form-control" id="description" name="description" placeholder="Eventuell beskrivelse" />
+			</div>
+
+			<div class="form-group">
+				<label for="owner">Ansvarlig</label>
+				<select name="owner" class="form-control" id="owner">
+					{% for owner in owners %}
+						<option value="{{ owner.getId() }}" {% if budget != false and owner.getID() == budget.getOwner() %}selected="selected"{% endif %}>{{ owner.getName() }}</option>
+					{% endfor %}				
+				</select>
+			</div>
+			
+		</fieldset>
+						
+		<div class="clearfix"></div>
+		
+		<p>&nbsp;</p>
+		<button class="btn btn-lg btn-success" type="submit">
+	    	{% if budget == false %}
+			Opprett område
+			{% else %}
+			Lagre endringer
+			{% endif %}
+		</button>
+		 &nbsp;
+		eller <a href=" {{ url('UKMeco_budget_homepage') }}">avbryt</a>
+		<p>&nbsp;</p>
+				
+		<div class="clearfix"></div>
+
+	</form>
+
+{% endblock %}

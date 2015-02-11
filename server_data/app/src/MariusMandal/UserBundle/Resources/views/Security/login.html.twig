@@ -1,0 +1,35 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+
+	
+	<div class="col-xs-12 col-sm-4 col-sm-offset-4">
+		<form class="form-signin" role="form" action="{{ path("fos_user_security_check") }}" method="post">
+
+			<p class="hidden-xs">&nbsp;</p>
+			<h2 class="form-signin-heading">Logg inn</h2>
+
+			{% if error %}
+			    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
+		
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+			
+			<label for="username">Brukernavn</label>
+			<input id="username" type="text" class="form-control" placeholder="Skriv inn brukernavn" id="username" name="_username" value="{{ last_username }}" required autofocus />
+		
+			<label for="password">Passord</label>
+			<input id="password" type="password" class="form-control" placeholder="Skriv inn passord" id="password" name="_password" required />
+
+			<div class="form-group">
+				<input class="pull-left" style="margin-right: 5px;" type="checkbox" id="remember_me" name="_remember_me" value="on" />
+				<label class="checkbox" for="remember_me">Husk meg</label>
+				<div class="clearfix"></div>
+			</div>
+			
+			<input class="btn btn-lg btn-success btn-block" type="submit" id="_submit" name="_submit" value="Logg inn" />
+		</form>
+	</div>
+{% endblock fos_user_content %}

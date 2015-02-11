@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}En feil har oppstått!{% endblock %}
+
+{% block body %}
+	<div class="alert-error">
+		<h2>{{title}}</h2>
+		
+		<p class="lead">
+			En ukjent feil har oppstått! (feilkode: {{code}})
+		</p>
+		
+		<p>Serveren ga følgende tilbakemelding {{ message }}</p>
+		
+		<p>
+			<a href="{{ url('UKMeco_users_homepage') }}">Tilbake til brukerlisten</a>
+		</p>
+	</div>
+{% endblock %}

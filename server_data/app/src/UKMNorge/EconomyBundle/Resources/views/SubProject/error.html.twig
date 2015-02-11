@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block title %}En feil har oppstått!{% endblock %}
+
+{% block body %}
+	<div class="alert-error">
+		<h2>Kunne ikke lagre!</h2>
+		
+		<p class="lead">
+		{% if error == 2000 %}
+			Området må ha et navn. Vennligst prøv igjen.
+		{% elseif error == 2001 %}
+			Det eksisterer allerede et område med navnet. Vennligst prøv igjen med et annet navn.
+		{% elseif error == 2002 %}
+			Brukeren tilknyttet området eksisterer ikke, eller er av feil type. Vennligst prøv igjen med annen ansvarlig.
+		{% endif %}
+	</div>
+{% endblock %}

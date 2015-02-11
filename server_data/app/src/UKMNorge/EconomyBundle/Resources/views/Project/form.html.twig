@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{% if project == false %}Legg til nytt prosjekt{% else %}Rediger "{{ project.getName() }}"{% endif %}{% endblock %}
+
+{% block body %}    
+	<form role="form" method="post" action="{{ project == false ? url( 'UKMeco_project_doCreate', {'budget': budget.getId()} ) :  url( 'UKMeco_project_doEdit', {'id': project.getId(), 'budget': budget.getId() } ) }}">
+		<input type="hidden" id="project_id" name="project_id" value="{{ project == false ? 'new' : project.getId() }}" />
+		<input type="hidden" id="budget_id" name="budget_id" value="{{ budget.getId() }}" />
+		<fieldset class="col-xs-12 col-md-6">
+			<legend>Prosjektinformasjon</legend>
+			
+			<div class="form-group">
+				<label for="name">Prosjektnavn</label>
+				<input value="{{ project == false ? '': project.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn prosjektnavn..." />
+			</div>
+			
+			<div class="form-group">
+				<label for="description">Beskrivelse</label>
+				<input value="{{ project == false ? '': project.getDescription()}}" type="text" class="form-control" id="description" name="description" placeholder="Eventuell beskrivelse" />
+			</div>
+
+			<div class="form-group">
+				<label for="owner">Ansvarlig</label>
+				<select name="owner" class="form-control" id="owner">
+					{% for owner in owners %}
+						<option value="{{ owner.getId() }}" {% if project != false and owner.getID() == project.getOwner() %}selected="selected"{% endif %}>{{ owner.getName() }}</option>
+					{% endfor %}				
+				</select>
+			</div>
+
+
+			
+		</fieldset>
+						
+		<div class="clearfix"></div>
+		
+		<p>&nbsp;</p>
+		<button class="btn btn-lg btn-success" type="submit">
+	    	{% if project == false %}
+			Opprett prosjekt
+			{% else %}
+			Lagre endringer
+			{% endif %}
+		</button>
+		 &nbsp;
+		eller <a href=" {{ url('UKMeco_project_homepage', {'budget': budget.getId()}) }}">avbryt</a>
+		<p>&nbsp;</p>
+				
+		<div class="clearfix"></div>
+
+	</form>
+
+{% endblock %}

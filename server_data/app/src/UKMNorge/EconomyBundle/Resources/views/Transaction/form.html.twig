@@ -1,0 +1,62 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{% if transaction == false %}Legg til ny transaksjon{% else %}Rediger "{{ transaction.getName() }}"{% endif %}{% endblock %}
+
+{% block body %}
+	<form role="form" method="post" action="{{ transaction == false ? url( 'UKMeco_transaction_doCreate', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId()} ) :  url( 'UKMeco_transaction_doEdit', {'id': transaction.getId(), 'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId(), 'id': transaction.getId() } ) }}">
+		<input type="hidden" id="transaction_id" name="transaction_id" value="{{ transaction == false ? 'new' : transaction.getId() }}" />
+		<input type="hidden" id="budget_id" name="budget_id" value="{{ budget.getId() }}" />
+		<input type="hidden" id="project_id" name="project_id" value="{{ project.getId() }}" />
+		<input type="hidden" id="subproject_id" name="subproject_id" value="{{ subproject.getId() }}" />
+
+		<fieldset class="col-xs-12 col-md-6">
+			<legend>Info om transaksjon</legend>
+			
+			<div class="form-group">
+				<label for="name">Navn</label>
+				<input value="{{ transaction == false ? '': transaction.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn tittel / kort beskrivelse..." />
+			</div>
+			
+			<div class="form-group">
+				<label for="description">Beskrivelse/kommentar</label>
+				<input value="{{ transaction == false ? '': transaction.getDescription()}}" type="text" class="form-control" id="description" name="description" placeholder="Eventuell beskrivelse / utfyllende kommentar" />
+			</div>
+
+			<div class="form-group">
+				<label for="type">Type</label>
+				<div class="radio">
+					<label>
+						<input type="radio" name="type" id="type" value="Budget" {{ transaction == false ? '': (transaction.getType() == 'Budget' ? 'checked="checked"' : '') }} /> Budsjettert
+					</label>
+	
+					<label>
+						<input type="radio" name="type" id="type" value="Accounting" {{ transaction == false ? '': (transaction.getType() == 'Accounting' ? 'checked="checked"' : '') }} /> Gjennomført
+					</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="amount">Beløp</label>
+				<input value="{{ transaction == false ? '': transaction.getAmount()}}" type="number" class="form-control" id="amount" name="amount" placeholder="Skriv inn beløp..." />
+			</div>
+		</fieldset>
+						
+		<div class="clearfix"></div>
+		
+		<p>&nbsp;</p>
+		<button class="btn btn-lg btn-success" type="submit">
+	    	{% if transaction == false %}
+			Opprett transaksjon
+			{% else %}
+			Lagre endringer
+			{% endif %}
+		</button>
+		 &nbsp;
+		eller <a href=" {{ url('UKMeco_transaction_homepage', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId()}) }}">avbryt</a>
+		<p>&nbsp;</p>
+				
+		<div class="clearfix"></div>
+
+	</form>
+
+{% endblock %}

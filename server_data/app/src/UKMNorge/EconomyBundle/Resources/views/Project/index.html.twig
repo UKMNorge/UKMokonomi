@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Hjem{% endblock %}
+
+{% block body %}
+	<div class="pull-right">
+		<p></p>
+		<a href="{{ url( 'UKMeco_project_create', {'budget': budget.getId()} ) }}">
+			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt prosjekt</button>
+		</a>
+	</div>
+	
+	<h1>{{ budget.getName() }}</h1>
+	<p class="lead">Viser alle prosjekter</p>
+	
+	<ol class="list-unstyled project">
+		{% for project in projects %}
+			<li>
+				<div class="col-xs-1">
+					<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}">
+						<small>rediger</small>
+					</a>
+				</div>
+				<div class="col-xs-11 col-sm-8">
+					<a href="{{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId() } ) }}">{{ project.getName() }}</a>
+				</div>
+				<div class="col-sm-3 hidden-xs">{{ project.getOwnerObject().getName() }}</div>
+			</li>
+		{% else %}
+			<li class="error error-warning">
+				Det er ikke lagt til noen prosjekter i {{ budget.getName() }} enda. 
+				<a href="{{ url( 'UKMeco_project_create', {'budget': budget.getId()} ) }}">Start med å legge til et</a>
+			</li>
+		{% endfor %}
+	</ol>
+{% endblock %}
