@@ -4,6 +4,7 @@ namespace UKMNorge\EconomyBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use MariusMandal\UserBundle\Entity\User;
 use UKMNorge\EconomyBundle\Entity\Project;
+use UKMNorge\EconomyBundle\Entity\ProjectAllocatedAmount;
 use Exception;
 use DateTime;
 
@@ -272,6 +273,93 @@ class ProjectService
 	    }
 		return $project;
     }
+    
+    /** **************************************************************************************** **/
+	/** ALLOCATED AMOUNT FUNCTIONS
+    /** **************************************************************************************** **/
+
+    /**
+	 * Set Allocated Amount
+	 *
+	 * @param project
+	 * @param integer year
+	 * @param integer amount
+	 * @return AllocatedAmount
+	*/
+	public function setAllocatedAmount( $project, $year, $amount ) {
+		$this->_validate( $project );
+	
+		if( !is_numeric( $year ) || !is_integer( $year ) ) {
+			throw new Exception('Given year is not an integer! Given '. gettype( $year ). ' "'. $year .'"' );
+		}
+		if( !is_numeric( $amount ) || !is_integer( $amount ) ) {
+			throw new Exception('Given amount is not an integer! Given '. gettype( $amount ). ' "'. $amount .'"' );
+		}
+		$allocatedAmountRepo = $this->doctrine->getRepository('UKMecoBundle:ProjectAllocatedAmount');
+		
+		$allocatedAmount = $allocatedAmountRepo->findOneBy( array('project' => $project,
+																 'year' => $year ) );
+		if( is_null( $allocatedAmount ) ) {
+			$allocatedAmount = new ProjectAllocatedAmount();
+			$allocatedAmount->setProject( $project );
+			$allocatedAmount->setYear( $year );
+		}
+		
+		// TODO: Delete from DB if amount == 0
+		
+		$allocatedAmount->setAmount( $amount );
+		
+		$this->_persistAndFlush( $allocatedAmount );
+		
+		return $allocatedAmount;
+	}
+	
+	public function getAllocatedAmounts( $project, $startYear=null, $stopYear=null ) {
+		$this->_validate( $project );
+		
+		$allocatedAmounts = $project->getAllocatedAmounts();
+
+		$array = array();
+		if( !is_null( $startYear ) && !is_null( $stopYear ) ) {
+			for( $i=$startYear; $i<$stopYear+1; $i++) {
+				$array[ $i ] = 0;
+			}
+		}
+		
+		foreach( $allocatedAmounts as $entity ) {
+			$array[ $entity->getYear() ] = $entity->getAmount();
+		}
+		return $array;
+	}
+
+    /** **************************************************************************************** **/
+	/** LOADERS */
+    /** **************************************************************************************** **/
+	private function _loadAllocatedAmounts( $subProjects, $allocatedAmountData ) {
+		if( $allocatedAmountData === true ) {
+			$startYear = null;
+			$stopYear = null;
+		} else {
+			if( !isset( $allocatedAmountData->startYear ) || !isset( $allocatedAmountData->stopYear ) ) {
+				throw new Exception('AllocatedAmountData must be stdClass with integer startYear and integer stopYear defined!');
+			}
+			if( !is_integer( $allocatedAmountData->startYear ) ) {
+				throw new Exception('AllocatedAmountData->startYear must be integer!');
+			}
+			if( !is_integer( $allocatedAmountData->stopYear ) ) {
+				throw new Exception('AllocatedAmountData->stopYear must be integer!');
+			}
+			if( $allocatedAmountData->startYear > $allocatedAmountData->stopYear ) {
+				throw new Exception('AllocatedAmountData->stopYear must be smaller than AllocatedAmountData->startYear!');
+			}
+			$startYear = $allocatedAmountData->startYear;
+			$stopYear = $allocatedAmountData->stopYear;
+		}
+		
+		foreach( $subProjects as $subProject ) {
+			$subProject->setAllocatedAmountsArray( $this->getAllocatedAmounts( $subProject, $startYear, $stopYear ) );
+		}
+	}
     
     /** **************************************************************************************** **/
 	/** CLASS TEST HELPERS

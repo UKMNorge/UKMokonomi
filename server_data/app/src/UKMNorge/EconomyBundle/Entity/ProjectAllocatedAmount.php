@@ -5,12 +5,12 @@ namespace UKMNorge\EconomyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AllocatedAmount
+ * ProjectAllocatedAmount
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="UKMNorge\EconomyBundle\Entity\Repository\AllocatedAmountRepository")
+ * @ORM\Entity(repositoryClass="UKMNorge\EconomyBundle\Entity\Repository\ProjectAllocatedAmountRepository")
  */
-class AllocatedAmount
+class ProjectAllocatedAmount
 {
     /**
      * @var integer
@@ -24,17 +24,10 @@ class AllocatedAmount
     /**
      * @var integer
      *
-     * @ORM\Column(name="ProjectId", type="integer")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="allocatedAmounts")
+     * @ORM\JoinColumn(name="Project", referencedColumnName="id")
      */
-    private $projectId;
-
-    /**
-     * @var integer
-     *
-     * @ORM\ManyToOne(targetEntity="SubProject", inversedBy="allocatedAmounts")
-     * @ORM\JoinColumn(name="subProjectId", referencedColumnName="id")
-     */
-    private $subProjectId;
+    private $project;
 
     /**
      * @var integer
@@ -59,52 +52,6 @@ class AllocatedAmount
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set projectId
-     *
-     * @param integer $projectId
-     * @return AllocatedAmount
-     */
-    public function setProjectId($projectId)
-    {
-        $this->projectId = $projectId;
-
-        return $this;
-    }
-
-    /**
-     * Get projectId
-     *
-     * @return integer 
-     */
-    public function getProjectId()
-    {
-        return $this->projectId;
-    }
-
-    /**
-     * Set subProjectId
-     *
-     * @param integer $subProjectId
-     * @return AllocatedAmount
-     */
-    public function setSubProjectId($subProjectId)
-    {
-        $this->subProjectId = $subProjectId;
-
-        return $this;
-    }
-
-    /**
-     * Get subProjectId
-     *
-     * @return integer 
-     */
-    public function getSubProjectId()
-    {
-        return $this->subProjectId;
     }
 
     /**
@@ -151,5 +98,28 @@ class AllocatedAmount
     public function getYear()
     {
         return $this->year;
+    }
+
+    /**
+     * Set Project
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\Project $Project
+     * @return ProjectAllocatedAmount
+     */
+    public function setProject(\UKMNorge\EconomyBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \UKMNorge\EconomyBundle\Entity\Project 
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }

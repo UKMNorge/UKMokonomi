@@ -27,10 +27,18 @@
 					{% endfor %}				
 				</select>
 			</div>
-
-
-			
 		</fieldset>
+
+		<fieldset class="col-xs-12">
+			<legend>Budsjett</legend>
+			{% for i in yearspan.start..yearspan.stop %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-2">
+					<label for="amount_{{ i }}">{{ i }} </label>
+					<input value="{{ project.getAllocatedAmount( i ) }}" type="number" class="form-control" id="amount_{{ i }}" name="amount_{{ i }}" placeholder="kr ..." />
+				</div>
+			{% endfor %}
+		</fieldset>
+
 						
 		<div class="clearfix"></div>
 		

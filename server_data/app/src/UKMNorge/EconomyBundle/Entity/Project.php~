@@ -49,6 +49,21 @@ class Project
      */
     private $budget;
 
+	/**
+     * @ORM\OneToMany(targetEntity="SubProject", mappedBy="project")
+     */
+    private $subProjects;
+
+	/**
+     * @ORM\OneToMany(targetEntity="SubProjectAllocatedAmount", mappedBy="project")
+     */
+    private $subProjectsAllocatedAmounts;
+
+	/**
+     * @ORM\OneToMany(targetEntity="ProjectAllocatedAmount", mappedBy="project")
+     */
+    private $allocatedAmounts;
+
 
     /**
      * Get id
@@ -172,5 +187,78 @@ class Project
     public function getOwnerObject()
     {
         return $this->ownerObject;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->subProjects = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add subProjects
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProject $subProjects
+     * @return Project
+     */
+    public function addSubProject(\UKMNorge\EconomyBundle\Entity\SubProject $subProjects)
+    {
+        $this->subProjects[] = $subProjects;
+
+        return $this;
+    }
+
+    /**
+     * Remove subProjects
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProject $subProjects
+     */
+    public function removeSubProject(\UKMNorge\EconomyBundle\Entity\SubProject $subProjects)
+    {
+        $this->subProjects->removeElement($subProjects);
+    }
+
+    /**
+     * Get subProjects
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubProjects()
+    {
+        return $this->subProjects;
+    }
+
+    /**
+     * Add subProjectsAllocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts
+     * @return Project
+     */
+    public function addSubProjectsAllocatedAmount(\UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts)
+    {
+        $this->subProjectsAllocatedAmounts[] = $subProjectsAllocatedAmounts;
+
+        return $this;
+    }
+
+    /**
+     * Remove subProjectsAllocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts
+     */
+    public function removeSubProjectsAllocatedAmount(\UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts)
+    {
+        $this->subProjectsAllocatedAmounts->removeElement($subProjectsAllocatedAmounts);
+    }
+
+    /**
+     * Get subProjectsAllocatedAmounts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubProjectsAllocatedAmounts()
+    {
+        return $this->subProjectsAllocatedAmounts;
     }
 }

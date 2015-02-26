@@ -21,7 +21,7 @@ class SubProjectController extends Controller
 	    $data = array();
 	    $data['budget'] = $budget;
 	    $data['project'] = $project;
-	    $data['subprojects'] = $subProjectServ->getAll( $project, true );
+#	    $data['subprojects'] = $project->getSubProjects();
 	    	    
         return $this->render('UKMecoBundle:SubProject:index.html.twig', $data);
     }
@@ -33,11 +33,20 @@ class SubProjectController extends Controller
 
 		$budget = $budgetServ->get( $budget );
 		$project = $projectServ->get( $project );
+		
+		$yearspan = $this->_getYearSpan();
 
 	    $data = array();
 	    $data['budget'] = $budget;
 	    $data['project'] = $project;
 	    $data['subproject'] = false;
+	    $data['yearspan'] = $yearspan;
+	    
+	    $allocatedAmounts = array();
+	    for( $i=$yearspan->start; $i<$yearspan->stop+1; $i++) {
+		    $allocatedAmounts[ $i ] = 0;
+	    }
+		$data['allocatedAmounts'] = $allocatedAmounts;
 	    
 		return $this->render('UKMecoBundle:SubProject:form.html.twig', $data);
     }
@@ -61,7 +70,7 @@ class SubProjectController extends Controller
 			return $this->render('UKMecoBundle:SubProject:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
 	    }
 	    
-	    $this->_setAllocatedAmounts( $subProjectServ, $subproject, $request->request );
+	    $this->_setAllocatedAmounts( $subProjectServ, $SubProject, $request->request );
 	    
 	    return $this->redirect( $this->get('router')->generate('UKMeco_subproject_homepage', array('project' => $project->getId(), 'budget' => $budget->getId())) );
     }
@@ -75,9 +84,7 @@ class SubProjectController extends Controller
 		$project = $projectServ->get( $project );
 		$subproject = $subProjectServ->get( $id );
 
-		$yearspan = new stdClass();
-		$yearspan->start = (int) date('Y') - 1;
-		$yearspan->stop = (int) date('Y') + 4;
+		$yearspan = $this->_getYearSpan();
 		
 	    $data = array();
 	    $data['budget'] = $budget;
@@ -123,4 +130,11 @@ class SubProjectController extends Controller
 			}
 	    }	
 	}
+    
+    private function _getYearSpan() {
+		$yearspan = new stdClass();
+		$yearspan->start = (int) date('Y') - 1;
+		$yearspan->stop = (int) date('Y') + 4;
+		return $yearspan;
+    }
 }

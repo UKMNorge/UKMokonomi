@@ -12,8 +12,65 @@
 	
 	<h1>{{ budget.getName() }}</h1>
 	<p class="lead">Viser alle prosjekter</p>
-	
-	<ol class="list-unstyled project">
+	<table class="table table-striped subproject">
+		<thead>
+			<tr>
+				<th></th>
+				<th colspan="3" style="text-align:center;">{{ "now"|date("Y") }}</th>
+			</tr>
+			<tr>
+				<th class="col-xs-3">Prosjekt</th>
+				{% for i in "now"|date("Y").."now +3 years"|date("Y") %}
+					{% if loop.first %}
+						<td class="col-xs-1 info kroner">Tildelt budsjett</th>
+						<td class="col-xs-1 active kroner">Akkumulert del-prosjekter</th>
+						<td class="col-xs-1 warning kroner">Regnskap</td>
+					{% else %}
+						<th class="col-xs-1 kroner">
+							<small>{{ i }}</small>
+						</th>
+					{% endif %}
+				{% endfor %}
+				<th class="col-xs-1"></th>
+			</tr>
+		</thead>
+		{% for project in projects %}
+			<tr>
+				<td>
+					<a href="{{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId() } ) }}">{{ project.getName() }}</a>
+				</td>
+				{% for i in "now"|date("Y").."now +3 years"|date("Y") %}
+					{% if loop.first %}
+						<td class="info">{{ project.getAllocatedAmount( i )|kroner }},-</td>
+						<td class="active kroner b">{{ project.getSubProjectsAllocatedAmount( i )|kroner }},-</td>
+						<td class="warning kroner"> - </td>
+					{% else %}
+						<td class="kroner">
+							<small>{{ project.getAllocatedAmount( i )|kroner }},-</small>
+						</td>
+					{% endif %}
+				{% endfor %}
+				<td>
+					<div class="dropdown" align="right">
+						<button class="btn btn-default dropdown-toggle btn-sm" type="button" id="actionsProject_{{ project.getId() }}" data-toggle="dropdown" aria-expanded="true">
+							Handlinger
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="actionsProject_{{ project.getId() }}">
+							<li role="presentation">
+								<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}">Rediger</a>
+							</li>
+							<li role="presentation">
+								<a href="{{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId() } ) }}">Vis del-prosjekter</a>
+							</li>
+						</ul>
+					</div>
+				</td>
+
+			</tr>
+		{% endfor %}
+	</table>
+{#	<ol class="list-unstyled project">
 		{% for project in projects %}
 			<li>
 				<div class="col-xs-1">
@@ -33,4 +90,5 @@
 			</li>
 		{% endfor %}
 	</ol>
+#}
 {% endblock %}

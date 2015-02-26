@@ -49,6 +49,23 @@ class Project
      */
     private $budget;
 
+	/**
+     * @ORM\OneToMany(targetEntity="SubProject", mappedBy="project")
+     */
+    private $subProjects;
+
+	/**
+     * @ORM\OneToMany(targetEntity="SubProjectAllocatedAmount", mappedBy="project")
+     */
+    private $subProjectsAllocatedAmounts;
+    private $subProjectsAllocatedAmountsArray = false;
+
+	/**
+     * @ORM\OneToMany(targetEntity="ProjectAllocatedAmount", mappedBy="project")
+     */
+    private $allocatedAmounts;
+
+	private $allocatedAmountsArray = false;
 
     /**
      * Get id
@@ -172,5 +189,204 @@ class Project
     public function getOwnerObject()
     {
         return $this->ownerObject;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->subProjects = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add subProjects
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProject $subProjects
+     * @return Project
+     */
+    public function addSubProject(\UKMNorge\EconomyBundle\Entity\SubProject $subProjects)
+    {
+        $this->subProjects[] = $subProjects;
+
+        return $this;
+    }
+
+    /**
+     * Remove subProjects
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProject $subProjects
+     */
+    public function removeSubProject(\UKMNorge\EconomyBundle\Entity\SubProject $subProjects)
+    {
+        $this->subProjects->removeElement($subProjects);
+    }
+
+    /**
+     * Get subProjects
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubProjects()
+    {
+        return $this->subProjects;
+    }
+
+    /**
+     * Add subProjectsAllocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts
+     * @return Project
+     */
+    public function addSubProjectsAllocatedAmount(\UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts)
+    {
+        $this->subProjectsAllocatedAmounts[] = $subProjectsAllocatedAmounts;
+
+        return $this;
+    }
+
+    /**
+     * Remove subProjectsAllocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts
+     */
+    public function removeSubProjectsAllocatedAmount(\UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $subProjectsAllocatedAmounts)
+    {
+        $this->subProjectsAllocatedAmounts->removeElement($subProjectsAllocatedAmounts);
+    }
+
+    /**
+     * Get subProjectsAllocatedAmounts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubProjectsAllocatedAmounts()
+    {
+        return $this->subProjectsAllocatedAmounts;
+    }
+
+    /**
+     * Add allocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\ProjectAllocatedAmount $allocatedAmounts
+     * @return Project
+     */
+    public function addAllocatedAmount(\UKMNorge\EconomyBundle\Entity\ProjectAllocatedAmount $allocatedAmounts)
+    {
+        $this->allocatedAmounts[] = $allocatedAmounts;
+		$this->allocatedAmountsArray = false;
+        return $this;
+    }
+
+    /**
+     * Remove allocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\ProjectAllocatedAmount $allocatedAmounts
+     */
+    public function removeAllocatedAmount(\UKMNorge\EconomyBundle\Entity\ProjectAllocatedAmount $allocatedAmounts)
+    {
+        $this->allocatedAmounts->removeElement($allocatedAmounts);
+		$this->allocatedAmountsArray = false;
+    }
+
+    /**
+     * Get allocatedAmounts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAllocatedAmounts()
+    {
+        return $this->allocatedAmounts;
+    }
+    
+    /**
+     * Set allocatedAmountsArray
+     *
+     * @return void
+     */
+    public function setAllocatedAmountsArray( $array ) {
+	    $this->allocatedAmountsArray = $array;
+    }
+    
+    /**
+     * Get allocatedAmountsArray
+     *
+     * @return Array
+     */
+    public function getAllocatedAmountsArray() {
+	    return $this->allocatedAmountsArray;
+    }
+    
+    /**
+     * Get allocatedAmount
+     * 
+     * @param integer $year
+     *
+     * @return integer $amount
+     */
+
+    public function getAllocatedAmount( $year ) {
+
+	    // If not loaded, load now
+	    if( $this->allocatedAmountsArray == false ) {
+		    $allocatedAmounts = $this->getAllocatedAmounts();
+			foreach( $allocatedAmounts as $entity ) {
+				$this->allocatedAmountsArray[ $entity->getYear() ] = $entity->getAmount();
+			}
+		}
+		// If there is set an amount for given year, return
+	    if( isset( $this->allocatedAmountsArray[ $year ] ) ) {
+		    return $this->allocatedAmountsArray[ $year ];
+	    }
+	    // If none allocated, zero it is
+	    return 0;
+    }
+    
+    
+    
+    /**
+     * Set allocatedAmountsArray
+     *
+     * @return void
+     */
+    public function setSubProjectsAllocatedAmountsArray( $array ) {
+	    $this->subProjectsAllocatedAmountsArray = $array;
+    }
+    
+    /**
+     * Get allocatedAmountsArray
+     *
+     * @return Array
+     */
+    public function getSubProjectsAllocatedAmountsArray() {
+	    return $this->subProjectsAllocatedAmountsArray;
+    }
+    
+    /**
+     * Get allocatedAmount
+     * 
+     * @param integer $year
+     *
+     * @return integer $amount
+     */
+
+    public function getSubProjectsAllocatedAmount( $year ) {
+
+	    // If not loaded, load now
+	    if( $this->subProjectsAllocatedAmountsArray == false ) {
+		    $allocatedAmounts = $this->getSubProjectsAllocatedAmounts();
+			foreach( $allocatedAmounts as $entity ) {
+				// Since this one is accumulating, initiate with 0 if not isset and accumulate always in loop
+				if( !isset( $this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] ) ) {
+					$this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] = 0;
+				}
+				$this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] += $entity->getAmount();
+			}
+		}
+		// If there is set an amount for given year, return
+	    if( isset( $this->subProjectsAllocatedAmountsArray[ $year ] ) ) {
+		    return $this->subProjectsAllocatedAmountsArray[ $year ];
+	    }
+	    // If none allocated, zero it is
+	    return 0;
     }
 }

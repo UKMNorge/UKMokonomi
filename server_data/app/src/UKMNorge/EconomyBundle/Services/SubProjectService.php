@@ -6,7 +6,7 @@ use MariusMandal\UserBundle\Entity\User;
 use UKMNorge\EconomyBundle\Entity\Budget;
 use UKMNorge\EconomyBundle\Entity\Project;
 use UKMNorge\EconomyBundle\Entity\SubProject;
-use UKMNorge\EconomyBundle\Entity\AllocatedAmount;
+use UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount;
 use Exception;
 use DateTime;
 
@@ -99,7 +99,7 @@ class SubProjectService
 
 		$subProject = new SubProject();
 		$subProject->setName( $name );
-		$subProject->setProject( $project->getId() );
+		$subProject->setProject( $project);
 		$subProject->setBudget( $budget->getId() );
 		$subProject->setDescription( $description );
 		$this->_persistAndFlush( $subProject );
@@ -179,7 +179,7 @@ class SubProjectService
 	    $this->_validate( $subProject );
 		$this->_validateProject( $project );
 		
-		$subProject->setProject( $project->getId() );
+		$subProject->setProject( $project );
 	    $this->_persistAndFlush( $subProject );
 	    return $subProject;
     }
@@ -221,14 +221,14 @@ class SubProjectService
 		if( !is_numeric( $amount ) || !is_integer( $amount ) ) {
 			throw new Exception('Given amount is not an integer! Given '. gettype( $amount ). ' "'. $amount .'"' );
 		}
-		$allocatedAmountRepo = $this->doctrine->getRepository('UKMecoBundle:AllocatedAmount');
+		$allocatedAmountRepo = $this->doctrine->getRepository('UKMecoBundle:SubProjectAllocatedAmount');
 		
-		$allocatedAmount = $allocatedAmountRepo->findOneBy( array('subProjectId' => $subProject->getId(),
+		$allocatedAmount = $allocatedAmountRepo->findOneBy( array('subProject' => $subProject,
 																 'year' => $year ) );
 		if( is_null( $allocatedAmount ) ) {
-			$allocatedAmount = new allocatedAmount();
-			$allocatedAmount->setProjectId(0);
-			$allocatedAmount->setSubProjectId( $subProject );
+			$allocatedAmount = new SubProjectAllocatedAmount();
+			$allocatedAmount->setProjectId( $subProject->getProject()->getId() );
+			$allocatedAmount->setSubProject( $subProject );
 			$allocatedAmount->setYear( $year );
 		}
 		
