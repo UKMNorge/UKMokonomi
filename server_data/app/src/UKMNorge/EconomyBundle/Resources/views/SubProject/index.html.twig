@@ -11,41 +11,40 @@
 	</div>
 	
 	<h1>
-		<a href="{{ url( 'UKMeco_budget_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a>:
+		<a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a>:
 		{{ project.getName() }}
 		<small>
-			<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
+			<a href="{{ url('UKMeco_subproject_edit', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
 		</small>
 	</h1>
 	<p class="lead">
-		Benyttet <label class="text-info">kr {{ project.getTransactionsTotal( "now"|date("Y") )|kroner }},-</label> 
+		Benyttet <label class="text-info">kr {{ transactionServ.getTotalByProject( project, "now"|date("Y") )|kroner }},-</label> 
 		av budsjetterte <label class="text-info">kr {{ project.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</label> 
 		i {{ "now"|date("Y") }}.
-		{% if project.getSubProjectsAllocatedTotal( "now"|date("Y") ) < project.getTransactionsTotal( "now"|date("Y") ) %}
+		{% if project.getSubProjectsAllocatedTotal( "now"|date("Y") ) < transactionServ.getTotalByProject( project, "now"|date("Y") ) %}
 			Overforbruk 
 			<label class="text-danger">
-				kr {{ ( project.getTransactionsTotal( "now"|date("Y") ) - project.getSubProjectsAllocatedTotal( "now"|date("Y") ) )|kroner }},-
+				kr {{ ( transactionServ.getTotalByProject( project, "now"|date("Y") ) - project.getSubProjectsAllocatedTotal( "now"|date("Y") ) )|kroner }},-
 			</label>
 		{% else %}
 			Gjenstående 
 			<label class="text-success">
-				kr {{ (project.getSubProjectsAllocatedTotal( "now"|date("Y") ) - project.getTransactionsTotal( "now"|date("Y") ) )|kroner }},-
+				kr {{ (project.getSubProjectsAllocatedTotal( "now"|date("Y") ) - transactionServ.getTotalByProject( project, "now"|date("Y") ) )|kroner }},-
 			</label>
 		{% endif %}
 		<br />
 		Av tildelte <label class="text-info">kr {{ project.getAllocatedAmount( "now"|date("Y") )|kroner }},-</label> 
-		{% if project.getAllocatedAmount( "now"|date("Y") ) < project.getTransactionsTotal( "now"|date("Y") ) %}
+		{% if project.getAllocatedAmount( "now"|date("Y") ) < transactionServ.getTotalByProject( project, "now"|date("Y") ) %}
 			er overforbruket 
 			<label class="text-danger">
-				kr {{ ( project.getTransactionsTotal( "now"|date("Y") ) - project.getAllocatedAmount( "now"|date("Y") ) )|kroner }},-
+				kr {{ (transactionServ.getTotalByProject( project, "now"|date("Y") ) - project.getAllocatedAmount( "now"|date("Y") ) )|kroner }},-
 			</label>
 		{% else %}
 			gjenstår
 			<label class="text-success">
-				kr {{ (project.getAllocatedAmount( "now"|date("Y") ) - project.getTransactionsTotal( "now"|date("Y") ) )|kroner }},-
+				kr {{ (project.getAllocatedAmount( "now"|date("Y") ) - transactionServ.getTotalByProject( project, "now"|date("Y") ) )|kroner }},-
 			</label>
 		{% endif %}
-		
 	</p>
 	
 	<h3>Alle del-prosjekter</h3>
@@ -85,7 +84,7 @@
 					{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
 						{% if loop.index == 2 %}
 							<td class="active kroner b">{{ subproject.getAllocatedAmount( i )|kroner }},-</td>
-							<td class="warning kroner"> - </td>
+							<td class="warning kroner">{{ transactionServ.getTotalBySubProject( subproject, "now"|date("Y") )|kroner }},-</td>
 						{% else %}
 							<td class="kroner">
 								<small>{{ subproject.getAllocatedAmount( i )|kroner }},-</small>
@@ -122,10 +121,10 @@
 					{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
 						{% if loop.index == 2 %}
 							<th class="col-xs-1 active kroner">{{ project.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</th>
-							<th class="col-xs-1 warning kroner">-</th>
+							<th class="col-xs-1 warning kroner">{{ transactionTotal|kroner }},-</th>
 						{% else %}
 							<th class="col-xs-1 kroner">
-								<small>{{ project.getSubProjectsAllocatedTotal( i ) }},-</small>
+								<small>{{ project.getSubProjectsAllocatedTotal( i )|kroner }},-</small>
 							</th>
 						{% endif %}
 					{% endfor %}

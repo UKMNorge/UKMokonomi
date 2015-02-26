@@ -13,12 +13,16 @@ class ProjectController extends Controller
     {
 	    $budgetServ = $this->get('UKMeco.budget');
 		$projectServ = $this->get('UKMeco.project');
+		$amountServ = $this->get('UKMeco.amount');
+		$transactionServ = $this->get('UKMeco.transaction');
 
 		$budget = $budgetServ->get( $budget );
 
 	    $data = array();
 	    $data['budget'] = $budget;
 	    $data['projects'] = $projectServ->getAll( $budget );
+	    $data['transactionServ'] = $transactionServ;
+	    $data['transactionTotal'] = $amountServ->getTransactionTotalByBudget( $budget, (int)date("Y") );
         return $this->render('UKMecoBundle:project:index.html.twig', $data);
     }
     

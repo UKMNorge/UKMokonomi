@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class SubProjectAllocatedAmountRepository extends EntityRepository
 {
+	
+	public function getTotalByBudget( $budget, $year ) {
+		$q = $this->createQueryBuilder('e')
+	        ->addSelect('SUM(e.amount) AS total')
+	        ->where('e.budget = :budget')
+	        ->whereAnd('e.year = :year')
+	        ->setParameter(array('budget','year'), array($budget,$year))
+	        ->getQuery();
+	        
+	    $result = $q->getSingleResult();
+	    return $result['total'];
+
+	}
 }

@@ -11,6 +11,9 @@ services:
     UKMeco.transaction:
         class:  UKMNorge\EconomyBundle\Services\TransactionService
         arguments: [@service_container]
+    UKMeco.amount:
+        class:  UKMNorge\EconomyBundle\Services\AmountService
+        arguments: [@service_container]
     app.twig_extension:
         class: UKMNorge\EconomyBundle\Twig\KronerExtension
         public: false

@@ -64,6 +64,19 @@ class TransactionService
 		$transactions = $this->repo->findBy( array('subProject'=>$subProject->getId()), array('name' => 'ASC') );
 		return $transactions;
    	}
+   	
+   	
+   	public function getTotalByBudget( $budget, $year ) {
+		return $this->repo->getTotalByBudget( $budget, $year );
+   	}
+
+   	public function getTotalByProject( $project, $year ) {
+		return $this->repo->getTotalByProject( $project, $year );
+   	}
+
+   	public function getTotalBySubProject( $subProject, $year ) {
+		return $this->repo->getTotalBySubProject( $subProject, $year );
+   	}
     
     /** **************************************************************************************** **/
 	/** CREATE FUNCTIONS

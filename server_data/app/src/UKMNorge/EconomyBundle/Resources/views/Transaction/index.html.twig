@@ -9,43 +9,21 @@
 			<button class="btn btn-success"><i class="icon-add"></i> Legg til ny transaksjon</button>
 		</a>
 	</div>
-	
+
 	<h1>
-		{{ budget.getName() }}: 
-		{{ project.getName() }}:
+		<a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a>:
+		<a href="{{ url( 'UKMeco_subproject_homepage', {'budget': budget.getID(), 'project': project.getId() } ) }}">{{ project.getName() }}</a>:
 		{{ subproject.getName() }}
-	</h1>
-		
-	<div class="col-xs-12 col-sm-6">
-		<div>
-			<p class="pull-right">40.000,-</p>
-			<p>Tildelt budsjett</p>
-		</div>
-		<div>
-			<p class="pull-right">11.000,-</p>
-			<p>Tilgjengelig</p>
-		</div>
-	</div>
-	<div class="col-xs-12 col-sm-6">
 		<small>
-			<div>
-				<div class="pull-right">9.000,-</div>
-				Akkumulert budsjett
-			</div>
-			<div>
-				<div class="pull-right">10.000,-</div>
-				Gjennomførte transaksjoner
-			</div>
-			<div>
-				<div class="pull-right">19.000,-</div>
-				Akkumulert budsjett + gjennomført
-			</div>
+			<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
 		</small>
-	</div>
+	</h1>
+
+		
 	<div class="clearfix"></div>
 	
 	
-	<p class="lead">Viser alle transaksjoner</p>
+	<p class="lead">Alle transaksjoner</p>
 
 	{% if transactions|length == 0 %}
 		<div class="alert alert-warning">
@@ -59,8 +37,8 @@
 			<thead>
 				<tr>
 					<th>Transaksjon</th>
-					<th>Budsjettert</th>
-					<th>Gjennomført</th>
+					<th>Faktura kommer</th>
+					<th>Faktura betalt</th>
 				</tr>
 			</thead>
 			<tbody>

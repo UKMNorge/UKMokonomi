@@ -14,6 +14,8 @@ class SubProjectController extends Controller
 	    $budgetServ = $this->get('UKMeco.budget');
 	    $projectServ = $this->get('UKMeco.project');
 		$subProjectServ = $this->get('UKMeco.subproject');
+		$transactionServ = $this->get('UKMeco.transaction');
+		$amountServ = $this->get('UKMeco.amount');
 
 		$budget = $budgetServ->get( $budget );
 		$project = $projectServ->get( $project );
@@ -21,8 +23,8 @@ class SubProjectController extends Controller
 	    $data = array();
 	    $data['budget'] = $budget;
 	    $data['project'] = $project;
-#	    $data['subprojects'] = $project->getSubProjects();
-	    	    
+	    $data['transactionServ'] = $transactionServ;
+	    $data['transactionTotal'] = $amountServ->getTransactionTotalByProject( $project, (int)date("Y") );	    	    
         return $this->render('UKMecoBundle:SubProject:index.html.twig', $data);
     }
     

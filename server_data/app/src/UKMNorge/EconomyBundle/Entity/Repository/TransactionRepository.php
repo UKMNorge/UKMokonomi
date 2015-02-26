@@ -12,4 +12,37 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionRepository extends EntityRepository
 {
+	public function getTotalByBudget( $budget, $year ) {
+	    $q = $this->createQueryBuilder('e')
+	        ->addSelect('SUM(e.amount) AS total')
+	        ->where('e.budget = :budget')
+	        ->setParameter('budget', $budget->getId())
+	        ->getQuery();
+	        
+	    $result = $q->getSingleResult();
+	    return $result['total'];
+	}
+
+	public function getTotalByProject( $project, $year ) {
+	    $q = $this->createQueryBuilder('e')
+	        ->addSelect('SUM(e.amount) AS total')
+	        ->where('e.project = :project')
+	        ->setParameter('project', $project->getId())
+	        ->getQuery();
+	        
+	    $result = $q->getSingleResult();
+	    return $result['total'];
+	}
+
+	public function getTotalBySubProject( $subProject, $year ) {
+	    $q = $this->createQueryBuilder('e')
+	        ->addSelect('SUM(e.amount) AS total')
+	        ->where('e.subProject = :subProject')
+	        ->setParameter('subProject', $subProject->getId())
+	        ->getQuery();
+	        
+	    $result = $q->getSingleResult();
+	    return $result['total'];
+	}
+
 }

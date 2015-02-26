@@ -409,11 +409,6 @@ class Project
 	    return 0;
     }
     
-    
-    public function getTransactionsTotal( $year ) {
-	    return 15000;
-    }
-
     /**
      * Set budget
      *
