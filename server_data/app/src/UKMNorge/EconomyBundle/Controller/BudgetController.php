@@ -4,6 +4,7 @@ namespace UKMNorge\EconomyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use stdClass;
 
 class BudgetController extends Controller
 {
@@ -14,17 +15,19 @@ class BudgetController extends Controller
 
 	    $data = array();
 	    $data['budgets'] = $budgetServ->getAll();
+	    $data['transactionServ'] = $this->get('UKMeco.transaction');
         return $this->render('UKMecoBundle:Budget:index.html.twig', $data);
     }
     
     public function createAction() {
-	    $data = array();
-	    $data['budget'] = false;
-
-
 		$userManager = $this->get('fos_user.user_manager');
 	    $users = $userManager->findUsers();
+   	    $yearspan = $this->_yearspan();
+
+	    $data = array();
+	    $data['budget'] = false;
 	    $data['owners'] = $users;
+	    $data['yearspan'] = $yearspan;
 	    
 		return $this->render('UKMecoBundle:Budget:form.html.twig', $data);
     }
@@ -47,18 +50,21 @@ class BudgetController extends Controller
 			return $this->render('UKMecoBundle:Budget:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
 	    }
 	    
+	    $this->_setAllocatedAmounts( $budgetServ, $budget, $request->request );
+	    
 	    return $this->redirect( $this->get('router')->generate('UKMeco_budget_homepage') );
     }
     
     public function editAction( $id ) {
 	    $budgetServ = $this->get('UKMeco.budget');
+   	    $yearspan = $this->_yearspan();
 	    
-	    $data = array();
-	    $data['budget'] = $budgetServ->get( $id );
-
-
 		$userManager = $this->get('fos_user.user_manager');
 	    $users = $userManager->findUsers();
+
+	    $data = array();
+	    $data['budget'] = $budgetServ->get( $id );
+	    $data['yearspan'] = $yearspan;
 	    $data['owners'] = $users;
 	    
 		return $this->render('UKMecoBundle:Budget:form.html.twig', $data);
@@ -83,7 +89,26 @@ class BudgetController extends Controller
 			return $this->render('UKMecoBundle:Budget:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
 	    }
 	    
+	    $this->_setAllocatedAmounts( $budgetServ, $budget, $request->request );
+	    
 	    return $this->redirect( $this->get('router')->generate('UKMeco_budget_homepage') );
     }
+    
+    private function _setAllocatedAmounts( $budgetServ, $budget, $postdata ) {
+	    foreach( $postdata as $post_key => $amount ) {
+		    if( strpos( $post_key, 'amount_' ) === 0 ) {
+			    $amount = (int) $amount;
+			    $year = (int) str_replace('amount_', '', $post_key);
+				$budgetServ->setAllocatedAmount( $budget, $year, $amount );    
+			}
+	    }	
+	}
+    
+    private function _yearspan() {
+   		$yearspan = new stdClass();
+		$yearspan->start = (int) date('Y') - 1;
+		$yearspan->stop = (int) date('Y') + 4;
 
+	    return $yearspan;
+    }
 }

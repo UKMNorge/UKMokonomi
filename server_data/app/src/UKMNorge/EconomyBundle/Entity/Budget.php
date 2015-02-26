@@ -41,6 +41,13 @@ class Budget
      * @ORM\Column(name="Owner", type="integer", nullable=true)
      */
     private $owner=0;
+    
+	/**
+     * @ORM\OneToMany(targetEntity="BudgetAllocatedAmount", mappedBy="budget")
+     */
+    private $allocatedAmounts;
+    private $allocatedAmountsArray = false;
+    private $allocatedTotalArray = false;
 
 	/**
      * @ORM\OneToMany(targetEntity="Project", mappedBy="budget")
@@ -282,5 +289,81 @@ class Budget
 				}
 			}
 		}
+    }
+
+    /**
+     * Add allocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\BudgetAllocatedAmount $allocatedAmounts
+     * @return Budget
+     */
+    public function addAllocatedAmount(\UKMNorge\EconomyBundle\Entity\BudgetAllocatedAmount $allocatedAmounts)
+    {
+        $this->allocatedAmounts[] = $allocatedAmounts;
+
+        return $this;
+    }
+
+    /**
+     * Remove allocatedAmounts
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\BudgetAllocatedAmount $allocatedAmounts
+     */
+    public function removeAllocatedAmount(\UKMNorge\EconomyBundle\Entity\BudgetAllocatedAmount $allocatedAmounts)
+    {
+        $this->allocatedAmounts->removeElement($allocatedAmounts);
+    }
+
+    /**
+     * Get allocatedAmounts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAllocatedAmounts()
+    {
+        return $this->allocatedAmounts;
+    }
+    
+    /**
+     * Set allocatedAmountsArray
+     *
+     * @return void
+     */
+    public function setAllocatedAmountsArray( $array ) {
+	    $this->allocatedAmountsArray = $array;
+    }
+    
+    /**
+     * Get allocatedAmountsArray
+     *
+     * @return Array
+     */
+    public function getAllocatedAmountsArray() {
+	    return $this->allocatedAmountsArray;
+    }
+    
+    /**
+     * Get allocatedAmount
+     * 
+     * @param integer $year
+     *
+     * @return integer $amount
+     */
+
+    public function getAllocatedAmount( $year ) {
+
+	    // If not loaded, load now
+	    if( $this->allocatedAmountsArray == false ) {
+		    $allocatedAmounts = $this->getAllocatedAmounts();
+			foreach( $allocatedAmounts as $entity ) {
+				$this->allocatedAmountsArray[ $entity->getYear() ] = $entity->getAmount();
+			}
+		}
+		// If there is set an amount for given year, return
+	    if( isset( $this->allocatedAmountsArray[ $year ] ) ) {
+		    return $this->allocatedAmountsArray[ $year ];
+	    }
+	    // If none allocated, zero it is
+	    return 0;
     }
 }

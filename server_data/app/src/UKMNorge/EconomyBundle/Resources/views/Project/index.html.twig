@@ -28,16 +28,16 @@
 			</label>
 		{% endif %}
 		<br />
-		Av tildelte <label class="text-info">kr {{ budget.getProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</label> 
+		Av tildelte <label class="text-info">kr {{ budget.getAllocatedAmount( "now"|date("Y") )|kroner }},-</label> 
 		{% if budget.getProjectsAllocatedTotal( "now"|date("Y") ) < transactionServ.getTotalByBudget( budget, "now"|date("Y") ) %}
 			er overforbruket 
 			<label class="text-danger">
-				kr {{ (transactionServ.getTotalByBudget( budget, "now"|date("Y") ) - budget.getProjectsAllocatedTotal( "now"|date("Y") ))|kroner  }},-
+				kr {{ (transactionServ.getTotalByBudget( budget, "now"|date("Y") ) - budget.getAllocatedAmount( "now"|date("Y") ))|kroner  }},-
 			</label>
 		{% else %}
 			gjenstår
 			<label class="text-success">
-				kr {{ (budget.getProjectsAllocatedTotal( "now"|date("Y") ) - transactionServ.getTotalByBudget( budget, "now"|date("Y") ))|kroner }},-
+				kr {{ (budget.getAllocatedAmount( "now"|date("Y") ) - transactionServ.getTotalByBudget( budget, "now"|date("Y") ))|kroner }},-
 			</label>
 		{% endif %}
 	</p>
