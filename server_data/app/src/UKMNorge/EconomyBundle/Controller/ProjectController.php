@@ -26,13 +26,16 @@ class ProjectController extends Controller
 	    $budgetServ = $this->get('UKMeco.budget');
 		$budget = $budgetServ->get( $budget );
 
+		$userManager = $this->get('fos_user.user_manager');
+	    $users = $userManager->findUsers();
+
+	    $yearspan = $this->_yearspan();
+
 	    $data = array();
 	    $data['project'] = false;
 	    $data['budget'] = $budget;
-
-		$userManager = $this->get('fos_user.user_manager');
-	    $users = $userManager->findUsers();
 	    $data['owners'] = $users;
+	    $data['yearspan'] = $yearspan;
 	    
 		return $this->render('UKMecoBundle:project:form.html.twig', $data);
     }
@@ -71,10 +74,8 @@ class ProjectController extends Controller
 		$userManager = $this->get('fos_user.user_manager');
 	    $users = $userManager->findUsers();
 	    
-		$yearspan = new stdClass();
-		$yearspan->start = (int) date('Y') - 1;
-		$yearspan->stop = (int) date('Y') + 4;
-		
+	    $yearspan = $this->_yearspan();
+	    		
 	    $data = array();
 	    $data['owners'] = $users;
 	    $data['budget'] = $budget;
@@ -82,6 +83,14 @@ class ProjectController extends Controller
 	    $data['yearspan'] = $yearspan;	    
 	    
 		return $this->render('UKMecoBundle:project:form.html.twig', $data);
+    }
+    
+    private function _yearspan() {
+   		$yearspan = new stdClass();
+		$yearspan->start = (int) date('Y') - 1;
+		$yearspan->stop = (int) date('Y') + 4;
+
+	    return $yearspan;
     }
     
     public function doEditAction( Request $request, $id ) {

@@ -13,18 +13,60 @@
 	<h1>
 		<a href="{{ url( 'UKMeco_budget_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a>:
 		{{ project.getName() }}
+		<small>
+			<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
+		</small>
 	</h1>
-	<p class="lead">Viser alle del-prosjekter</p>
+	<p class="lead">
+		Benyttet <label class="text-info">kr {{ project.getTransactionsTotal( "now"|date("Y") )|kroner }},-</label> 
+		av budsjetterte <label class="text-info">kr {{ project.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</label> 
+		i {{ "now"|date("Y") }}.
+		{% if project.getSubProjectsAllocatedTotal( "now"|date("Y") ) < project.getTransactionsTotal( "now"|date("Y") ) %}
+			Overforbruk 
+			<label class="text-danger">
+				kr {{ ( project.getTransactionsTotal( "now"|date("Y") ) - project.getSubProjectsAllocatedTotal( "now"|date("Y") ) )|kroner }},-
+			</label>
+		{% else %}
+			Gjenstående 
+			<label class="text-success">
+				kr {{ (project.getSubProjectsAllocatedTotal( "now"|date("Y") ) - project.getTransactionsTotal( "now"|date("Y") ) )|kroner }},-
+			</label>
+		{% endif %}
+		<br />
+		Av tildelte <label class="text-info">kr {{ project.getAllocatedAmount( "now"|date("Y") )|kroner }},-</label> 
+		{% if project.getAllocatedAmount( "now"|date("Y") ) < project.getTransactionsTotal( "now"|date("Y") ) %}
+			er overforbruket 
+			<label class="text-danger">
+				kr {{ ( project.getTransactionsTotal( "now"|date("Y") ) - project.getAllocatedAmount( "now"|date("Y") ) )|kroner }},-
+			</label>
+		{% else %}
+			gjenstår
+			<label class="text-success">
+				kr {{ (project.getAllocatedAmount( "now"|date("Y") ) - project.getTransactionsTotal( "now"|date("Y") ) )|kroner }},-
+			</label>
+		{% endif %}
+		
+	</p>
+	
+	<h3>Alle del-prosjekter</h3>
 	
 	{% if true %}
 		<table class="table table-striped subproject">
 			<thead>
 				<tr>
+					<th></th>
+					<th></th>
+					<th colspan="2" style="text-align:center">{{ "now"|date("Y") }}</th>
+					{% for i in "now"|date("Y").."now +3 years"|date("Y") %}
+						<th></th>
+					{% endfor %}
+				</tr>
+				<tr>
 					<th class="col-xs-3">Budsjettpost</th>
 					{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
 						{% if loop.index == 2 %}
-							<th class="col-xs-1 active kroner">B{{ i }}</th>
-							<th class="col-xs-1 warning kroner">R{{ i }}</th>
+							<th class="col-xs-1 active kroner">Budsjett</th>
+							<th class="col-xs-1 warning kroner">Regnskap</th>
 						{% else %}
 							<th class="col-xs-1 kroner">
 								<small>{{ i }}</small>
@@ -34,6 +76,7 @@
 					<th class="col-xs-1"></th>
 				</tr>
 			</thead>
+			<tbody>			
 			{% for subproject in project.getSubProjects() %}
 				<tr>
 					<td>
@@ -72,6 +115,23 @@
 					</td>
 				</tr>
 			{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<th>SUM</th>
+					{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
+						{% if loop.index == 2 %}
+							<th class="col-xs-1 active kroner">{{ project.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</th>
+							<th class="col-xs-1 warning kroner">-</th>
+						{% else %}
+							<th class="col-xs-1 kroner">
+								<small>{{ project.getSubProjectsAllocatedTotal( i ) }},-</small>
+							</th>
+						{% endif %}
+					{% endfor %}
+					<th class="col-xs-1"></th>
+				</tr>
+			</tfoot>
 		</table>
 	{% else %}
 		<div class="error error-warning">

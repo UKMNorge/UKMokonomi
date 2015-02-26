@@ -60,7 +60,7 @@ class ProjectService
     */
    	public function getAll( $budget ) {
 	   	$this->_validateBudget( $budget );
-		$projects = $this->repo->findBy( array('budget'=>$budget->getId()), array('name' => 'ASC') );
+		$projects = $this->repo->findBy( array('budget'=>$budget), array('name' => 'ASC') );
 		$this->_loadOwnerObjects( $projects );
 		return $projects;
    	}
@@ -85,7 +85,7 @@ class ProjectService
 	   	$this->_validateBudget( $budget );
 		
 		// Existing name
-		$existing = $this->repo->findOneByName( array('name' => $name, 'budget' => $budget->getId() ) );
+		$existing = $this->repo->findOneByName( array('name' => $name, 'budget' => $budget ) );
 		if( !is_null( $existing ) ) {
 			throw new Exception('Project name already registered within budget ("'. $budget->getName().'")!', 2001);
 		}
@@ -93,7 +93,7 @@ class ProjectService
 		$project = new project();
 		$project->setName( $name );
 		$project->setOwner( $owner->getId() );
-		$project->setBudget( $budget->getId() );
+		$project->setBudget( $budget );
 		$project->setDescription( $description );
 		$this->_persistAndFlush( $project );
 
@@ -185,7 +185,7 @@ class ProjectService
 	    $this->_validate( $project );
 	    $this->_validateBudget( $budget );
 
-		$project->setBudget( $budget->getId() );
+		$project->setBudget( $budget );
 	    $this->_persistAndFlush( $project );
 	    return $project;
     }

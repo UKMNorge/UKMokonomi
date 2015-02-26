@@ -46,7 +46,8 @@ class SubProject
     /**
      * @var integer
      *
-     * @ORM\Column(name="Budget", type="integer")
+     * @ORM\ManyToOne(targetEntity="Budget", inversedBy="subProjects")
+     * @ORM\JoinColumn(name="Budget", referencedColumnName="id")
      */
     private $budget;
 
@@ -112,28 +113,6 @@ class SubProject
         return $this->description;
     }
 
-    /**
-     * Set budget
-     *
-     * @param integer $budget
-     * @return SubProject
-     */
-    public function setBudget($budget)
-    {
-        $this->budget = $budget;
-
-        return $this;
-    }
-
-    /**
-     * Get budget
-     *
-     * @return integer 
-     */
-    public function getBudget()
-    {
-        return $this->budget;
-    }
     /**
      * Constructor
      */
@@ -241,5 +220,28 @@ class SubProject
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Set budget
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\Budget $budget
+     * @return SubProject
+     */
+    public function setBudget(\UKMNorge\EconomyBundle\Entity\Budget $budget = null)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get budget
+     *
+     * @return \UKMNorge\EconomyBundle\Entity\Budget 
+     */
+    public function getBudget()
+    {
+        return $this->budget;
     }
 }

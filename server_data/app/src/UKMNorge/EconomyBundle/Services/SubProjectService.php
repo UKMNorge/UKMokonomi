@@ -100,7 +100,7 @@ class SubProjectService
 		$subProject = new SubProject();
 		$subProject->setName( $name );
 		$subProject->setProject( $project);
-		$subProject->setBudget( $budget->getId() );
+		$subProject->setBudget( $budget );
 		$subProject->setDescription( $description );
 		$this->_persistAndFlush( $subProject );
 
@@ -195,7 +195,7 @@ class SubProjectService
     public function setBudget( $subProject, $budget ) {
 	    $this->_validate( $subProject );
 		$this->_validateBudget( $budget );
-		$subProject->setBudget( $budget->getId() );
+		$subProject->setBudget( $budget );
 	    $this->_persistAndFlush( $subProject );
 	    return $subProject;
     }
@@ -227,7 +227,7 @@ class SubProjectService
 																 'year' => $year ) );
 		if( is_null( $allocatedAmount ) ) {
 			$allocatedAmount = new SubProjectAllocatedAmount();
-			$allocatedAmount->setProjectId( $subProject->getProject()->getId() );
+			$allocatedAmount->setProject( $subProject->getProject() );
 			$allocatedAmount->setSubProject( $subProject );
 			$allocatedAmount->setYear( $year );
 		}

@@ -26,11 +26,11 @@
 				<label for="type">Type</label>
 				<div class="radio">
 					<label>
-						<input type="radio" name="type" id="type" value="Budget" {{ transaction == false ? '': (transaction.getType() == 'Budget' ? 'checked="checked"' : '') }} /> Budsjettert
+						<input type="radio" name="type" id="type" value="Budget" {{ transaction == false ? '': (transaction.getType() == 'Budget' ? 'checked="checked"' : '') }} /> Faktura kommer
 					</label>
 	
 					<label>
-						<input type="radio" name="type" id="type" value="Accounting" {{ transaction == false ? '': (transaction.getType() == 'Accounting' ? 'checked="checked"' : '') }} /> Gjennomført
+						<input type="radio" name="type" id="type" value="Accounting" {{ transaction == false ? '': (transaction.getType() == 'Accounting' ? 'checked="checked"' : '') }} /> Faktura betalt
 					</label>
 				</div>
 			</div>

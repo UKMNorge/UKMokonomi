@@ -11,7 +11,11 @@
 	</div>
 	
 	<h1>{{ budget.getName() }}</h1>
-	<p class="lead">Viser alle prosjekter</p>
+	
+	<p class="lead">Tildelt kr {#{ budget.getAllocatedTotal( "now"|date("Y") )|kroner }#},-, budsjettert x xxx,- </p>
+
+
+	<h3>Viser alle prosjekter</h3>
 	<table class="table table-striped subproject">
 		<thead>
 			<tr>
@@ -22,9 +26,9 @@
 				<th class="col-xs-3">Prosjekt</th>
 				{% for i in "now"|date("Y").."now +3 years"|date("Y") %}
 					{% if loop.first %}
-						<td class="col-xs-1 info kroner">Tildelt budsjett</th>
-						<td class="col-xs-1 active kroner">Akkumulert del-prosjekter</th>
-						<td class="col-xs-1 warning kroner">Regnskap</td>
+						<th class="col-xs-1 info kroner">Tildelt budsjett</th>
+						<th class="col-xs-1 active kroner">Akkumulert del-prosjekter</th>
+						<th class="col-xs-1 warning kroner">Regnskap</td>
 					{% else %}
 						<th class="col-xs-1 kroner">
 							<small>{{ i }}</small>
@@ -43,7 +47,7 @@
 					{% if loop.first %}
 						<td class="info">{{ project.getAllocatedAmount( i )|kroner }},-</td>
 						<td class="active kroner b">{{ project.getSubProjectsAllocatedAmount( i )|kroner }},-</td>
-						<td class="warning kroner"> - </td>
+						<td class="warning kroner">{{ project.getTransactionsTotal( "now"|date("Y") )|kroner }},-</td>
 					{% else %}
 						<td class="kroner">
 							<small>{{ project.getAllocatedAmount( i )|kroner }},-</small>

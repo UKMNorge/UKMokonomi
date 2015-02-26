@@ -45,7 +45,8 @@ class Project
     /**
      * @var integer
      *
-     * @ORM\Column(name="Budget", type="integer")
+     * @ORM\ManyToOne(targetEntity="Budget", inversedBy="projects")
+     * @ORM\JoinColumn(name="Budget", referencedColumnName="id")
      */
     private $budget;
 
@@ -59,6 +60,7 @@ class Project
      */
     private $subProjectsAllocatedAmounts;
     private $subProjectsAllocatedAmountsArray = false;
+    private $subProjectsAllocatedTotalArray = false;
 
 	/**
      * @ORM\OneToMany(targetEntity="ProjectAllocatedAmount", mappedBy="project")
@@ -146,28 +148,6 @@ class Project
         return $this->owner;
     }
 
-    /**
-     * Set budget
-     *
-     * @param integer $budget
-     * @return Project
-     */
-    public function setBudget($budget)
-    {
-        $this->budget = $budget;
-
-        return $this;
-    }
-
-    /**
-     * Get budget
-     *
-     * @return integer 
-     */
-    public function getBudget()
-    {
-        return $this->budget;
-    }
     /**
      * Set owner object (PublicUser)
      *
@@ -286,6 +266,7 @@ class Project
     {
         $this->allocatedAmounts->removeElement($allocatedAmounts);
 		$this->allocatedAmountsArray = false;
+		$this->allocatedTotalArray = false;
     }
 
     /**
@@ -326,13 +307,7 @@ class Project
 
     public function getAllocatedAmount( $year ) {
 
-	    // If not loaded, load now
-	    if( $this->allocatedAmountsArray == false ) {
-		    $allocatedAmounts = $this->getAllocatedAmounts();
-			foreach( $allocatedAmounts as $entity ) {
-				$this->allocatedAmountsArray[ $entity->getYear() ] = $entity->getAmount();
-			}
-		}
+	    $this->_reloadAllocatedAmountArray();
 		// If there is set an amount for given year, return
 	    if( isset( $this->allocatedAmountsArray[ $year ] ) ) {
 		    return $this->allocatedAmountsArray[ $year ];
@@ -340,8 +315,63 @@ class Project
 	    // If none allocated, zero it is
 	    return 0;
     }
+        
+    private function _reloadAllocatedAmountArray() {
+	    // If not loaded, load now
+	    if( $this->allocatedAmountsArray == false ) {
+		    $allocatedAmounts = $this->getAllocatedAmounts();
+			foreach( $allocatedAmounts as $entity ) {
+				// Store current amount
+				$this->allocatedAmountsArray[ $entity->getYear() ] = $entity->getAmount();
+			}
+		}
+    }
     
-    
+    private function _reloadSubProjectAllocatedAmountArray() {
+	    // If not loaded, load now
+	    if( $this->subProjectsAllocatedAmountsArray == false ) {
+		    $allocatedAmounts = $this->getSubProjectsAllocatedAmounts();
+			foreach( $allocatedAmounts as $entity ) {
+				// Since this one is accumulating, initiate with 0 if not isset and accumulate always in loop
+				if( !isset( $this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] ) ) {
+					$this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] = 0;
+				}
+				$this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] += $entity->getAmount();
+			}
+		}
+	}
+	
+    private function _reloadSubProjectAllocatedTotalArray() {
+	    // If not loaded, load now
+	    if( $this->subProjectsAllocatedTotalArray == false ) {
+		    $allocatedAmounts = $this->getSubProjectsAllocatedAmounts();
+			foreach( $allocatedAmounts as $entity ) {
+				// Since this one is accumulating, initiate with 0 if not isset and accumulate always in loop
+				if( !isset( $this->subProjectsAllocatedTotalArray[ $entity->getYear() ] ) ) {
+					$this->subProjectsAllocatedTotalArray[ $entity->getYear() ] = 0;
+				}
+				$this->subProjectsAllocatedTotalArray[ $entity->getYear() ] += $entity->getAmount();
+			}
+		}
+	}    
+    /**
+	 * Get subProjectsAllocatedTotal
+	 *
+	 * Returns the total of allocated projects
+	 *
+	 * @param integer $year
+	 *
+	 * @return integer $total
+	 */
+    public function getSubProjectsAllocatedTotal( $year ) {
+	    $this->_reloadSubProjectAllocatedAmountArray();
+	    $this->_reloadSubProjectAllocatedTotalArray();
+
+	    if( isset( $this->subProjectsAllocatedTotalArray[ $year ] ) ) {
+		    return $this->subProjectsAllocatedTotalArray[ $year ];
+	    }	    
+	    return 0;
+    }
     
     /**
      * Set allocatedAmountsArray
@@ -370,23 +400,40 @@ class Project
      */
 
     public function getSubProjectsAllocatedAmount( $year ) {
-
-	    // If not loaded, load now
-	    if( $this->subProjectsAllocatedAmountsArray == false ) {
-		    $allocatedAmounts = $this->getSubProjectsAllocatedAmounts();
-			foreach( $allocatedAmounts as $entity ) {
-				// Since this one is accumulating, initiate with 0 if not isset and accumulate always in loop
-				if( !isset( $this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] ) ) {
-					$this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] = 0;
-				}
-				$this->subProjectsAllocatedAmountsArray[ $entity->getYear() ] += $entity->getAmount();
-			}
-		}
+	    $this->_reloadSubProjectAllocatedAmountArray();
 		// If there is set an amount for given year, return
 	    if( isset( $this->subProjectsAllocatedAmountsArray[ $year ] ) ) {
 		    return $this->subProjectsAllocatedAmountsArray[ $year ];
 	    }
 	    // If none allocated, zero it is
 	    return 0;
+    }
+    
+    
+    public function getTransactionsTotal( $year ) {
+	    return 15000;
+    }
+
+    /**
+     * Set budget
+     *
+     * @param \UKMNorge\EconomyBundle\Entity\Budget $budget
+     * @return Project
+     */
+    public function setBudget(\UKMNorge\EconomyBundle\Entity\Budget $budget = null)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get budget
+     *
+     * @return \UKMNorge\EconomyBundle\Entity\Budget 
+     */
+    public function getBudget()
+    {
+        return $this->budget;
     }
 }

@@ -46,7 +46,8 @@ class SubProject
     /**
      * @var integer
      *
-     * @ORM\Column(name="Budget", type="integer")
+     * @ORM\ManyToOne(targetEntity="Budget", inversedBy="subProjects")
+     * @ORM\JoinColumn(name="Budget", referencedColumnName="id")
      */
     private $budget;
 
@@ -55,7 +56,7 @@ class SubProject
      */
     private $allocatedAmounts;
 
-	private $allocatedAmountsArray;
+	private $allocatedAmountsArray = false;
     /**
      * Get id
      *
@@ -113,43 +114,20 @@ class SubProject
     }
 
     /**
-     * Set budget
-     *
-     * @param integer $budget
-     * @return SubProject
-     */
-    public function setBudget($budget)
-    {
-        $this->budget = $budget;
-
-        return $this;
-    }
-
-    /**
-     * Get budget
-     *
-     * @return integer 
-     */
-    public function getBudget()
-    {
-        return $this->budget;
-    }
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->allocatedAmounts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->allocatedAmountsArray = false;
     }
 
     /**
      * Add allocatedAmounts
      *
-     * @param \UKMNorge\EconomyBundle\Entity\AllocatedAmount $allocatedAmounts
+     * @param \UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $allocatedAmounts
      * @return SubProject
      */
-    public function addAllocatedAmount(\UKMNorge\EconomyBundle\Entity\AllocatedAmount $allocatedAmounts)
+    public function addAllocatedAmount(\UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $allocatedAmounts)
     {
         $this->allocatedAmounts[] = $allocatedAmounts;
 
@@ -159,9 +137,9 @@ class SubProject
     /**
      * Remove allocatedAmounts
      *
-     * @param \UKMNorge\EconomyBundle\Entity\AllocatedAmount $allocatedAmounts
+     * @param \UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $allocatedAmounts
      */
-    public function removeAllocatedAmount(\UKMNorge\EconomyBundle\Entity\AllocatedAmount $allocatedAmounts)
+    public function removeAllocatedAmount(\UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $allocatedAmounts)
     {
         $this->allocatedAmounts->removeElement($allocatedAmounts);
 	    $this->allocatedAmountsArray = false;

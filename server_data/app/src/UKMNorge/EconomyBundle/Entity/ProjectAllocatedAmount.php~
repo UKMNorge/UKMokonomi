@@ -106,9 +106,9 @@ class ProjectAllocatedAmount
      * @param \UKMNorge\EconomyBundle\Entity\Project $Project
      * @return ProjectAllocatedAmount
      */
-    public function setProject(\UKMNorge\EconomyBundle\Entity\Project $Project = null)
+    public function setProject(\UKMNorge\EconomyBundle\Entity\Project $project = null)
     {
-        $this->Project = $Project;
+        $this->project = $project;
 
         return $this;
     }
