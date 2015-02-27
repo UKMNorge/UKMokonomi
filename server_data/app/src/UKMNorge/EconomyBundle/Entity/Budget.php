@@ -51,6 +51,7 @@ class Budget
 
 	/**
      * @ORM\OneToMany(targetEntity="Project", mappedBy="budget")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $projects;
 	private $projectAllocatedTotalArray=false;

@@ -52,6 +52,7 @@ class Project
 
 	/**
      * @ORM\OneToMany(targetEntity="SubProject", mappedBy="project")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $subProjects;
 
