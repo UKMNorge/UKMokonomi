@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<title>{% block title %}{% endblock %} :: Økonomikontroll</title>
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
-		<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+{#		<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" /> #}
 		{% stylesheets '../app/Resources/public/css/*' %}
 		<link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
 		{% endstylesheets %}        
@@ -14,9 +14,6 @@
 		{% javascripts '../app/Resources/public/js/*' %}
 			<script src="{{ asset_url }}"></script>
 		{% endjavascripts %}        
-
-		{# JQUERY UI #}
-		<script src="/js/modernizr.min.js"></script>
 
 		{# JQUERY UI #}
 		<script src="/jquery-ui/jquery-ui.min.js"></script>
@@ -55,7 +52,7 @@
 		
 		<div class="container" id="UKMeco_loader" style="display:none;">
 			<h3 align="center">Laster inn...</h3>
-			<img src="/web/img/ajax-loader.gif" />
+			<img src="/web/jquery-ui/ajax-loader.gif" />
 		</div>
 	</body>
 </html>
