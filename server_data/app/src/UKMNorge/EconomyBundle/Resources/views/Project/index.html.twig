@@ -10,7 +10,11 @@
 		</a>
 	</div>
 	
-	<h1>{{ budget.getName() }}</h1>
+	<h1>{{ budget.getName() }}
+		<small>
+			<a href="{{ url('UKMeco_budget_edit', {'id': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
+		</small>
+</h1>
 	
 	<p class="lead">
 		Benyttet <label class="text-info">kr {{ transactionServ.getTotalByBudget( budget, "now"|date("Y") )|kroner }},-</label> 
