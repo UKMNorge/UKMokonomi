@@ -1,16 +1,22 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{% if budget == false %}Legg til nytt område{% else %}Rediger "{{ budget.getName() }}"{% endif %}{% endblock %}
+{% block title %}{% if budget == false %}Legg til nytt formål{% else %}Rediger "{{ budget.getName() }}"{% endif %}{% endblock %}
 
 {% block body %}    
 	<form role="form" method="post" action="{{ budget == false ? url( 'UKMeco_budget_doCreate' ) :  url( 'UKMeco_budget_doEdit', {'id': budget.getId()} ) }}">
 		<input type="hidden" id="budget_id" name="budget_id" value="{{ budget == false ? 'new' : budget.getId() }}" />
 		<fieldset class="col-xs-12 col-md-6">
-			<legend>Områdeinformasjon</legend>
+			<legend>Informasjon om formålet</legend>
+
+			<div class="form-group">
+				<label for="name">Formålskode</label>
+				<input value="{{ budget == false ? '': budget.getCode()}}" type="number" class="form-control" id="code" name="code" placeholder="Firesifret tall" />
+			</div>
+			
 			
 			<div class="form-group">
 				<label for="name">Navn</label>
-				<input value="{{ budget == false ? '': budget.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn områdenavn..." />
+				<input value="{{ budget == false ? '': budget.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn navn på formål..." />
 			</div>
 			
 			<div class="form-group">
@@ -30,7 +36,7 @@
 		</fieldset>
 		
 		<fieldset class="col-xs-12">
-			<legend>Budsjett</legend>
+			<legend>Tildelt budsjett</legend>
 			{% for i in yearspan.start..yearspan.stop %}
 				<div class="form-group col-xs-12 col-sm-3 col-md-2">
 					<label for="amount_{{ i }}">{{ i }} </label>
@@ -46,7 +52,7 @@
 		<p>&nbsp;</p>
 		<button class="btn btn-lg btn-success" type="submit">
 	    	{% if budget == false %}
-			Opprett område
+			Opprett formål
 			{% else %}
 			Lagre endringer
 			{% endif %}

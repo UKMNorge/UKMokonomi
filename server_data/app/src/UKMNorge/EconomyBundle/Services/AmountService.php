@@ -139,7 +139,7 @@ class AmountService
 	}
 
 	private function _validateYear( $year ) {
-		if( !is_integer( $year ) ) {
+		if( !is_numeric( $year ) || strlen( $year ) != 4) {
 			throw new Exception('Year must be integer!');
 		}
 		return true;

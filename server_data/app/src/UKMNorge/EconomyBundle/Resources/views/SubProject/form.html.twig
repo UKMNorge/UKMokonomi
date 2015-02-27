@@ -1,6 +1,10 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{% if subproject == false %}Legg til nytt prosjekt{% else %}Rediger "{{ subproject.getName() }}"{% endif %}{% endblock %}
+
+{% block title %}
+	{% if subproject == false %}Legg til nytt prosjekt{% else %}Rediger "{{ subproject.getName() }}"{% endif %}
+	:: {{ project.getName() ~ ' :: ' ~ budget.getName() }}
+{% endblock %}
 
 {% block body %}    
 	<form role="form" method="post" action="{{ subproject == false ? url( 'UKMeco_subproject_doCreate', {'project': project.getId(), 'budget': budget.getId()} ) :  url( 'UKMeco_subproject_doEdit', {'project': project.getId(), 'budget': budget.getId(), 'id': subproject.getId() } ) }}">

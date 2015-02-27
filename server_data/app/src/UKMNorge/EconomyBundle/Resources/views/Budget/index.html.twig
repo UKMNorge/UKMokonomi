@@ -1,24 +1,26 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Hjem{% endblock %}
+{% block title %}Alle formål{% endblock %}
 
 {% block body %}
+	{% if user.hasRole('ROLE_ADMIN') %}
 	<div class="pull-right">
 		<p></p>
 		<a href="{{ url( 'UKMeco_budget_create' ) }}">
-			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt område</button>
+			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt formål</button>
 		</a>
 	</div>
-	
-	<h1>Oversikt</h1>
-	<p class="lead">Viser alle budsjett-/regnskapsområder</p>
+	{% endif %}	
+	<h1>Alle formål</h1>
+	{#<p class="lead">Viser alle formål</p>#}
 
 	{% if budgets|length > 0 %}
 	<table class="table table-striped subproject">
 		<thead>
 			<tr>
-				<th class="col-xs-3">Budsjettområde</th>
-				<th class="col-xs-1 kroner">Budsjett</th>
+				<th class="col-xs-3">Formål</th>
+				<th class="col-xs-1 kroner">Tildelt budsjett</th>
+				<th class="col-xs-1 kroner">Beregnet budsjett</th>
 				<th class="col-xs-1 kroner">Regnskap</th>
 				<th class="col-xs-1 kroner">Status</th>
 				<th class="col-xs-1"></th>
@@ -28,12 +30,16 @@
 		{% for budget in budgets %}
 			<tr>
 				<td class="col-xs-7 col-sm-5">
+					{{ budget.getCode() }} -
 					<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">{{ budget.getName() }}</a>
 					<small>({{ budget.getOwnerObject().getName() }})</small>
 				</td>
 				<td class="col-xs-2 col-sm-2 kroner">{{ budget.getAllocatedAmount( "now"|date("Y") )|kroner }},-</td>
+				<td class="col-xs-2 col-sm-2 kroner">{{ budget.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</td>
 				<td class="col-xs-2 col-sm-2 kroner">{{ transactionServ.getTotalByBudget( budget, "now"|date("Y") )|kroner }},-</td>
 				<td class="col-xs-2 col-sm-2 kroner {{ budget.getAllocatedAmount( "now"|date("Y") ) < transactionServ.getTotalByBudget( budget, "now"|date("Y") ) ? 'text-danger' : ''}}">{{ (budget.getAllocatedAmount( "now"|date("Y") ) - transactionServ.getTotalByBudget( budget, "now"|date("Y") ))|kroner }},-</td>
+
+
 				<td>
 					<div class="dropdown" align="right">
 						<button class="btn btn-default dropdown-toggle btn-sm" type="button" id="actionsBudget_{{ budget.getId() }}" data-toggle="dropdown" aria-expanded="true">
@@ -41,11 +47,13 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="actionsBudget_{{ budget.getId() }}">
+							{% if user.hasRole('ROLE_ADMIN') %}
 							<li role="presentation">
-								<a href="{{ url('UKMeco_budget_edit', {'id': budget.getId() } ) }}">Rediger</a>
+								<a href="{{ url('UKMeco_budget_edit', {'id': budget.getId() } ) }}">Rediger formål</a>
 							</li>
+							{% endif %}
 							<li role="presentation">
-								<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">Vis prosjekter</a>
+								<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">Vis del-formål</a>
 							</li>
 						</ul>
 					</div>
@@ -57,7 +65,7 @@
 	</table>
 	{% else %}
 		<div class="alert alert-info">
-			Det er ikke lagt til noen områder enda. 
+			Det er ikke lagt til noen formål enda. 
 			<a href="{{ url( 'UKMeco_budget_create' ) }}">Start med å legge til et</a>
 		</div>
 	{% endif %}

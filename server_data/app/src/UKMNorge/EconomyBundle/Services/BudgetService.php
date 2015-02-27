@@ -77,7 +77,7 @@ class BudgetService
 	 *
 	 * @return Budget
 	*/
-    public function create( $name, $owner, $description='' ) {
+    public function create( $name, $owner, $description='', $code=0 ) {
 		if( empty( $name ) ) {
 			throw new Exception('Budget name cannot be empty!', 2000);
 		}
@@ -94,6 +94,7 @@ class BudgetService
 		$budget->setName( $name );
 		$budget->setOwner( $owner->getId() );
 		$budget->setDescription( $description );
+		$budget->setCode( $code );
 		$this->_persistAndFlush( $budget );
 
 		return $budget;
@@ -112,10 +113,11 @@ class BudgetService
 	 * @param string Description
 	 * @return Budget
 	*/
-	public function setData( $budget, $name, $owner, $description ) {
+	public function setData( $budget, $name, $owner, $description, $code=0 ) {
 		$this->setName( $budget, $name );
 		$this->setOwner( $budget, $owner );
 		$this->setDescription( $budget, $description );
+		$budget->setCode( $code );
 		return $budget;
 	}
     /**
@@ -152,7 +154,21 @@ class BudgetService
 	    $this->_persistAndFlush( $budget );
 	    return $budget;
     } 
-    
+
+    /**
+	 * Set budget code
+	 *
+	 * @param Budget
+	 * @param string Description
+	 *
+	 * @return Budget
+	*/
+    public function setCode( $budget, $code ) {
+	    $this->_validate( $budget );	    
+		$budget->setCode( $code );
+	    $this->_persistAndFlush( $budget );
+	    return $budget;
+    }     
     /**
 	 * Set budget owner
 	 *

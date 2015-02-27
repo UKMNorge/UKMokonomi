@@ -1,16 +1,17 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Hjem{% endblock %}
+{% block title %}{{ 'Alle prosjekter :: ' ~ project.getName() ~ ' :: ' ~ budget.getName() }}{% endblock %}
 
 {% block body %}
 	<div class="pull-right">
 		<p></p>
 		<a href="{{ url( 'UKMeco_subproject_create', {'project': project.getId(), 'budget': budget.getId() } ) }}">
-			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt del-prosjekt</button>
+			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt prosjekt</button>
 		</a>
 	</div>
 	
 	<h1>
+		<a href="{{ url('UKMeco_budget_homepage') }}"><img src="//ico.ukm.no/hus-64.png" width="40" /></a> 
 		<a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a>:
 		{{ project.getName() }}
 		<small>
@@ -32,22 +33,9 @@
 				kr {{ (project.getSubProjectsAllocatedTotal( "now"|date("Y") ) - transactionServ.getTotalByProject( project, "now"|date("Y") ) )|kroner }},-
 			</label>
 		{% endif %}
-		<br />
-		Av tildelte <label class="text-info">kr {{ project.getAllocatedAmount( "now"|date("Y") )|kroner }},-</label> 
-		{% if project.getAllocatedAmount( "now"|date("Y") ) < transactionServ.getTotalByProject( project, "now"|date("Y") ) %}
-			er overforbruket 
-			<label class="text-danger">
-				kr {{ (transactionServ.getTotalByProject( project, "now"|date("Y") ) - project.getAllocatedAmount( "now"|date("Y") ) )|kroner }},-
-			</label>
-		{% else %}
-			gjenstår
-			<label class="text-success">
-				kr {{ (project.getAllocatedAmount( "now"|date("Y") ) - transactionServ.getTotalByProject( project, "now"|date("Y") ) )|kroner }},-
-			</label>
-		{% endif %}
 	</p>
 	
-	<h3>Alle del-prosjekter</h3>
+	{#<h3>Alle del-prosjekter</h3>#}
 	
 	{% if true %}
 		<table class="table table-striped subproject">
@@ -61,7 +49,7 @@
 					{% endfor %}
 				</tr>
 				<tr>
-					<th class="col-xs-3">Budsjettpost</th>
+					<th class="col-xs-3">Prosjekt</th>
 					{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
 						{% if loop.index == 2 %}
 							<th class="col-xs-1 active kroner">Budsjett</th>
@@ -100,10 +88,7 @@
 							</button>
 							<ul class="dropdown-menu" role="menu" aria-labelledby="actionsSubProject_{{ subproject.getId() }}">
 								<li role="presentation">
-									<a href="{{ url('UKMeco_subproject_edit', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Rediger</a>
-								</li>
-								<li role="presentation">
-									<a href="{{ url('UKMeco_subproject_edit', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Hurtigrediger budsjett</a>
+									<a href="{{ url('UKMeco_subproject_edit', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Rediger prosjekt</a>
 								</li>
 								<li role="presentation">
 									<a href="{{ url('UKMeco_transaction_homepage', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Vis transaksjoner</a>

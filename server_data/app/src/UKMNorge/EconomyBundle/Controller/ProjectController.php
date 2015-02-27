@@ -19,6 +19,7 @@ class ProjectController extends Controller
 		$budget = $budgetServ->get( $budget );
 
 	    $data = array();
+   	    $data['user'] = $this->get('security.context')->getToken()->getUser();
 	    $data['budget'] = $budget;
 	    $data['projects'] = $projectServ->getAll( $budget );
 	    $data['transactionServ'] = $transactionServ;
@@ -36,6 +37,7 @@ class ProjectController extends Controller
 	    $yearspan = $this->_yearspan();
 
 	    $data = array();
+   	    $data['user'] = $this->get('security.context')->getToken()->getUser();
 	    $data['project'] = false;
 	    $data['budget'] = $budget;
 	    $data['owners'] = $users;

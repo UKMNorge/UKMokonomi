@@ -16,9 +16,9 @@ class SubProjectAllocatedAmountRepository extends EntityRepository
 	public function getTotalByBudget( $budget, $year ) {
 		$q = $this->createQueryBuilder('e')
 	        ->addSelect('SUM(e.amount) AS total')
-	        ->where('e.budget = :budget')
-	        ->whereAnd('e.year = :year')
-	        ->setParameter(array('budget','year'), array($budget,$year))
+	        ->where('e.budget = :budget AND e.year = :year')
+	        ->setParameter('budget', $budget)
+	        ->setParameter('year', $year)
 	        ->getQuery();
 	        
 	    $result = $q->getSingleResult();

@@ -130,7 +130,7 @@ class SubProject
     public function addAllocatedAmount(\UKMNorge\EconomyBundle\Entity\SubProjectAllocatedAmount $allocatedAmounts)
     {
         $this->allocatedAmounts[] = $allocatedAmounts;
-
+	    $this->allocatedAmountsArray = false;
         return $this;
     }
 
@@ -162,7 +162,6 @@ class SubProject
      */
     public function setAllocatedAmountsArray( $array ) {
 	    $this->allocatedAmountsArray = $array;
-	    $this->allocatedAmountsArray = false;
     }
     
     /**

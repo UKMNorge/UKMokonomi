@@ -41,6 +41,13 @@ class Budget
      * @ORM\Column(name="Owner", type="integer", nullable=true)
      */
     private $owner=0;
+ 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Code", type="integer", nullable=true)
+     */
+    private $code=0;
     
 	/**
      * @ORM\OneToMany(targetEntity="BudgetAllocatedAmount", mappedBy="budget")
@@ -366,5 +373,28 @@ class Budget
 	    }
 	    // If none allocated, zero it is
 	    return 0;
+    }
+
+    /**
+     * Set code
+     *
+     * @param integer $code
+     * @return Budget
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return integer 
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

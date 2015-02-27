@@ -16,6 +16,8 @@ class BudgetController extends Controller
 	    $data = array();
 	    $data['budgets'] = $budgetServ->getAll();
 	    $data['transactionServ'] = $this->get('UKMeco.transaction');
+	    $data['amountServ'] = $this->get('UKMeco.amount');
+	    $data['user'] = $this->get('security.context')->getToken()->getUser();
         return $this->render('UKMecoBundle:Budget:index.html.twig', $data);
     }
     
@@ -38,6 +40,7 @@ class BudgetController extends Controller
 		$name		 = $request->request->get('name');
 		$description = $request->request->get('description');
 		$owner 		 = $request->request->get('owner');
+		$code 		 = $request->request->get('code');
 
 
    		$em = $this->get('doctrine')->getRepository('MariusMandalUserBundle:User');
@@ -45,7 +48,7 @@ class BudgetController extends Controller
 		$owner = $em->findOneById( $owner );
 
 	    try {
-		    $budget = $budgetServ->create( $name, $owner, $description ); 
+		    $budget = $budgetServ->create( $name, $owner, $description, $code); 
 	    } catch( Exception $e ) {
 			return $this->render('UKMecoBundle:Budget:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
 	    }
