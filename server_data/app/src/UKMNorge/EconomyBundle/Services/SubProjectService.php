@@ -88,8 +88,8 @@ class SubProjectService
 
 		$this->_validateProject( $project );
 		// Existing name
-		$existing = $this->repo->findOneByName( array('name' => $name, 'project' => $project->getId() ) );
-		if( !is_null( $existing ) ) {
+		$existing = $this->repo->findOneBy( array('name' => $name, 'project' => $project ) );
+		if( !is_null( $existing ) && $project->getId() != 0) {
 			throw new Exception('SubProject name already registered within project ("'.$project->getName().'::'. $name.'")!', 2001);
 		}
 		

@@ -85,7 +85,7 @@ class ProjectService
 	   	$this->_validateBudget( $budget );
 		
 		// Existing name
-		$existing = $this->repo->findOneByName( array('name' => $name, 'budget' => $budget ) );
+		$existing = $this->repo->findOneBy( array('name' => $name, 'budget' => $budget ) );
 		if( !is_null( $existing ) ) {
 			throw new Exception('Project name already registered within budget ("'. $budget->getName().'")!', 2001);
 		}
