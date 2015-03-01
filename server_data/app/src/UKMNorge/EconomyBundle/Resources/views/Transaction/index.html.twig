@@ -2,17 +2,11 @@
 
 {% block title %}Hjem{% endblock %}
 
-{% block body %}
-	<div class="pull-right">
-		<p></p>
-		<a href="{{ url( 'UKMeco_transaction_create', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">
-			<button class="btn btn-success"><i class="icon-add"></i> Legg til ny transaksjon</button>
-		</a>
-	</div>
+{% set current_year = "now"|date("Y") %}
 
+{% block body %}
+	{% embed "breadcrumbs.html.twig" with {'type': 'transaction'} %}{% endembed %}	
 	<h1>
-		<a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a>:
-		<a href="{{ url( 'UKMeco_subproject_homepage', {'budget': budget.getID(), 'project': project.getId() } ) }}">{{ project.getName() }}</a>:
 		{{ subproject.getName() }}
 		<small>
 			<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
@@ -21,9 +15,24 @@
 
 		
 	<div class="clearfix"></div>
+	<p class="lead">
+		{% if subproject.getAllocatedAmount( current_year ) < transactionServ.getTotalBySubProject( subproject, current_year ) %}
+			Overforbruk 
+			<label class="text-danger">
+				kr {{ ( transactionServ.getTotalBySubProject( subproject, current_year ) - subproject.getAllocatedAmount( current_year ) )|kroner }},-
+			</label>
+		{% else %}
+			Gjenstående 
+			<label class="text-success">
+				kr {{ ( subproject.getAllocatedAmount( current_year ) - transactionServ.getTotalBySubProject( subproject, current_year ) )|kroner }},-
+			</label>
+		{% endif %}
+		av budsjetterte <label class="text-info">kr {{ subproject.getAllocatedAmount( current_year )|kroner }},-</label>. 
+		Benyttet <label class="text-info">kr {{ transactionServ.getTotalBySubProject( subproject, current_year )|kroner }},-</label> 
+	</p>
+
 	
-	
-	<p class="lead">Alle transaksjoner</p>
+	{#<p class="lead">Alle transaksjoner</p>#}
 
 	{% if transactions|length == 0 %}
 		<div class="alert alert-warning">
@@ -44,16 +53,28 @@
 			<tbody>
 			{% for transaction in transactions %}
 				<tr>
-					<td>
-						<a href="{{ url( 'UKMeco_transaction_edit', {'id': transaction.getId(), 'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">
-							{{ transaction.getName() }}
-						</a>
-					</td>
+					<td>{{ transaction.getName() }}</td>
 					<td>{{ transaction.getType() == 'Budget' ? transaction.getAmount() : 0 }},-</td>
 					<td>{{ transaction.getType() != 'Budget' ? transaction.getAmount() : 0 }},-</td>
+					
+					<td>
+						<div class="dropdown" align="right">
+							<button class="btn btn-default dropdown-toggle btn-sm" type="button" id="actionsTransaction_{{ budget.getId() }}" data-toggle="dropdown" aria-expanded="true">
+								Handlinger
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="actionsTransaction_{{ budget.getId() }}">
+								<li role="presentation">
+									<a href="{{ url( 'UKMeco_transaction_edit', {'id': transaction.getId(), 'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Rediger transaksjon</a>
+								</li>
+							</ul>
+						</div>
+					</td>
 				</tr>
 			{% endfor %}
 			</tbody>
 		</table>
 	{% endif %}
 {% endblock %}
+
+

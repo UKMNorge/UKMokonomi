@@ -1,3 +1,63 @@
+#UKMeco_menu_button {
+	margin-top: 5px;
+}
+
+
+#UKMeco_navbar {
+	background: #F7F7F7;
+}
+
+#UKMeco_brand {
+	font-size: 18px;
+	line-height: 20px;
+	margin: 10px 0px;
+	margin-left: -16px;
+}
+
+#UKMeco_brand a {
+	color: #3498db;
+	text-decoration: none;
+	font-size: 20px;
+}
+
+
+
+
+#UKMeco_breadcrumbs {
+	background: none;
+	padding-left: 0px;
+	margin-bottom: -22px;
+}
+#UKMeco_breadcrumbs li.pull-right::before {
+	content: " ";
+}
+
+
+
+
+.UKMeco_nameCircle {
+	float: left;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	background: #D8D8D8;
+	color: #989898;
+	text-align: center;
+	line-height: 22px;
+	font-size: 20px;
+	font-weight: normal;
+	margin: -1px 9px 0px 0px;
+	padding: 1px 0px 0px 1px;
+	text-transform: capitalize;
+}
+
+#UKMeco_formalstabell td {
+	padding: 8px 8px 1px 8px;
+	vertical-align: top;
+	border-top: 1px solid #ddd;
+	line-height: 20px;
+}
+
 /* ICONS */
 @font-face {
 	font-family: 'icomoon';

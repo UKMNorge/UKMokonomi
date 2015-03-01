@@ -1,12 +1,14 @@
 {% for item in menu %}
-<li class="col-xs-6 col-sm-3 {{class_li}} active">
+<li class="col-xs-6 col-sm-3 {{class_li}}">
 	<div class="" align="center">
-		<div class="icon">
-			<img src="//placehold.it/50x50" />
-		</div>
-		<div class="link">
-			<a href="{{ item.path }}">{{ item.title }}</a>
-		</div>
+		<a href="{{ item.path }}">
+			<div class="icon">
+				<img src="{{ item.icon }}" />
+			</div>
+			<div class="link">
+				{{ item.title }}
+			</div>
+		</a>
 	</div>
 </li>
 {% endfor %}

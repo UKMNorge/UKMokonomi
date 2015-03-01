@@ -3,19 +3,11 @@
 {% block title %}Alle formål{% endblock %}
 
 {% block body %}
-	{% if user.hasRole('ROLE_ADMIN') %}
-	<div class="pull-right">
-		<p></p>
-		<a href="{{ url( 'UKMeco_budget_create' ) }}">
-			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt formål</button>
-		</a>
-	</div>
-	{% endif %}	
+	{% embed "breadcrumbs.html.twig" with {'type': 'budget'} %}{% endembed %}	
 	<h1>Alle formål</h1>
-	{#<p class="lead">Viser alle formål</p>#}
 
 	{% if budgets|length > 0 %}
-	<table class="table table-striped subproject">
+	<table class="table table-striped subproject" id="UKMeco_formalstabell">
 		<thead>
 			<tr>
 				<th class="col-xs-3">Formål</th>
@@ -30,9 +22,9 @@
 		{% for budget in budgets %}
 			<tr>
 				<td class="col-xs-7 col-sm-5">
-					{{ budget.getCode() }} -
+					<div class="UKMeco_nameCircle" title="{{ budget.getOwnerObject().getName() }}">{{ budget.getOwnerObject().getUsername()|first }}</div>
+					<b>{{ budget.getCode() }}</b> 
 					<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">{{ budget.getName() }}</a>
-					<small>({{ budget.getOwnerObject().getName() }})</small>
 				</td>
 				<td class="col-xs-2 col-sm-2 kroner">{{ budget.getAllocatedAmount( "now"|date("Y") )|kroner }},-</td>
 				<td class="col-xs-2 col-sm-2 kroner">{{ budget.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</td>

@@ -1,0 +1,40 @@
+{% set btnClass = 'btn btn-xs btn-primary' %}
+
+<ol class="breadcrumb" id="UKMeco_breadcrumbs">
+	{% if type != 'budget' %}
+		<li><a href="{{ url('UKMeco_budget_homepage') }}">Alle formål</a></li>
+	{% endif %}
+	
+	
+	{% if type == 'subproject' or type == 'transaction' %}
+		<li><a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a></li>
+	{% endif %}
+	
+	{% if type == 'transaction' %}
+		<li><a href="{{ url( 'UKMeco_subproject_homepage', {'budget': budget.getID(), 'project': project.getId() } ) }}">{{ project.getName() }}</a></li>
+	{% endif %}
+	
+	
+	{% if type == 'budget' %}
+		<li class="active">Alle formål</li>
+	{% elseif type == 'project' %}
+		<li class="active">{{ budget.getName() }} :: Alle del-formål</li>
+	{% elseif type == 'subproject' %}
+		<li class="active">{{ project.getName() }} :: Alle prosjekt</li>
+	{% elseif type == 'transaction' %}
+		<li class="active">{{ subproject.getName() }} :: Alle transaksjoner</li>
+	{% endif %}
+	
+	
+	<li class="pull-right">
+		{% if type == 'transaction' %}
+			<a href="{{ url( 'UKMeco_transaction_create', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}" class="{{ btnClass }}">Legg til ny transaksjon</a>		
+		{% elseif type == 'subproject' %}
+			<a href="{{ url( 'UKMeco_subproject_create', {'project': project.getId(), 'budget': budget.getId() } ) }}" class="{{ btnClass }}">Legg til nytt prosjekt</a>
+		{% elseif type == 'project' %}
+			<a href="{{ url( 'UKMeco_project_create', {'budget': budget.getId()} ) }}" class="{{ btnClass }}">Legg til nytt del-formål</a>
+		{% elseif type == 'budget' and user.hasRole('ROLE_ADMIN') %}
+			<a href="{{ url( 'UKMeco_budget_create' ) }}" class="{{ btnClass }}">Legg til nytt formål</a>
+		{% endif %}
+	</li>
+</ol>

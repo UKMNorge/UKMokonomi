@@ -23,21 +23,20 @@
 	</head>
 	<body onunload="showLoader();">
 		
-		<nav class="navbar navbar-inverse navbar-top">
+		<nav class="navbar-top" id="UKMeco_navbar">
 			<div class="container">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">UKM økonomi</a>
-				</div>
-				<div id="navbar" class="navbar-collapse collapse">
-					<div class="navbar-right">
-						<button type="button" class="btn btn-success" id="UKMeco_menu_button">MENY</button>
-					</div>
-				</div><!--/.navbar-collapse -->
+					<button type="button" class="pull-right btn btn-sm btn-primary" id="UKMeco_menu_button">MENY</button>
+
+					<h1 id="UKMeco_brand">
+						<a href="{{ url('UKMeco_budget_homepage') }}">UKM økonomi</a>
+					</h1>
 			</div>
 		</nav>
 		
 		<div class="clearfix">
 		    <div class="container hidden-xs" id="UKMeco_menu" style="display:none;">
+		    	<p class="lead">&nbsp;</p>
+		    	<div class="clearfix"></div>
 				<ol class="list-unstyled navigation">
 					{% render( controller( 'UKMecoBundle:Layout:menu', {'class_li': 'block' } ) ) %}
 				</ol>
@@ -51,8 +50,10 @@
 		</div>
 		
 		<div class="container" id="UKMeco_loader" style="display:none;">
-			<h3 align="center">Laster inn...</h3>
-			<img src="/web/jquery-ui/ajax-loader.gif" />
+			<div align="center">
+				<img src="//ico.ukm.no/loading.gif" />
+				<h3 align="center">Laster inn...</h3>
+			</div>
 		</div>
 	</body>
 </html>

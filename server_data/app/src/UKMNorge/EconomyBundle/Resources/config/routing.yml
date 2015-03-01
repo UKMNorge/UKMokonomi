@@ -1,3 +1,8 @@
+UKMeco_public_homepage:
+    path:     /
+    defaults: { _controller: UKMecoBundle:Default:public }
+
+
 UKMeco_homepage:
     path:     /admin/
     defaults: { _controller: UKMecoBundle:Default:index }

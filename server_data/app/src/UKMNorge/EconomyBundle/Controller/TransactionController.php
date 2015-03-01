@@ -23,6 +23,7 @@ class TransactionController extends Controller
 	    $data['budget'] = $budget;
 	    $data['project'] = $project;
 	    $data['subproject'] = $subProject;
+	    $data['transactionServ'] = $transactionServ;
 	    $data['transactions'] = $transactionServ->getAll( $subProject );
 	    
         return $this->render('UKMecoBundle:Transaction:index.html.twig', $data);

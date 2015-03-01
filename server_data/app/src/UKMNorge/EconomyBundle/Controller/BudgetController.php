@@ -79,6 +79,7 @@ class BudgetController extends Controller
 		$name		 = $request->request->get('name');
 		$description = $request->request->get('description');
 		$owner 		 = $request->request->get('owner');
+		$code 		 = $request->request->get('code');
 
 	    $budget = $budgetServ->get( $id );
 
@@ -87,7 +88,7 @@ class BudgetController extends Controller
 		$owner = $em->findOneById( $owner );
 
 	    try {
-		    $budget = $budgetServ->setData( $budget, $name, $owner, $description ); 
+		    $budget = $budgetServ->setData( $budget, $name, $owner, $description, $code ); 
 	    } catch( Exception $e ) {
 			return $this->render('UKMecoBundle:Budget:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
 	    }

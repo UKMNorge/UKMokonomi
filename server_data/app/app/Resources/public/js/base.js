@@ -2,9 +2,16 @@ var APP_PATH = '/';
 
 $(document).on('click','#UKMeco_menu_button',function(e){
 	e.preventDefault();
-	$('#UKMeco_menu').fadeToggle(function(){
-		$('#UKMeco_content').toggle();
-	});
+	
+	if( $('#UKMeco_content').is(':visible') ) {
+		$('#UKMeco_content').fadeOut(function(){
+			$('#UKMeco_menu').fadeIn();
+		});
+	} else {
+		$('#UKMeco_menu').fadeOut(function(){
+			$('#UKMeco_content').fadeIn();
+		});
+	}
 });
 
 /*

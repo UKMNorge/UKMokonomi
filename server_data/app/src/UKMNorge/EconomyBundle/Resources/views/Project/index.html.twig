@@ -2,37 +2,48 @@
 
 {% block title %}{{ 'Alle del-formål :: ' ~ budget.getName() }}{% endblock %}
 
+{% set current_year = "now"|date("Y") %}
+
 {% block body %}
-	<div class="pull-right">
-		<p></p>
-		<a href="{{ url( 'UKMeco_project_create', {'budget': budget.getId()} ) }}">
-			<button class="btn btn-success"><i class="icon-add"></i> Legg til nytt del-formål</button>
-		</a>
-	</div>
-	
+	{% embed "breadcrumbs.html.twig" with {'type': 'project'} %}{% endembed %}	
 	<h1>
-		<a href="{{ url('UKMeco_budget_homepage') }}"><img src="//ico.ukm.no/hus-64.png" width="40" /></a> 
 		{{ budget.getName() }}
 		<small>
 			<a href="{{ url('UKMeco_budget_edit', {'id': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
 		</small>
-</h1>
+	</h1>
 	
 	<p class="lead">
-		Benyttet <label class="text-info">kr {{ transactionServ.getTotalByBudget( budget, "now"|date("Y") )|kroner }},-</label> 
-		av budsjetterte <label class="text-info">kr {{ budget.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</label> 
-		i {{ "now"|date("Y") }}.
-		{% if budget.getSubProjectsAllocatedTotal( "now"|date("Y") ) < transactionServ.getTotalByBudget( budget, "now"|date("Y") ) %}
+		{% if budget.getSubProjectsAllocatedTotal( current_year ) < transactionServ.getTotalByBudget( budget, current_year ) %}
 			Overforbruk 
 			<label class="text-danger">
-				kr {{ ( transactionServ.getTotalByBudget( budget,"now"|date("Y") ) - budget.getSubProjectsAllocatedTotal( "now"|date("Y") ) )|kroner }},-
+				kr {{ ( transactionServ.getTotalByBudget( budget,current_year ) - budget.getSubProjectsAllocatedTotal( current_year ) )|kroner }},-
 			</label>
 		{% else %}
 			Gjenstående 
 			<label class="text-success">
-				kr {{ ( budget.getSubProjectsAllocatedTotal( "now"|date("Y") ) - transactionServ.getTotalByBudget( budget,"now"|date("Y") ) )|kroner }},-
+				kr {{ ( budget.getSubProjectsAllocatedTotal( current_year ) - transactionServ.getTotalByBudget( budget,current_year ) )|kroner }},-
 			</label>
 		{% endif %}
+		av budsjetterte <label class="text-info">kr {{ budget.getSubProjectsAllocatedTotal( current_year )|kroner }},-</label>.
+		Benyttet <label class="text-info">kr {{ transactionServ.getTotalByBudget( budget, current_year )|kroner }},-</label> 
+		<br />
+		<small>
+		Tildelt <label class="text-info"> kr {{ budget.getAllocatedAmount( current_year )|kroner }},-</label>.
+		{% if budget.getSubProjectsAllocatedTotal( current_year ) == budget.getAllocatedAmount( current_year ) %}
+			(Nøyaktig likt beregnet budsjett)
+		{% elseif budget.getSubProjectsAllocatedTotal( current_year ) < budget.getAllocatedAmount( current_year ) %}
+			Budsjettert overskudd 
+			<label class="text-success">
+				kr {{ ( budget.getAllocatedAmount( current_year ) - budget.getSubProjectsAllocatedTotal( current_year ) )|kroner }},-
+			</label>
+		{% else %}
+			Budsjettert overforbruk 
+			<label class="text-danger">
+				kr {{ ( budget.getSubProjectsAllocatedTotal( current_year ) - budget.getAllocatedAmount( current_year ) )|kroner }},-
+			</label>
+		{% endif %}
+		</small>
 	</p>
 
 	{#<h3>Alle del-formål</h3>#}
@@ -40,11 +51,11 @@
 		<thead>
 			<tr>
 				<th></th>
-				<th colspan="3" style="text-align:center;">{{ "now"|date("Y") }}</th>
+				<th colspan="3" style="text-align:center;">{{ current_year }}</th>
 			</tr>
 			<tr>
 				<th class="col-xs-3">Del-formål</th>
-				{% for i in "now"|date("Y").."now +3 years"|date("Y") %}
+				{% for i in current_year.."now +3 years"|date("Y") %}
 					{% if loop.first %}
 						<th class="col-xs-1 info kroner">Budsjett</th>
 						<th class="col-xs-1 warning kroner">Regnskap</td>
@@ -63,10 +74,10 @@
 					<td>
 						<a href="{{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId() } ) }}">{{ project.getName() }}</a>
 					</td>
-					{% for i in "now"|date("Y").."now +3 years"|date("Y") %}
+					{% for i in current_year.."now +3 years"|date("Y") %}
 						{% if loop.first %}
 							<td class="info kroner">{{ project.getSubProjectsAllocatedAmount( i )|kroner }},-</td>
-							<td class="warning kroner">{{ transactionServ.getTotalByProject( project, "now"|date("Y") )|kroner }},-</td>
+							<td class="warning kroner">{{ transactionServ.getTotalByProject( project, current_year )|kroner }},-</td>
 						{% else %}
 							<td class="kroner">{{ project.getSubProjectsAllocatedAmount( i )|kroner }},-</td>
 						{% endif %}
@@ -94,8 +105,8 @@
 		<tfoot>
 			<tr>
 				<th class="col-xs-3">SUM</th>
-				<th class="col-xs-1 info kroner">{{ budget.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</th>
-				<th class="col-xs-1 warning kroner">{{ transactionServ.getTotalByBudget( budget, "now"|date("Y") )|kroner }},-</td>
+				<th class="col-xs-1 info kroner">{{ budget.getSubProjectsAllocatedTotal( current_year )|kroner }},-</th>
+				<th class="col-xs-1 warning kroner">{{ transactionServ.getTotalByBudget( budget, current_year )|kroner }},-</td>
 				{% for i in "now +1 year"|date("Y").."now +3 years"|date("Y") %}
 					<th class="col-xs-1 kroner">{{ budget.getSubProjectsAllocatedTotal( i )|kroner }},-</th>
 				{% endfor %}
