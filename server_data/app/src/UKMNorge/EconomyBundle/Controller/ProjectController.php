@@ -24,7 +24,7 @@ class ProjectController extends Controller
 	    $data['projects'] = $projectServ->getAll( $budget );
 	    $data['transactionServ'] = $transactionServ;
 	    $data['transactionTotal'] = $amountServ->getTransactionTotalByBudget( $budget, (int)date("Y") );
-        return $this->render('UKMecoBundle:project:index.html.twig', $data);
+        return $this->render('UKMecoBundle:Project:index.html.twig', $data);
     }
     
     public function createAction( $budget ) {
@@ -43,7 +43,7 @@ class ProjectController extends Controller
 	    $data['owners'] = $users;
 	    $data['yearspan'] = $yearspan;
 	    
-		return $this->render('UKMecoBundle:project:form.html.twig', $data);
+		return $this->render('UKMecoBundle:Project:form.html.twig', $data);
     }
     
     public function doCreateAction( Request $request ) {
@@ -63,7 +63,7 @@ class ProjectController extends Controller
 	    try {
 		    $project = $projectServ->create( $name, $owner, $budget, $description ); 
 	    } catch( Exception $e ) {
-			return $this->render('UKMecoBundle:project:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
+			return $this->render('UKMecoBundle:Project:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
 	    }
 	    
 	    $this->_setAllocatedAmounts( $projectServ, $project, $request->request );
@@ -88,7 +88,7 @@ class ProjectController extends Controller
 	    $data['project'] = $project;
 	    $data['yearspan'] = $yearspan;	    
 	    
-		return $this->render('UKMecoBundle:project:form.html.twig', $data);
+		return $this->render('UKMecoBundle:Project:form.html.twig', $data);
     }
     
     private function _yearspan() {
@@ -118,7 +118,7 @@ class ProjectController extends Controller
 	    try {
 		    $project = $projectServ->setData( $project, $name, $owner, $budget, $description ); 
 	    } catch( Exception $e ) {
-			return $this->render('UKMecoBundle:project:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
+			return $this->render('UKMecoBundle:Project:error.html.twig', array('error' => $e->getCode(), 'name' => $name) );		    
 	    }
 	    
 	    $this->_setAllocatedAmounts( $projectServ, $project, $request->request );
