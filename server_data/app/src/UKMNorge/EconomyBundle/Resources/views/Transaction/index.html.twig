@@ -9,7 +9,7 @@
 	<h1>
 		{{ subproject.getName() }}
 		<small>
-			<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
+			<a href="{{ url('UKMeco_subproject_edit', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
 		</small>
 	</h1>
 
