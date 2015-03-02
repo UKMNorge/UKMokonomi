@@ -41,7 +41,7 @@
 					{% endfor %}
 				</tr>
 				<tr>
-					<th class="col-xs-3">Utgiftsgruppe</th>
+					<th class="col-xs-3">Utgiftsgrupper</th>
 					{% for i in "now -1 year"|date("Y").."now +3 years"|date("Y") %}
 						{% if loop.index == 2 %}
 							<th class="col-xs-1 active kroner">Budsjett</th>
