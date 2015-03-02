@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ 'Alle del-formål :: ' ~ budget.getName() }}{% endblock %}
+{% block title %}{{ 'Alle prosjekter :: ' ~ budget.getName() }}{% endblock %}
 
 {% set current_year = "now"|date("Y") %}
 
@@ -46,7 +46,7 @@
 		</small>
 	</p>
 
-	{#<h3>Alle del-formål</h3>#}
+	{#<h3>Alle prosjekter</h3>#}
 	<table class="table table-striped subproject">
 		<thead>
 			<tr>
@@ -54,7 +54,7 @@
 				<th colspan="3" style="text-align:center;">{{ current_year }}</th>
 			</tr>
 			<tr>
-				<th class="col-xs-3">Del-formål</th>
+				<th class="col-xs-3">Prosjekt</th>
 				{% for i in current_year.."now +3 years"|date("Y") %}
 					{% if loop.first %}
 						<th class="col-xs-1 info kroner">Budsjett</th>
@@ -90,10 +90,10 @@
 							</button>
 							<ul class="dropdown-menu" role="menu" aria-labelledby="actionsProject_{{ project.getId() }}">
 								<li role="presentation">
-									<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}">Rediger del-formål</a>
+									<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}">Rediger prosjekt</a>
 								</li>
 								<li role="presentation">
-									<a href="{{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId() } ) }}">Vis prosjekter</a>
+									<a href="{{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId() } ) }}">Vis utgiftsgrupper</a>
 								</li>
 							</ul>
 						</div>

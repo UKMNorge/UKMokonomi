@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-	{% if project == false %}Legg til nytt del-formål{% else %}Rediger "{{ project.getName() }}"{% endif %}
+	{% if project == false %}Legg til nytt prosjekt{% else %}Rediger "{{ project.getName() }}"{% endif %}
 	{{ ' :: ' ~ budget.getName() }}
 {% endblock %}
 
@@ -10,11 +10,11 @@
 		<input type="hidden" id="project_id" name="project_id" value="{{ project == false ? 'new' : project.getId() }}" />
 		<input type="hidden" id="budget_id" name="budget_id" value="{{ budget.getId() }}" />
 		<fieldset class="col-xs-12 col-md-6">
-			<legend>Informasjon om del-formålet</legend>
+			<legend>Informasjon om prosjektet</legend>
 			
 			<div class="form-group">
 				<label for="name">Navn</label>
-				<input value="{{ project == false ? '': project.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn navn på del-formål..." />
+				<input value="{{ project == false ? '': project.getName()}}" type="text" class="form-control" id="name" name="name" placeholder="Skriv inn navn på prosjektet..." />
 			</div>
 			
 			<div class="form-group">
@@ -49,7 +49,7 @@
 		<p>&nbsp;</p>
 		<button class="btn btn-lg btn-success" type="submit">
 	    	{% if project == false %}
-			Opprett del-formål
+			Opprett prosjekt
 			{% else %}
 			Lagre endringer
 			{% endif %}
