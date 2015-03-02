@@ -18,11 +18,11 @@
 	{% if type == 'budget' %}
 		<li class="active">Alle formål</li>
 	{% elseif type == 'project' %}
-		<li class="active">{{ budget.getName() }} :: Alle del-formål</li>
+		<li class="active">{{ budget.getName() }}{# :: Alle del-formål#}</li>
 	{% elseif type == 'subproject' %}
-		<li class="active">{{ project.getName() }} :: Alle prosjekt</li>
+		<li class="active">{{ project.getName() }}{# :: Alle prosjekt#}</li>
 	{% elseif type == 'transaction' %}
-		<li class="active">{{ subproject.getName() }} :: Alle transaksjoner</li>
+		<li class="active">{{ subproject.getName() }}{# :: Alle transaksjoner#}</li>
 	{% endif %}
 	
 	
