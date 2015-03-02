@@ -29,16 +29,16 @@
 		Benyttet <label class="text-info">kr {{ transactionServ.getTotalByBudget( budget, current_year )|kroner }},-</label> 
 		<br />
 		<small>
-		Tildelt <label class="text-info"> kr {{ budget.getAllocatedAmount( current_year )|kroner }},-</label>.
+		Tildelt <label class="text-info"> kr {{ budget.getAllocatedAmount( current_year )|kroner }},-</label> fra sjefen.
 		{% if budget.getSubProjectsAllocatedTotal( current_year ) == budget.getAllocatedAmount( current_year ) %}
 			(Nøyaktig likt beregnet budsjett)
 		{% elseif budget.getSubProjectsAllocatedTotal( current_year ) < budget.getAllocatedAmount( current_year ) %}
-			Budsjettert overskudd 
+			Ditt budsjett gir et mindreforbruk på 
 			<label class="text-success">
 				kr {{ ( budget.getAllocatedAmount( current_year ) - budget.getSubProjectsAllocatedTotal( current_year ) )|kroner }},-
 			</label>
 		{% else %}
-			Budsjettert overforbruk 
+			Ditt budsjett gir et merforbruk på 
 			<label class="text-danger">
 				kr {{ ( budget.getSubProjectsAllocatedTotal( current_year ) - budget.getAllocatedAmount( current_year ) )|kroner }},-
 			</label>
