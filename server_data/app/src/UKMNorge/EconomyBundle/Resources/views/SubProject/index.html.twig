@@ -29,7 +29,7 @@
 	
 	{#<h3>Alle del-utgiftsgrupper</h3>#}
 	
-	{% if true %}
+	{% if project.getSubProjects()|length > 0 %}
 		<table class="table table-striped subproject">
 			<thead>
 				<tr>
@@ -110,8 +110,8 @@
 			</tfoot>
 		</table>
 	{% else %}
-		<div class="error error-warning">
-			Det er ikke lagt til noen utgiftsgrupper i {{ project.getName() }} enda. 
+		<div class="alert alert-info">
+			Det er ikke lagt til noen utgiftsgrupper i "{{ project.getName() }}" enda. 
 			<a href="{{ url( 'UKMeco_subproject_create', {'project': project.getId(), 'budget': budget.getId() } ) }}">Start med å legge til en utgiftsgruppe</a>
 		</div>
 	{% endif %}

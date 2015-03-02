@@ -36,9 +36,9 @@
 
 	{% if transactions|length == 0 %}
 		<div class="alert alert-warning">
-			Det er ikke lagt til noen transaksjoner i {{ project.getName() }}: {{ subproject.getName() }} enda. 
+			Det er ikke lagt til noen transaksjoner i "{{ subproject.getName() }}" enda. 
 			<a href="{{ url( 'UKMeco_transaction_create', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">
-				Start med å legge til et
+				Start med å legge til en transaksjon
 			</a>
 		</div>
 	{% else %}
