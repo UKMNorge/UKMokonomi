@@ -12,4 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class BudgetRepository extends EntityRepository
 {
+	public function findAll()
+    {
+        return $this->findBy(array(), array('code' => 'ASC','name' => 'ASC'));
+    }
 }
