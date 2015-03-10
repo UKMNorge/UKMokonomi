@@ -41,7 +41,6 @@ class BudgetController extends Controller
 			$groups[ $code ]->sum->allocated	+= $budget->getAllocatedAmount( date("Y") );
 			$groups[ $code ]->sum->subProjects	+= $budget->getSubProjectsAllocatedTotal( date("Y") );
 			$groups[ $code ]->sum->transactions	+= $transactionServ->getTotalByBudget( $budget, date("Y") );
-			ksort( $groups[ $code ]->budgets );
 		}
 		ksort( $groups );
 
