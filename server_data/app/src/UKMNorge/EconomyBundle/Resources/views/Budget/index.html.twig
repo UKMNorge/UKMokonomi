@@ -2,11 +2,13 @@
 
 {% block title %}Alle formål{% endblock %}
 
+{% set current_budget = '' %}
+
 {% block body %}
 	{% embed "breadcrumbs.html.twig" with {'type': 'budget'} %}{% endembed %}	
 	<h1>Alle formål</h1>
 
-	{% if budgets|length > 0 %}
+	{% if budgetGroups|length > 0 %}
 	<table class="table table-striped subproject" id="UKMeco_formalstabell">
 		<thead>
 			<tr>
@@ -19,39 +21,48 @@
 			</tr>
 		</thead>
 		<tbody>
-		{% for budget in budgets %}
-			<tr>
-				<td class="col-xs-7 col-sm-5">
-					<div class="UKMeco_nameCircle" title="{{ budget.getOwnerObject().getName() }}">{{ budget.getOwnerObject().getUsername()|first }}</div>
-					<b>{{ budget.getCode() }}</b> 
-					<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">{{ budget.getName() }}</a>
-				</td>
-				<td class="col-xs-2 col-sm-2 kroner">{{ budget.getAllocatedAmount( "now"|date("Y") )|kroner }},-</td>
-				<td class="col-xs-2 col-sm-2 kroner">{{ budget.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</td>
-				<td class="col-xs-2 col-sm-2 kroner">{{ transactionServ.getTotalByBudget( budget, "now"|date("Y") )|kroner }},-</td>
-				<td class="col-xs-2 col-sm-2 kroner {{ budget.getAllocatedAmount( "now"|date("Y") ) < transactionServ.getTotalByBudget( budget, "now"|date("Y") ) ? 'text-danger' : ''}}">{{ (budget.getAllocatedAmount( "now"|date("Y") ) - transactionServ.getTotalByBudget( budget, "now"|date("Y") ))|kroner }},-</td>
-
-
-				<td>
-					<div class="dropdown" align="right">
-						<button class="btn btn-default dropdown-toggle btn-sm" type="button" id="actionsBudget_{{ budget.getId() }}" data-toggle="dropdown" aria-expanded="true">
-							Handlinger
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="actionsBudget_{{ budget.getId() }}">
-							{% if user.hasRole('ROLE_ADMIN') %}
-							<li role="presentation">
-								<a href="{{ url('UKMeco_budget_edit', {'id': budget.getId() } ) }}">Rediger formål</a>
-							</li>
-							{% endif %}
-							<li role="presentation">
-								<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">Vis del-formål</a>
-							</li>
-						</ul>
-					</div>
-				</td>
-
+		{% for group in budgetGroups %}
+			<tr class="UKMeco_budget_headerRow">
+				<td><h5>{{ group.name }}-serien</h5></td>
+				<td class="kroner"><h5>{{ group.sum.allocated|kroner }},-</h5></td>
+				<td class="kroner"><h5>{{ group.sum.subProjects|kroner }},-</h5></td>
+				<td class="kroner"><h5>{{ group.sum.transactions|kroner }},-</h5></td>
+				<td class="kroner"><h5>{{ ( group.sum.allocated - group.sum.transactions )|kroner }},-</h5></td>
+				<td></td>
 			</tr>
+			{% for budget in group.budgets %}
+				<tr>
+					<td class="col-xs-7 col-sm-5">
+						<div class="UKMeco_nameCircle" title="{{ budget.getOwnerObject().getName() }}">{{ budget.getOwnerObject().getUsername()|first }}</div>
+						<b>{{ budget.getCode() }}</b> 
+						<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">{{ budget.getName() }}</a>
+					</td>
+					<td class="col-xs-2 col-sm-2 kroner">{{ budget.getAllocatedAmount( "now"|date("Y") )|kroner }},-</td>
+					<td class="col-xs-2 col-sm-2 kroner">{{ budget.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</td>
+					<td class="col-xs-2 col-sm-2 kroner">{{ transactionServ.getTotalByBudget( budget, "now"|date("Y") )|kroner }},-</td>
+					<td class="col-xs-2 col-sm-2 kroner {{ budget.getAllocatedAmount( "now"|date("Y") ) < transactionServ.getTotalByBudget( budget, "now"|date("Y") ) ? 'text-danger' : ''}}">{{ (budget.getAllocatedAmount( "now"|date("Y") ) - transactionServ.getTotalByBudget( budget, "now"|date("Y") ))|kroner }},-</td>
+	
+	
+					<td>
+						<div class="dropdown" align="right">
+							<button class="btn btn-default dropdown-toggle btn-sm" type="button" id="actionsBudget_{{ budget.getId() }}" data-toggle="dropdown" aria-expanded="true">
+								Handlinger
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="actionsBudget_{{ budget.getId() }}">
+								{% if user.hasRole('ROLE_ADMIN') %}
+								<li role="presentation">
+									<a href="{{ url('UKMeco_budget_edit', {'id': budget.getId() } ) }}">Rediger formål</a>
+								</li>
+								{% endif %}
+								<li role="presentation">
+									<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">Vis del-formål</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
 		{% endfor %}
 		</tbody>
 	</table>
