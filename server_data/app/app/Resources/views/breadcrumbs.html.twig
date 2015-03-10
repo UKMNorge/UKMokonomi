@@ -7,7 +7,7 @@
 	
 	
 	{% if type == 'subproject' or type == 'transaction' %}
-		<li><a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getName() }}</a></li>
+		<li><a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getCode() }} {{ budget.getName() }}</a></li>
 	{% endif %}
 	
 	{% if type == 'transaction' %}
@@ -18,7 +18,7 @@
 	{% if type == 'budget' %}
 		<li class="active">Alle formål</li>
 	{% elseif type == 'project' %}
-		<li class="active">{{ budget.getName() }}{# :: Alle del-formål#}</li>
+		<li class="active">{{ budget.getCode() }} {{ budget.getName() }}{# :: Alle del-formål#}</li>
 	{% elseif type == 'subproject' %}
 		<li class="active">{{ project.getName() }}{# :: Alle prosjekt#}</li>
 	{% elseif type == 'transaction' %}
