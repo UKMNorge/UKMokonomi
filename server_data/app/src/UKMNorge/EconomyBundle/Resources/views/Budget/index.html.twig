@@ -22,8 +22,8 @@
 		</thead>
 		<tbody>
 		{% for group in budgetGroups %}
-			<tr class="UKMeco_budget_headerRow">
-				<td><h5>{{ group.name }}-serien</h5></td>
+			<tr class="UKMeco_budget_headerRow primary">
+				<td><h4>{{ group.name }}-serien</h4></td>
 				<td class="kroner"><h5>{{ group.sum.allocated|kroner }},-</h5></td>
 				<td class="kroner"><h5>{{ group.sum.subProjects|kroner }},-</h5></td>
 				<td class="kroner"><h5>{{ group.sum.transactions|kroner }},-</h5></td>

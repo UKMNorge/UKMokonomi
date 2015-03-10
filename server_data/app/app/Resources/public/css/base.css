@@ -34,7 +34,8 @@
 
 
 .UKMeco_budget_headerRow > td {
-	padding-top:20px;
+	padding-top:20px !important;
+	background: #fff !important;
 }
 
 
