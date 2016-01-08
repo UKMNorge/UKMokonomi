@@ -59,9 +59,9 @@ class TransactionService
 	 *
      * @return array ?
     */
-   	public function getAll( $subProject ) {
+   	public function getAll( $subProject, $year=false ) {
 	   	$this->_validateSubProject( $subProject );
-		$transactions = $this->repo->getAllBySubProject( $subProject, false );
+		$transactions = $this->repo->getAllBySubProject( $subProject, $year );
 		return $transactions;
    	}
    	

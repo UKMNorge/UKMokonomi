@@ -1,0 +1,68 @@
+{% for group in budgetGroups %}
+	<h2 class="page-break-before">Bilag {{ group.name }}-serien {{ year }}</h2>
+	{% for budget in group.budgets %}
+		{% set projects = projectServ.getAll( budget ) %}
+		{% for project in projects %}
+			<div class="page-break-avoid" style="margin-bottom: 80px;">
+				<h3>Bilag {{ budget.getCode() }} {{ budget.getName() }}</h3>			
+				{% for subproject in project.getSubProjects() %}
+					{% set transactions = transactionServ.getAll( subproject, year ) %}
+	
+					{% set sub_allocated = subproject.getAllocatedAmount( year ) %}
+					{% set sub_budget = transactionServ.getTotalBySubProject( subproject, year ) %}
+					{% set sub_result = sub_allocated - sub_budget %}
+	
+					{% set trans_sum_plan = 0 %}
+					{% set trans_sum_paid = 0 %}
+					<table class="table table-striped subproject">
+						<thead>
+							<tr>
+								<th width="*%"><h4>{{ subproject.getName() }} <small>{{ project.getName() }} ({{ budget.getName() }})</small></h4></th>
+								<th width="100">Planlagt</th>
+								<th width="100">Betalt</th>
+								<th width="100">Tild. Budsj<br/>{{ sub_allocated|kroner }},-</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for transaction in transactions %}
+							{% if transaction.getType() == 'Budget' %}
+								{% set t_plan = transaction.getAmount() %}
+								{% set t_paid = 0 %}
+								{% set trans_sum_plan = trans_sum_plan + t_plan %}
+							{% else %}
+								{% set t_plan = 0 %}
+								{% set t_paid = transaction.getAmount() %}
+								{% set trans_sum_paid = trans_sum_paid + t_paid %}
+							{% endif %}
+							<tr>
+								<td>{{ transaction.getName() }}</td>
+								<td>{{ t_plan|kroner }},-</td>
+								<td>{{ t_paid|kroner }},-</td>
+								<td></td>
+							</tr>
+						{% else %}
+							<tr colspan="3">Det er ikke lagt til noen transaksjoner i {{ subproject.getName() }}</tr>
+						{% endfor %}
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>SUM</th>
+								<th>{{ trans_sum_plan|kroner }},-</th>
+								<th>{{ trans_sum_paid|kroner }},-</th>
+								<th class="{{ sub_allocated < (trans_sum_plan + trans_sum_paid ) ? 'warning' : ''}}">{{ (trans_sum_plan + trans_sum_paid )|kroner }},-</th>
+							</tr>
+							<tr>
+								<th>Resultat</th>
+								<th></th>
+								<th></th>
+								<th class="{{ sub_result > 0 ? 'success' : 'danger' }}">{{ sub_result|kroner }},-</th>
+							</tr>
+						</tfoot>
+					</table>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p>Det er ikke lagt til noen prosjekter i "{{ budget.getName() }}" enda.</p>
+		{% endfor %}
+	{% endfor %}
+{% endfor %}

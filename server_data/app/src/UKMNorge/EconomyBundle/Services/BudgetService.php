@@ -7,6 +7,7 @@ use UKMNorge\EconomyBundle\Entity\Budget;
 use UKMNorge\EconomyBundle\Entity\BudgetAllocatedAmount;
 use Exception;
 use DateTime;
+use stdClass;
 
 class BudgetService
 {
@@ -64,6 +65,36 @@ class BudgetService
 		$budgets = $this->repo->findBy( array(), array('name' => 'ASC') );
 		$this->_loadOwnerObjects( $budgets );
 		return $budgets;
+   	}
+   	
+   	public function getGroups( $transactionServ, $year = false ) {
+	   	$year = $year ? $year : date('Y');
+		$groups = array();
+		foreach( $this->getAll() as $budget ) {
+		    $code = $budget->getCode();
+		    if( empty( $code ) ) {
+			    $code = 'Ukjent';
+		    } else {
+			    $code = substr( (string)$code, 0, 2);
+		    }
+		    
+		    if( !isset( $groups[ $code ] ) ) {
+			    $groups[ $code ] = new stdClass();
+			    $groups[ $code ]->budgets = array();
+			    $groups[ $code ]->name = $code;
+			    $groups[ $code ]->sum = new stdClass();
+			    $groups[ $code ]->sum->allocated = 0;
+			    $groups[ $code ]->sum->subProjects = 0;
+			    $groups[ $code ]->sum->transactions = 0;
+		    }
+			$groups[ $code ]->budgets[ $budget->getCode() .'_'. $budget->getName() ] = $budget;
+			$groups[ $code ]->sum->allocated	+= $budget->getAllocatedAmount( $year );
+			$groups[ $code ]->sum->subProjects	+= $budget->getSubProjectsAllocatedTotal( $year );
+			$groups[ $code ]->sum->transactions	+= $transactionServ->getTotalByBudget( $budget, $year );
+			ksort( $groups[ $code ]->budgets );
+		}
+		ksort( $groups );
+		return $groups;
    	}
     
     /** **************************************************************************************** **/

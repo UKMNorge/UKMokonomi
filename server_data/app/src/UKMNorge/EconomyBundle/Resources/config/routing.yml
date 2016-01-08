@@ -7,6 +7,13 @@ UKMeco_homepage:
     path:     /admin/
     defaults: { _controller: UKMecoBundle:Default:index }
 
+UKMeco_report_home:
+    path:     /admin/report/
+    defaults: { _controller: UKMecoBundle:Report:index }
+
+UKMeco_report_year:
+    path: /admin/report/{year}/
+    defaults: { _controller: UKMecoBundle:Report:year }
 
 UKMeco_budget_homepage:
     path: /admin/budget/

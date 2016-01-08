@@ -13,39 +13,8 @@ class BudgetController extends Controller
     {
 		$budgetServ = $this->get('UKMeco.budget');
 		$transactionServ = $this->get('UKMeco.transaction');
-
-	    $data = array();
-	    $budgetsArray = $budgetServ->getAll();
-	    
-	    $groups = array();
-	    
-	    foreach( $budgetsArray as $budget ) {
-		    $code = $budget->getCode();
-		    if( empty( $code ) ) {
-			    $code = 'Ukjent';
-		    } else {
-			    $code = substr( (string)$code, 0, 2);
-		    }
-		    
-		    if( !isset( $groups[ $code ] ) ) {
-			    $groups[ $code ] = new stdClass();
-			    $groups[ $code ]->budgets = array();
-			    $groups[ $code ]->name = $code;
-			    $groups[ $code ]->sum = new stdClass();
-			    $groups[ $code ]->sum->allocated = 0;
-			    $groups[ $code ]->sum->subProjects = 0;
-			    $groups[ $code ]->sum->transactions = 0;
-		    }
-			
-			$groups[ $code ]->budgets[ $budget->getCode() .'_'. $budget->getName() ] = $budget;
-			$groups[ $code ]->sum->allocated	+= $budget->getAllocatedAmount( date("Y") );
-			$groups[ $code ]->sum->subProjects	+= $budget->getSubProjectsAllocatedTotal( date("Y") );
-			$groups[ $code ]->sum->transactions	+= $transactionServ->getTotalByBudget( $budget, date("Y") );
-			ksort( $groups[ $code ]->budgets );
-		}
-		ksort( $groups );
-
-	    $data['budgetGroups'] = $groups;
+	    $data = array();    
+	    $data['budgetGroups'] = $budgetServ->getGroups( $transactionServ );
 	    $data['transactionServ'] = $transactionServ; 
 	    $data['amountServ'] = $this->get('UKMeco.amount');
 	    $data['user'] = $this->get('security.context')->getToken()->getUser();

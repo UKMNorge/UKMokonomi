@@ -1,0 +1,48 @@
+{% for group in budgetGroups %}
+	<h2 class="page-break-before">Regnskap {{ group.name }}-serien {{ year }}</h2>
+	{% for budget in group.budgets %}
+		{% set projects = projectServ.getAll( budget ) %}
+		<div class="page-break-avoid">
+			<h3>{{ budget.getCode() }} {{ budget.getName() }}</h3>
+			
+			{% if projects|length > 0 %}
+				{% set allocatedTotal = budget.getSubProjectsAllocatedTotal( year ) %}
+				{% set budgetTotal = transactionServ.getTotalByBudget( budget, year ) %}
+				{% set resultTotal = allocatedTotal - budgetTotal %}
+				<table class="table table-striped subproject">
+					<thead>
+						<tr>
+							<th width="*%">Prosjekter</th>
+							<th width="100">Budsjett</th>
+							<th width="100">Regnskap</th>
+							<th width="100">Resultat</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for project in projects %}
+							{% set project_allocated = project.getSubProjectsAllocatedAmount( year ) %}
+							{% set project_budget = transactionServ.getTotalByProject( project, year ) %}
+							{% set project_result = project_allocated - project_budget %}
+							<tr>
+								<td>{{ project.getName() }}</td>
+								<td class="kroner">{{ project_allocated|kroner }},-</td>
+								<td class="kroner">{{ project_budget|kroner }},-</td>
+								<td class="kroner {{ project_result > 0 ? 'success' : 'danger' }}">{{ project_result|kroner }},-</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>SUM</th>
+							<th class="kroner">{{ allocatedTotal|kroner }},-</th>
+							<th class="kroner">{{ budgetTotal|kroner }},-</th>
+							<th class="kroner {{ resultTotal > 0 ? 'success' : 'danger' }}">{{ resultTotal|kroner }},-</th>
+						</tr>
+					</tfoot>
+				</table>
+			{% else %}
+				<p>Det er ikke lagt til noen prosjekter i "{{ budget.getName() }}" enda.</p>
+			{% endif %}
+		</div>	
+	{% endfor %}
+{% endfor %}

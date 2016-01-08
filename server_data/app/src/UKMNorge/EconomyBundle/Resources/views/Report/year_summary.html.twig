@@ -1,0 +1,22 @@
+<table class="table table-striped subproject" id="UKMeco_formalstabell">
+	<thead>
+		<tr>
+			<th width="*%" class=""></th>
+			<th width="100" class="kroner">Tildelt budsjett</th>
+			<th width="100" class="kroner">Beregnet budsjett</th>
+			<th width="100" class="kroner">Regnskap</th>
+			<th width="100" class="kroner">Resultat</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for group in budgetGroups %}
+		<tr class="primary">
+			<td>{{ group.name }}-serien</td>
+			<td class="kroner">{{ group.sum.allocated|kroner }},-</td>
+			<td class="kroner">{{ group.sum.subProjects|kroner }},-</td>
+			<td class="kroner">{{ group.sum.transactions|kroner }},-</td>
+			<td class="kroner {{ ( group.sum.allocated - group.sum.transactions ) > 0 ? 'success' : 'danger' }}">{{ ( group.sum.allocated - group.sum.transactions )|kroner }},-</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

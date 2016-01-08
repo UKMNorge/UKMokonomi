@@ -13,56 +13,68 @@ use DateTime;
  */
 class TransactionRepository extends EntityRepository
 {
-	public function getAllBySubProject( $subProject, $year ) {
+	public function getAllBySubProject( $subProject, $year=false ) {
+		$budget_year_start = new DateTime( ( $year ? $year : date('Y') ) .'-01-01');
+		$budget_year_stop = new DateTime( ( $year ? $year : date('Y') ) .'-12-31');
+		
 		$q = $this->createQueryBuilder('e')
 				  ->select('e')
 				  ->where('e.subProject = :subProject')
 				  ->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
 				  ->setParameter('subProject', $subProject->getId())
-				  ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
-				  ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
+				  ->setParameter('date_from', $budget_year_start)
+				  ->setParameter('date_to', $budget_year_stop)
 				  ->getQuery();
 				  
 		$result = $q->getResult();
 		return $result;
 	}
 	
-	public function getTotalByBudget( $budget, $year ) {
+	public function getTotalByBudget( $budget, $year=false ) {
+		$budget_year_start = new DateTime( ( $year ? $year : date('Y') ) .'-01-01');
+		$budget_year_stop = new DateTime( ( $year ? $year : date('Y') ) .'-12-31');
+		
 	    $q = $this->createQueryBuilder('e')
 	        ->addSelect('SUM(e.amount) AS total')
 	        ->where('e.budget = :budget')
 			->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
 	        ->setParameter('budget', $budget->getId())
-	        ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
-	        ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
+	        ->setParameter('date_from', $budget_year_start)
+	        ->setParameter('date_to', $budget_year_stop)
 	        ->getQuery();
 	        
 	    $result = $q->getSingleResult();
 	    return $result['total'];
 	}
 
-	public function getTotalByProject( $project, $year ) {
+	public function getTotalByProject( $project, $year=false ) {
+		$budget_year_start = new DateTime( ( $year ? $year : date('Y') ) .'-01-01');
+		$budget_year_stop = new DateTime( ( $year ? $year : date('Y') ) .'-12-31');
+		
 	    $q = $this->createQueryBuilder('e')
 	        ->addSelect('SUM(e.amount) AS total')
 	        ->where('e.project = :project')
 			->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
 	        ->setParameter('project', $project->getId())
-	        ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
-	        ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
+	        ->setParameter('date_from', $budget_year_start)
+	        ->setParameter('date_to', $budget_year_stop)
 	        ->getQuery();
 	        
 	    $result = $q->getSingleResult();
 	    return $result['total'];
 	}
 
-	public function getTotalBySubProject( $subProject, $year ) {
+	public function getTotalBySubProject( $subProject, $year=false ) {
+		$budget_year_start = new DateTime( ( $year ? $year : date('Y') ) .'-01-01');
+		$budget_year_stop = new DateTime( ( $year ? $year : date('Y') ) .'-12-31');
+		
 	    $q = $this->createQueryBuilder('e')
 	        ->addSelect('SUM(e.amount) AS total')
 	        ->where('e.subProject = :subProject')
 			->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
 	        ->setParameter('subProject', $subProject->getId())
-	        ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
-	        ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
+	        ->setParameter('date_from', $budget_year_start)
+	        ->setParameter('date_to', $budget_year_stop)
 	        ->getQuery();
 	        
 	    $result = $q->getSingleResult();

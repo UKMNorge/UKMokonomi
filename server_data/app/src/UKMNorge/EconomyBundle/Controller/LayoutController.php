@@ -22,6 +22,13 @@ class LayoutController extends Controller
 	    	$item->active = true;
 	    	$menu[] = $item;
 
+	    	$item = new stdClass();
+	    	$item->icon = '//ico.ukm.no/clipboard-64.png';
+	    	$item->path = $this->get('router')->generate('UKMeco_report_home');
+	    	$item->title = 'Rapporter';
+	    	$item->active = false;
+	    	$menu[] = $item;
+
 			if( $user->hasRole('ROLE_ADMIN') ) {	
 		    	$item = new stdClass();
 				$item->icon = '//ico.ukm.no/user-64.png';
@@ -31,7 +38,6 @@ class LayoutController extends Controller
 		    	$menu[] = $item;
 			}
 			
-
 	    	$item = new stdClass();
 	    	$item->icon = '//ico.ukm.no/log-out-64.png';
 	    	$item->path = $this->get('router')->generate('fos_user_security_logout');

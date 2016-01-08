@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Hjem{% endblock %}
+
+{% block body %}
+<h1>Velg rapport</h1>
+<a href="{{ url('UKMeco_report_year', {'year': 2015}) }}" class="btn btn-primary">2015</a>
+<br />
+<a href="{{ url('UKMeco_report_year', {'year': 2016}) }}" class="btn btn-primary">2016</a>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% for group in budgetGroups %}
+	<table class="table table-striped subproject" id="UKMeco_formalstabell">
+		<thead>
+			<tr>
+				<th width="*%" class=""><h3>{{ group.name }}-serien</h3></th>
+				<th width="100" class="kroner">Tildelt budsjett</th>
+				<th width="100" class="kroner">Beregnet budsjett</th>
+				<th width="100" class="kroner">Regnskap</th>
+				<th width="100" class="kroner">Resultat</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="primary">
+			<td><b>Formål</b></td>
+			<td class="kroner"><b>{{ group.sum.allocated|kroner }},-</b></td>
+			<td class="kroner"><b>{{ group.sum.subProjects|kroner }},-</b></td>
+			<td class="kroner"><b>{{ group.sum.transactions|kroner }},-</b></td>
+			<td class="kroner {{ ( group.sum.allocated - group.sum.transactions ) > 0 ? 'success' : 'danger' }}"><b>{{ ( group.sum.allocated - group.sum.transactions )|kroner }},-</b></td>
+		</tr>
+		{% for budget in group.budgets %}
+			<tr>
+				<td class="">
+					<div class="UKMeco_nameCircle" title="{{ budget.getOwnerObject().getName() }}">{{ budget.getOwnerObject().getUsername()|first }}</div>
+					<b>{{ budget.getCode() }}</b> 
+					{{ budget.getName() }}
+				</td>
+				<td class="kroner">{{ budget.getAllocatedAmount( year )|kroner }},-</td>
+				<td class="kroner">{{ budget.getSubProjectsAllocatedTotal( year )|kroner }},-</td>
+				<td class="kroner">{{ transactionServ.getTotalByBudget( budget, year )|kroner }},-</td>
+				<td class="kroner {{ budget.getAllocatedAmount( year ) < transactionServ.getTotalByBudget( budget, year ) ? 'danger' : 'success'}}">{{ (budget.getAllocatedAmount( year ) - transactionServ.getTotalByBudget( budget, year ))|kroner }},-</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endfor %}
