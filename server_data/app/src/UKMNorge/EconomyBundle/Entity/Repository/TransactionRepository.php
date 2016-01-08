@@ -3,6 +3,7 @@
 namespace UKMNorge\EconomyBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use DateTime;
 
 /**
  * TransactionRepository
@@ -12,11 +13,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionRepository extends EntityRepository
 {
+	public function getAllBySubProject( $subProject, $year ) {
+		$q = $this->createQueryBuilder('e')
+				  ->select('e')
+				  ->where('e.subProject = :subProject')
+				  ->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
+				  ->setParameter('subProject', $subProject->getId())
+				  ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
+				  ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
+				  ->getQuery();
+				  
+		$result = $q->getResult();
+		return $result;
+	}
+	
 	public function getTotalByBudget( $budget, $year ) {
 	    $q = $this->createQueryBuilder('e')
 	        ->addSelect('SUM(e.amount) AS total')
 	        ->where('e.budget = :budget')
+			->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
 	        ->setParameter('budget', $budget->getId())
+	        ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
+	        ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
 	        ->getQuery();
 	        
 	    $result = $q->getSingleResult();
@@ -27,7 +45,10 @@ class TransactionRepository extends EntityRepository
 	    $q = $this->createQueryBuilder('e')
 	        ->addSelect('SUM(e.amount) AS total')
 	        ->where('e.project = :project')
+			->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
 	        ->setParameter('project', $project->getId())
+	        ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
+	        ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
 	        ->getQuery();
 	        
 	    $result = $q->getSingleResult();
@@ -38,7 +59,10 @@ class TransactionRepository extends EntityRepository
 	    $q = $this->createQueryBuilder('e')
 	        ->addSelect('SUM(e.amount) AS total')
 	        ->where('e.subProject = :subProject')
+			->andWhere($this->createQueryBuilder('e')->expr()->between('e.date', ':date_from', ':date_to'))
 	        ->setParameter('subProject', $subProject->getId())
+	        ->setParameter('date_from', new DateTime(date('Y').'-01-01'))
+	        ->setParameter('date_to', new DateTime(date('Y').'-12-31'))
 	        ->getQuery();
 	        
 	    $result = $q->getSingleResult();

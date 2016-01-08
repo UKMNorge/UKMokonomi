@@ -61,7 +61,7 @@ class TransactionService
     */
    	public function getAll( $subProject ) {
 	   	$this->_validateSubProject( $subProject );
-		$transactions = $this->repo->findBy( array('subProject'=>$subProject->getId()), array('name' => 'ASC') );
+		$transactions = $this->repo->getAllBySubProject( $subProject, false );
 		return $transactions;
    	}
    	
