@@ -1,8 +1,17 @@
+<h1>Formålsregnskap {{ year }}</h1>
+<hr class="page-break-after" />
+
 {% for group in budgetGroups %}
 	<table class="table table-striped subproject" id="UKMeco_formalstabell">
 		<thead>
 			<tr>
-				<th width="*%" class=""><h3>{{ group.name }}-serien</h3></th>
+				<th width="*%" class="">
+					<h3>
+						{{ group.name }}-serien
+						<br />
+						<small>FORMÅLSREGNSKAP</small>
+					</h3>
+				</th>
 				<th width="100" class="kroner">Tildelt budsjett</th>
 				<th width="100" class="kroner">Beregnet budsjett</th>
 				<th width="100" class="kroner">Regnskap</th>
@@ -33,3 +42,4 @@
 	</tbody>
 </table>
 {% endfor %}
+<hr class="page-break-after" />

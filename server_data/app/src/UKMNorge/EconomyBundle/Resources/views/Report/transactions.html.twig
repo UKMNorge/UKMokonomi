@@ -1,5 +1,7 @@
 {% for group in budgetGroups %}
-	<h2 class="page-break-before">Bilag {{ group.name }}-serien {{ year }}</h2>
+	<hr class="page-break-after" />
+	<h2>Bilag {{ group.name }}-serien {{ year }}</h2>
+	<hr class="page-break-after" />
 	{% for budget in group.budgets %}
 		{% set projects = projectServ.getAll( budget ) %}
 		{% for project in projects %}
@@ -17,7 +19,7 @@
 					<table class="table table-striped subproject">
 						<thead>
 							<tr>
-								<th width="*%"><h4>{{ subproject.getName() }} <small>{{ project.getName() }} ({{ budget.getName() }})</small></h4></th>
+								<th width="*%"><h4>{{ subproject.getName() }} <small>{{ project.getName() }} {{ budget.getCode() }} {{ budget.getName() }})</small></h4></th>
 								<th width="100">Planlagt</th>
 								<th width="100">Betalt</th>
 								<th width="100">Tild. Budsj<br/>{{ sub_allocated|kroner }},-</th>
@@ -35,13 +37,21 @@
 								{% set trans_sum_paid = trans_sum_paid + t_paid %}
 							{% endif %}
 							<tr>
-								<td>{{ transaction.getName() }}</td>
+								<td>
+									{{ transaction.getName() }}
+									<small>
+										<br />
+										{{ transaction.getDescription() }}
+									</small>
+								</td>
 								<td>{{ t_plan|kroner }},-</td>
 								<td>{{ t_paid|kroner }},-</td>
 								<td></td>
 							</tr>
 						{% else %}
-							<tr colspan="3">Det er ikke lagt til noen transaksjoner i {{ subproject.getName() }}</tr>
+							<tr>
+								<td colspan="4">Det er ikke lagt til noen transaksjoner i {{ subproject.getName() }}</td>
+							</tr>
 						{% endfor %}
 						</tbody>
 						<tfoot>

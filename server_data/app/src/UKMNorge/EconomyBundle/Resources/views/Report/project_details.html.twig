@@ -1,9 +1,11 @@
 {% for group in budgetGroups %}
-	<h2 class="page-break-before">Bilag {{ group.name }}-serien {{ year }}</h2>
+	<hr class="page-break-after" />
+	<h2>Utgiftsgrupper {{ group.name }}-serien {{ year }}</h2>
+	<hr class="page-break-after" />
 	{% for budget in group.budgets %}
 		{% set projects = projectServ.getAll( budget ) %}
 		<div class="page-break-avoid">
-			<h3>Bilag {{ budget.getCode() }} {{ budget.getName() }}</h3>			
+			<h3>Utgiftsgrupper i {{ budget.getCode() }} {{ budget.getName() }}</h3>			
 			{% if projects|length > 0 %}
 				{% for project in projects %}
 					{% set project_allocated = project.getSubProjectsAllocatedAmount( year ) %}
@@ -12,7 +14,7 @@
 					<table class="table table-striped subproject">
 						<thead>
 							<tr>
-								<th width="*%">{{ project.getName() }}</th>
+								<th width="*%">{{ project.getName() }} <small>(prosjekt)</small></th>
 								<th width="100">Budsjett</th>
 								<th width="100">Regnskap</th>
 								<th width="100">Resultat</th>

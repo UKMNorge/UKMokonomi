@@ -5,10 +5,8 @@
 {% block body %}
 	{% if budgetGroups|length > 0 %}
 
-		<h1 class="page-break-before">Regnskap {{ year }}</h1>
 		{% embed "UKMecoBundle:Report:year_summary.html.twig" %}{% endembed %}
 		
-		<h1 class="page-break-before">Formålsregnskap {{ year }}</h1>
 		{% embed "UKMecoBundle:Report:year_overview.html.twig" %}{% endembed %}
 		
 		<div class="page-break"></div>
