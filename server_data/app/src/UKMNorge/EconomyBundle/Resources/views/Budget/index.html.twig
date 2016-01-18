@@ -7,6 +7,9 @@
 {% block body %}
 	{% embed "breadcrumbs.html.twig" with {'type': 'budget'} %}{% endembed %}	
 	<h1>Alle formål</h1>
+	{% set control_allocated = 0 %}
+	{% set control_subprojects = 0 %}
+	{% set control_transactions = 0 %}
 
 	{% if budgetGroups|length > 0 %}
 	<table class="table table-striped subproject" id="UKMeco_formalstabell">
@@ -30,6 +33,10 @@
 				<td class="kroner"><h5>{{ ( group.sum.allocated - group.sum.transactions )|kroner }},-</h5></td>
 				<td></td>
 			</tr>
+			{% set control_allocated = control_allocated + group.sum.allocated %}
+			{% set control_subprojects = control_subprojects + group.sum.subProjects %}
+			{% set control_transactions = control_transactions + group.sum.transactions %}
+
 			{% for budget in group.budgets %}
 				<tr>
 					<td class="col-xs-7 col-sm-5">
@@ -65,6 +72,17 @@
 			{% endfor %}
 		{% endfor %}
 		</tbody>
+		
+		<tfoot>
+			<tr class="UKMeco_budget_headerRow primary">
+				<td><h4>SUM</h4></td>
+				<td class="kroner"><h5>{{ control_allocated|kroner }},-</h5></td>
+				<td class="kroner"><h5>{{ control_subprojects|kroner }},-</h5></td>
+				<td class="kroner"><h5>{{ control_transactions|kroner }},-</h5></td>
+				<td class="kroner"><h5>{{ ( control_allocated - control_transactions )|kroner }},-</h5></td>
+				<td></td>
+			</tr>
+		</tfoot>
 	</table>
 	{% else %}
 		<div class="alert alert-info">
