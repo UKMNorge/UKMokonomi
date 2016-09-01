@@ -64,6 +64,11 @@ class ProjectService
 		$this->_loadOwnerObjects( $projects );
 		return $projects;
    	}
+   	
+    public function search( $searchfor ) {
+		return $this->repo->search( $searchfor );
+    }
+
     
     /** **************************************************************************************** **/
 	/** CREATE FUNCTIONS

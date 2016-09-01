@@ -30,4 +30,19 @@ class SubProjectRepository extends EntityRepository
 								   ->setParameter('now', date('Y'));
 		return $query->getResult();
     }
+    
+    public function search( $searchfor ) {
+		$query = $this->createQueryBuilder('s')
+						->where('s.name LIKE :searchfor')
+						->setParameter('searchfor', '%'. $searchfor .'%' );
+		$titleMatch = $query->getQuery()->getResult();
+
+		$query = $this->createQueryBuilder('s')
+						->where('s.description LIKE :searchfor')
+						->setParameter('searchfor', '%'. $searchfor .'%' );
+		$descriptionMatch = $query->getQuery()->getResult();
+		
+		
+		return array_merge( $titleMatch, $descriptionMatch );
+    }
 }

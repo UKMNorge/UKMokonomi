@@ -1,0 +1,103 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Søk{% endblock %}
+
+{% block body %}
+	<h1>Søk for "{{ searchfor }}"</h1>
+	
+	
+	<div class="row">
+		<div class="col-xs-12 col-sm-6">
+			<h3>Budsjett</h3>
+			<ol class="list-group">
+				{% for budget in budgets %}
+					<li class="list-group-item">
+						<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">
+							{{ budget.getName() }}
+						</a>
+					</li>
+				{% else %}
+					<li class="list-group-item">Ingen treff</li>
+				{% endfor %}
+			</ol>
+		</div>
+		
+		<div class="col-xs-12 col-sm-6">
+			<h3>Prosjekt</h3>
+			<ol class="list-group">
+				{% for project in projects %}
+					<li class="list-group-item">
+						<a href="{{ url('UKMeco_subproject_homepage', {'budget': project.getBudget().getId(), 'project': project.getId() }) }}">
+							{{ project.getName() }}
+						</a>
+						<small>
+							 i 
+							<a href="{{ url('UKMeco_project_homepage', {'budget': project.getBudget().getId() } ) }}">
+								{{ project.getBudget().getCode() }}&nbsp;{{ project.getBudget().getName() }}
+							</a>
+						</small>
+					</li>
+				{% else %}
+					<li class="list-group-item">Ingen treff</li>
+				{% endfor %}
+			</ol>
+		</div>
+
+
+		<div class="col-xs-12 col-sm-6">
+			<h3>Utgiftsgrupper</h3>
+			<ol class="list-group">
+				{% for subproject in subprojects %}
+					<li class="list-group-item">
+						<a href="{{ url('UKMeco_transaction_homepage', {'budget': subproject.getBudget().getId(), 'project': subproject.getProject().getId(), 'subproject': subproject.getId() }) }}">
+							{{ subproject.getName() }}
+						</a>
+						<div class="visible-xs"></div>
+						<small>fra 
+							<a href="{{ url('UKMeco_subproject_homepage', {'budget': subproject.getBudget().getId(), 'project': subproject.getProject().getId() }) }}">
+								{{ subproject.getProject().getName() }}
+							</a>
+							 i 
+							<a href="{{ url('UKMeco_project_homepage', {'budget': subproject.getBudget().getId() } ) }}">
+								{{ subproject.getBudget().getCode() }}&nbsp;{{ subproject.getBudget().getName() }}
+							</a>
+						</small>
+					</li>
+				{% else %}
+					<li class="list-group-item">Ingen treff</li>
+				{% endfor %}
+			</ol>
+		</div>
+
+		<div class="col-xs-12 col-sm-6">
+			<h3>Transaksjoner</h3>
+			<ol class="list-group">
+				{% for transaction in transactions %}
+					<li class="list-group-item">
+						Bilag {{ transaction.getBilag() }}:
+						<a href="#">
+							{{ transaction.getName() }}
+						</a>
+						kr. {{ transaction.getAmount()|kroner }},-
+
+						<br />
+
+						<small>fra 
+							<a href="{{ url('UKMeco_subproject_homepage', {'budget': transaction.getBudget(), 'project': transaction.getProject() }) }}">
+								{{ projectServ.get( transaction.getProject() ).getName() }}
+							</a>
+							 i 
+							<a href="{{ url('UKMeco_project_homepage', {'budget': transaction.getBudget() } ) }}">
+								{{ budgetServ.get( transaction.getBudget() ).getCode() }}&nbsp;{{ budgetServ.get( transaction.getBudget() ).getName() }}
+							</a>
+						</small>
+					</li>
+				{% else %}
+					<li class="list-group-item">Ingen treff</li>
+				{% endfor %}
+			</ol>
+		</div>
+
+
+	</div>
+{% endblock %}

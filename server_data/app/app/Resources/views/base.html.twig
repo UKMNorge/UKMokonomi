@@ -26,6 +26,7 @@
 		<nav class="navbar-top" id="UKMeco_navbar">
 			<div class="container">
 					<button type="button" class="pull-right btn btn-sm btn-primary" id="UKMeco_menu_button">MENY</button>
+					{% embed "search.html.twig" %}{% endembed %}
 
 					<h1 id="UKMeco_brand">
 						<a href="{{ url('UKMeco_budget_homepage') }}">UKM økonomi</a>
@@ -46,6 +47,7 @@
 		<div class="container" id="UKMeco_content">
 			{% embed "flashmessages.html.twig" %}{% endembed %}
 			<div class="row">
+				{% block breadcrumbs %}{% endblock %}
 				{% block body %}{% endblock %}
 			</div>
 		</div>

@@ -77,6 +77,10 @@ class TransactionService
    	public function getTotalBySubProject( $subProject, $year ) {
 		return $this->repo->getTotalBySubProject( $subProject, $year );
    	}
+   	
+    public function search( $searchfor ) {
+		return $this->repo->search( $searchfor );
+    }
     
     /** **************************************************************************************** **/
 	/** CREATE FUNCTIONS

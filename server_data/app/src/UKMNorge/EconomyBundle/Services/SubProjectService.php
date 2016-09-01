@@ -69,6 +69,11 @@ class SubProjectService
 		return $subProjects;
    	}
     
+    
+    public function search( $searchfor ) {
+		return $this->repo->search( $searchfor );
+    }
+
     /** **************************************************************************************** **/
 	/** CREATE FUNCTIONS
     /** **************************************************************************************** **/

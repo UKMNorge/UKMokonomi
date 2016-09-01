@@ -4,8 +4,10 @@
 
 {% set current_year = "now"|date("Y") %}
 
-{% block body %}
+{% block breadcrumbs %}
 	{% embed "breadcrumbs.html.twig" with {'type': 'transaction'} %}{% endembed %}	
+{% endblock %}
+{% block body %}
 	<h1>
 		{{ subproject.getName() }}
 		<small>

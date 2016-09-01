@@ -13,6 +13,22 @@ use DateTime;
  */
 class TransactionRepository extends EntityRepository
 {
+	public function search( $searchfor ) {
+		$query = $this->createQueryBuilder('t')
+						->where('t.name LIKE :searchfor')
+						->orWhere('t.bilag LIKE :precisesearch')
+						->setParameter('searchfor', '%'. $searchfor .'%' )
+						->setParameter('precisesearch', $searchfor );
+		$titleMatch = $query->getQuery()->getResult();
+
+		$query = $this->createQueryBuilder('t')
+						->where('t.description LIKE :searchfor')
+						->setParameter('searchfor', '%'. $searchfor .'%' );
+		$descriptionMatch = $query->getQuery()->getResult();
+		
+		return array_merge( $titleMatch, $descriptionMatch );
+    }
+    
 	public function getAllBySubProject( $subProject, $year=false ) {
 		$budget_year_start = new DateTime( ( $year ? $year : date('Y') ) .'-01-01');
 		$budget_year_stop = new DateTime( ( $year ? $year : date('Y') ) .'-12-31');

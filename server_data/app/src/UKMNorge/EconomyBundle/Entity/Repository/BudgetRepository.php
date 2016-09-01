@@ -23,4 +23,11 @@ class BudgetRepository extends EntityRepository
 		
 		return $query->getQuery()->getResult();
     }
+    
+    public function search( $searchfor ) {
+		$query = $this->createQueryBuilder('b')
+						->where('b.name LIKE :searchfor')
+						->setParameter('searchfor', '%'. $searchfor .'%' );
+		return $query->getQuery()->getResult();
+    }
 }

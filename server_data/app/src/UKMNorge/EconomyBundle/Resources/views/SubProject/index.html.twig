@@ -2,8 +2,10 @@
 
 {% block title %}{{ 'Alle utgiftsgrupper :: ' ~ project.getName() ~ ' :: ' ~ budget.getName() }}{% endblock %}
 
-{% block body %}
+{% block breadcrumbs %}
 	{% embed "breadcrumbs.html.twig" with {'type': 'subproject'} %}{% endembed %}	
+{% endblock %}
+{% block body %}
 	<h1>
 		{{ project.getName() }}
 		<small>

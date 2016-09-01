@@ -4,8 +4,10 @@
 
 {% set current_budget = '' %}
 
-{% block body %}
+{% block breadcrumbs %}
 	{% embed "breadcrumbs.html.twig" with {'type': 'budget'} %}{% endembed %}	
+{% endblock %}
+{% block body %}
 	<h1>Alle formål</h1>
 	{% set control_allocated = 0 %}
 	{% set control_subprojects = 0 %}

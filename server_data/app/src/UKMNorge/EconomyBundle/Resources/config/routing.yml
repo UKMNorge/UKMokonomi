@@ -3,6 +3,11 @@ UKMeco_public_homepage:
     defaults: { _controller: UKMecoBundle:Default:public }
 
 
+UKMeco_search:
+    path: /search/
+    defaults: { _controller: UKMecoBundle:Search:search }
+
+
 UKMeco_homepage:
     path:     /admin/
     defaults: { _controller: UKMecoBundle:Default:index }
@@ -91,6 +96,7 @@ UKMeco_subproject_delete:
     path: /admin/budget/{budget}/project-{project}/subproject/{id}/delete/
     defaults: { _controller: UKMecoBundle:SubProject:delete }
     methods: [GET]
+
 
 UKMeco_transaction_homepage:
     path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/

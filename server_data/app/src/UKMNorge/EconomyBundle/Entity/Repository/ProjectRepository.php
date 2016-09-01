@@ -26,4 +26,20 @@ class ProjectRepository extends EntityRepository
 								   ->setParameter('now', date('Y'));
 		return $query->getResult();
     }
+    
+    public function search( $searchfor ) {
+		$query = $this->createQueryBuilder('p')
+						->where('p.name LIKE :searchfor')
+						->setParameter('searchfor', '%'. $searchfor .'%' );
+		$titleMatch = $query->getQuery()->getResult();
+
+		$query = $this->createQueryBuilder('p')
+						->where('p.description LIKE :searchfor')
+						->setParameter('searchfor', '%'. $searchfor .'%' );
+		$descriptionMatch = $query->getQuery()->getResult();
+		
+		
+		return array_merge( $titleMatch, $descriptionMatch );
+    }
+
 }
