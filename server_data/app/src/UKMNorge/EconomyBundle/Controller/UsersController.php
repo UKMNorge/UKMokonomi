@@ -95,9 +95,13 @@ class UsersController extends Controller
     public function doUpdateAction( Request $request, $username ) {
    		$userManager = $this->get('fos_user.user_manager');
    		$user = $userManager->findUserByUsername( $username );
-   		
+   		$currentUser = $this->container->get('security.context')->getToken()->getUser();
+
 		$this->_userData( $user, $request );
-   		$this->_userRoles( $user, $request );
+		
+		if( $user->getId() != $currentUser->getId() ) {
+	   		$this->_userRoles( $user, $request );
+		}
 
    		$password = $request->request->get('password');
 		if( !empty( $password ) ) {   		
