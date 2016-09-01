@@ -65,6 +65,10 @@
 								<li role="presentation">
 									<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">Vis prosjekter</a>
 								</li>
+								<li role="presentation">
+									<a href="{{ url('UKMeco_budget_delete', {'id': budget.getId() } ) }}" onClick="return confirm('Er du sikker på at du vil slette &quot;{{ budget.getName() }}&quot;?');">Slett formål</a>
+								</li>
+
 							</ul>
 						</div>
 					</td>

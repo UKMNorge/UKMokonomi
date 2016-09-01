@@ -14,6 +14,13 @@ class BudgetRepository extends EntityRepository
 {
 	public function findAll()
     {
-        return $this->findBy(array(), array('code' => 'ASC','name' => 'ASC'));
+		$query = $this->createQueryBuilder('b')
+						->where('b.deletedSince > :now')
+						->orWhere('b.deletedSince IS NULL')
+						->orWhere('b.deletedSince = 0')
+						->orderBy('b.code', 'ASC')
+						->setParameters(array('now' => date('Y') ));
+		
+		return $query->getQuery()->getResult();
     }
 }

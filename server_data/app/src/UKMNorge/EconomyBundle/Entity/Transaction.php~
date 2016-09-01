@@ -276,4 +276,27 @@ class Transaction
     {
         return $this->date;
     }
+
+    /**
+     * Set bilag
+     *
+     * @param integer $bilag
+     * @return Transaction
+     */
+    public function setBilag($bilag)
+    {
+        $this->bilag = $bilag;
+
+        return $this;
+    }
+
+    /**
+     * Get bilag
+     *
+     * @return integer 
+     */
+    public function getBilag()
+    {
+        return $this->bilag;
+    }
 }

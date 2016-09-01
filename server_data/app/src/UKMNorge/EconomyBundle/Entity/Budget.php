@@ -48,6 +48,13 @@ class Budget
      * @ORM\Column(name="Code", type="integer", nullable=true)
      */
     private $code=0;
+     
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="DeletedSince", type="integer", nullable=true)
+     */
+    private $deletedSince = null;
     
 	/**
      * @ORM\OneToMany(targetEntity="BudgetAllocatedAmount", mappedBy="budget")
@@ -396,5 +403,28 @@ class Budget
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set deletedSince
+     *
+     * @param integer $deletedSince
+     * @return Budget
+     */
+    public function setDeletedSince($deletedSince)
+    {
+        $this->deletedSince = $deletedSince;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedSince
+     *
+     * @return integer 
+     */
+    public function getDeletedSince()
+    {
+        return $this->deletedSince;
     }
 }

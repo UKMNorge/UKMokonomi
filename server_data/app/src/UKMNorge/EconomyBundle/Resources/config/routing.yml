@@ -35,6 +35,10 @@ UKMeco_budget_doEdit:
     path: /admin/budget-{id}/edit/
     defaults: { _controller: UKMecoBundle:Budget:doEdit }
     methods: [POST]
+UKMeco_budget_delete:
+    path: /admin/budget-{id}/delete/
+    defaults: { _controller: UKMecoBundle:Budget:delete }
+    methods: [GET]
 
 
 UKMeco_project_homepage:

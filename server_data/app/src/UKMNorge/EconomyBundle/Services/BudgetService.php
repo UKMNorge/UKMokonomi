@@ -62,7 +62,7 @@ class BudgetService
      * @return array
     */
    	public function getAll() {
-		$budgets = $this->repo->findBy( array(), array('name' => 'ASC') );
+		$budgets = $this->repo->findAll();#By( array(), array('name' => 'ASC') );
 		$this->_loadOwnerObjects( $budgets );
 		return $budgets;
    	}
@@ -304,6 +304,22 @@ class BudgetService
 		}
 		return $array;
 	}
+	
+    /**
+	 * Destroy Budget
+	 *
+	 * @param Budget
+	 *
+	 * @return budget
+	*/
+    public function destroy( $budget ) {
+	    $this->_validate( $budget );
+	    	    
+	    $budget->setDeletedSince( date('Y') );
+	    $this->_persistAndFlush( $budget );
+
+		return $budget;
+    }
 
     /** **************************************************************************************** **/
 	/** LOADERS */
