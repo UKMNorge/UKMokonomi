@@ -82,7 +82,12 @@
 
 						<br />
 
-						<small>fra 
+						<small>
+							fra 
+							<a href="{{ url('UKMeco_transaction_homepage', {'budget': transaction.getBudget(), 'project': transaction.getProject(), 'subproject': transaction.getSubProject() }) }}">
+								{{ subProjectServ.get( transaction.getSubProject() ).getName() }}
+							</a>
+							i
 							<a href="{{ url('UKMeco_subproject_homepage', {'budget': transaction.getBudget(), 'project': transaction.getProject() }) }}">
 								{{ projectServ.get( transaction.getProject() ).getName() }}
 							</a>

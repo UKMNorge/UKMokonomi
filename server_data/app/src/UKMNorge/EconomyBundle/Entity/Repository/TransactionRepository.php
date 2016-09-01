@@ -14,16 +14,26 @@ use DateTime;
 class TransactionRepository extends EntityRepository
 {
 	public function search( $searchfor ) {
+		$budget_year_start = new DateTime( date('Y') .'-01-01');
+		$budget_year_stop = new DateTime( date('Y') .'-12-31');
+
 		$query = $this->createQueryBuilder('t')
 						->where('t.name LIKE :searchfor')
 						->orWhere('t.bilag LIKE :precisesearch')
+						->andWhere($this->createQueryBuilder('t')->expr()->between('t.date', ':date_from', ':date_to'))
 						->setParameter('searchfor', '%'. $searchfor .'%' )
-						->setParameter('precisesearch', $searchfor );
+						->setParameter('precisesearch', $searchfor )
+						->setParameter('date_from', $budget_year_start)
+						->setParameter('date_to', $budget_year_stop);
+
 		$titleMatch = $query->getQuery()->getResult();
 
 		$query = $this->createQueryBuilder('t')
 						->where('t.description LIKE :searchfor')
-						->setParameter('searchfor', '%'. $searchfor .'%' );
+						->andWhere($this->createQueryBuilder('t')->expr()->between('t.date', ':date_from', ':date_to'))
+						->setParameter('searchfor', '%'. $searchfor .'%' )
+						->setParameter('date_from', $budget_year_start)
+						->setParameter('date_to', $budget_year_stop);
 		$descriptionMatch = $query->getQuery()->getResult();
 		
 		return array_merge( $titleMatch, $descriptionMatch );

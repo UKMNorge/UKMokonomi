@@ -20,6 +20,7 @@ class SearchController extends Controller
 		$viewData['searchfor'] = $searchfor;
 		$viewData['budgetServ'] = $budgetServ;
 		$viewData['projectServ'] = $projectServ;
+		$viewData['subProjectServ'] = $subProjectServ;
 	
 		$viewData['budgets'] = $budgetServ->search( $searchfor );
 		$viewData['projects'] = $projectServ->search( $searchfor );
