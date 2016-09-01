@@ -3,6 +3,8 @@
 namespace UKMNorge\EconomyBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use UKMNorge\EconomyBundle\Entity\Project;
+
 
 /**
  * SubProjectRepository
@@ -15,4 +17,17 @@ class SubProjectRepository extends EntityRepository
 	public function findAll() {
 		return $this->findBy(array(), array('name' => 'ASC'));
 	}
+	
+	public function findByProject(Project $project)
+    {
+		$em = $this->getEntityManager();
+		$query = $em->createQuery('SELECT s
+									FROM UKMecoBundle:SubProject s
+									WHERE s.project = :project
+									AND (s.deletedSince > :now OR s.deletedSince IS NULL OR s.deletedSince = 0)
+									ORDER BY s.name ASC'
+								   )->setParameter('project', $project->getId())
+								   ->setParameter('now', date('Y'));
+		return $query->getResult();
+    }
 }

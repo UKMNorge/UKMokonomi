@@ -51,6 +51,13 @@ class SubProject
      */
     private $budget;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="DeletedSince", type="integer", nullable=true)
+     */
+    private $deletedSince = null;
+    
 	/**
      * @ORM\OneToMany(targetEntity="SubProjectAllocatedAmount", mappedBy="subProject")
      */

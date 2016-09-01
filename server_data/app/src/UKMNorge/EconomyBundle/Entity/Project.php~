@@ -440,4 +440,27 @@ class Project
     {
         return $this->budget;
     }
+
+    /**
+     * Set deletedSince
+     *
+     * @param integer $deletedSince
+     * @return Project
+     */
+    public function setDeletedSince($deletedSince)
+    {
+        $this->deletedSince = $deletedSince;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedSince
+     *
+     * @return integer 
+     */
+    public function getDeletedSince()
+    {
+        return $this->deletedSince;
+    }
 }

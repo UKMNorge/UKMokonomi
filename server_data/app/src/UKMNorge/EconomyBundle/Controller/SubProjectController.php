@@ -4,7 +4,10 @@ namespace UKMNorge\EconomyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 use stdClass;
+use Exception;
 
 class SubProjectController extends Controller
 {
@@ -23,10 +26,31 @@ class SubProjectController extends Controller
 	    $data = array();
 	    $data['budget'] = $budget;
 	    $data['project'] = $project;
+	    $data['subprojects'] = $subProjectServ->getAll( $project );
 	    $data['transactionServ'] = $transactionServ;
 	    $data['transactionTotal'] = $amountServ->getTransactionTotalByProject( $project, (int)date("Y") );	    	    
         return $this->render('UKMecoBundle:SubProject:index.html.twig', $data);
     }
+    
+    public function deleteAction( $project, $budget, $id ) {
+	    $budgetServ = $this->get('UKMeco.budget');
+	    $projectServ = $this->get('UKMeco.project');
+		$subProjectServ = $this->get('UKMeco.subproject');
+	    $session = new Session();
+
+		$budget = $budgetServ->get( $budget );
+		$project = $projectServ->get( $project );
+		$subproject = $subProjectServ->get( $id );
+
+		try {
+			$subProjectServ->destroy( $subproject );
+			$session->getFlashBag()->set('success', 'Utgiftsgruppen er slettet!');
+		} catch( Exception $e ) {
+			$session->getFlashBag()->set('danger', 'Utgiftsgruppen ble ikke slettet pga følgende feilmelding: '. $e->getMessage() );
+		}
+
+	    return $this->redirect( $this->get('router')->generate('UKMeco_subproject_homepage', array('project' => $project->getId(), 'budget' => $budget->getId())) );
+	}
     
     public function createAction( $budget, $project ) {
 	    $budgetServ = $this->get('UKMeco.budget');

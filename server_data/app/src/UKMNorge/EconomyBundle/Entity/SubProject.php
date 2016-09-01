@@ -51,6 +51,13 @@ class SubProject
      */
     private $budget;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="DeletedSince", type="integer", nullable=true)
+     */
+    private $deletedSince = null;
+    
 	/**
      * @ORM\OneToMany(targetEntity="SubProjectAllocatedAmount", mappedBy="subProject")
      */
@@ -242,5 +249,28 @@ class SubProject
     public function getBudget()
     {
         return $this->budget;
+    }
+
+    /**
+     * Set deletedSince
+     *
+     * @param integer $deletedSince
+     * @return SubProject
+     */
+    public function setDeletedSince($deletedSince)
+    {
+        $this->deletedSince = $deletedSince;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedSince
+     *
+     * @return integer 
+     */
+    public function getDeletedSince()
+    {
+        return $this->deletedSince;
     }
 }

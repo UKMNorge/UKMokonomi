@@ -61,7 +61,7 @@ class SubProjectService
     */
    	public function getAll( $project, $allocatedAmountData=false ) {
 	   	$this->_validateProject( $project );
-		$subProjects = $this->repo->findBy( array('project'=>$project->getId()), array('name' => 'ASC') );
+		$subProjects = $this->repo->findByProject( $project );
 		
 		if( $allocatedAmountData !== false ) {
 			$this->_loadAllocatedAmounts( $subProjects, $allocatedAmountData );
@@ -198,6 +198,22 @@ class SubProjectService
 		$subProject->setBudget( $budget );
 	    $this->_persistAndFlush( $subProject );
 	    return $subProject;
+    }
+    
+   /**
+	 * Destroy SubProject
+	 *
+	 * @param SubProject
+	 *
+	 * @return SubProject
+	*/
+    public function destroy( $subProject ) {
+	    $this->_validate( $subProject );
+	    	    
+	    $subProject->setDeletedSince( date('Y') );
+	    $this->_persistAndFlush( $subProject );
+
+		return $subProject;
     }
 
     /** **************************************************************************************** **/

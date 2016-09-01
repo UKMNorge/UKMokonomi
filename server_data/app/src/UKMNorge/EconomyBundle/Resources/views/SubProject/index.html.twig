@@ -31,7 +31,7 @@
 	
 	{#<h3>Alle del-utgiftsgrupper</h3>#}
 	
-	{% if project.getSubProjects()|length > 0 %}
+	{% if subprojects|length > 0 %}
 		<table class="table table-striped subproject">
 			<thead>
 				<tr>
@@ -53,7 +53,7 @@
 				</tr>
 			</thead>
 			<tbody>			
-			{% for subproject in project.getSubProjects() %}
+			{% for subproject in subprojects %}
 				<tr>
 					<td>
 						<a href="{{ url('UKMeco_transaction_homepage', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">{{ subproject.getName() }}</a>
@@ -85,7 +85,9 @@
 								<li role="presentation">
 									<a href="{{ url('UKMeco_transaction_homepage', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}">Vis transaksjoner</a>
 								</li>
-	
+								<li role="presentation">
+									<a href="{{ url('UKMeco_subproject_delete', {'id': subproject.getId(), 'project': project.getId(), 'budget': budget.getId() } ) }}" onClick="return confirm('Er du sikker på at du vil slette &quot;{{ subproject.getName() }}&quot;');">Slett utgiftsgruppe</a>
+								</li>	
 							</ul>
 						</div>
 					</td>
