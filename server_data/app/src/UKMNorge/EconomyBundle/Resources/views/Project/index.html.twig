@@ -102,6 +102,9 @@
 									<li role="presentation">
 										<a href="{{ url('UKMeco_subproject_homepage', {'project': project.getId(), 'budget': budget.getId() } ) }}">Vis utgiftsgrupper</a>
 									</li>
+									<li role="presentation">
+										<a href="{{ url('UKMeco_project_delete', {'id': project.getId(), 'budget': budget.getId() } ) }}" onClick="return confirm('Er du sikker på at du vil slette &quot;{{ project.getName() }}&quot;');">Slett prosjekt</a>
+									</li>
 								</ul>
 							</div>
 						</td>

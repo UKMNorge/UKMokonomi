@@ -60,7 +60,7 @@ class ProjectService
     */
    	public function getAll( $budget ) {
 	   	$this->_validateBudget( $budget );
-		$projects = $this->repo->findBy( array('budget'=>$budget), array('name' => 'ASC') );
+		$projects = $this->repo->findAllFromBudget( $budget );
 		$this->_loadOwnerObjects( $projects );
 		return $projects;
    	}
@@ -273,6 +273,23 @@ class ProjectService
 	    }
 		return $project;
     }
+    
+   /**
+	 * Destroy Project
+	 *
+	 * @param Project
+	 *
+	 * @return Project
+	*/
+    public function destroy( $project ) {
+	    $this->_validate( $project );
+	    	    
+	    $project->setDeletedSince( date('Y') );
+	    $this->_persistAndFlush( $project );
+
+		return $project;
+    }
+
     
     /** **************************************************************************************** **/
 	/** ALLOCATED AMOUNT FUNCTIONS

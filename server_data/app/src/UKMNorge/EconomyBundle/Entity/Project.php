@@ -49,7 +49,14 @@ class Project
      * @ORM\JoinColumn(name="Budget", referencedColumnName="id")
      */
     private $budget;
-
+     
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="DeletedSince", type="integer", nullable=true)
+     */
+    private $deletedSince = null;
+    
 	/**
      * @ORM\OneToMany(targetEntity="SubProject", mappedBy="project")
      * @ORM\OrderBy({"name" = "ASC"})
@@ -432,5 +439,28 @@ class Project
     public function getBudget()
     {
         return $this->budget;
+    }
+
+    /**
+     * Set deletedSince
+     *
+     * @param integer $deletedSince
+     * @return Project
+     */
+    public function setDeletedSince($deletedSince)
+    {
+        $this->deletedSince = $deletedSince;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedSince
+     *
+     * @return integer 
+     */
+    public function getDeletedSince()
+    {
+        return $this->deletedSince;
     }
 }

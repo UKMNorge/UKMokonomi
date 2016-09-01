@@ -4,7 +4,10 @@ namespace UKMNorge\EconomyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 use stdClass;
+use Exception;
 
 class ProjectController extends Controller
 {
@@ -26,6 +29,25 @@ class ProjectController extends Controller
 	    $data['transactionTotal'] = $amountServ->getTransactionTotalByBudget( $budget, (int)date("Y") );
         return $this->render('UKMecoBundle:Project:index.html.twig', $data);
     }
+    
+    public function deleteAction( $budget, $id ) {
+		$projectServ = $this->get('UKMeco.project');
+	    $budgetServ = $this->get('UKMeco.budget');
+		$budget = $budgetServ->get( $budget );
+	    $project = $projectServ->get( $id );
+
+	    $session = new Session();
+	    		
+		try {
+			$projectServ->destroy( $project );
+			$session->getFlashBag()->set('success', 'Prosjektet er slettet!');
+		} catch( Exception $e ) {
+			$session->getFlashBag()->set('danger', 'Prosjektet ble ikke slettet pga følgende feilmelding: '. $e->getMessage() );
+		}
+		
+	    return $this->redirect( $this->get('router')->generate('UKMeco_project_homepage', array('budget' => $budget->getId())) );
+    }
+
     
     public function createAction( $budget ) {
 	    $budgetServ = $this->get('UKMeco.budget');

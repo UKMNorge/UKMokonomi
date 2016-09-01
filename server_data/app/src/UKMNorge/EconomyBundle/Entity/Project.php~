@@ -49,7 +49,14 @@ class Project
      * @ORM\JoinColumn(name="Budget", referencedColumnName="id")
      */
     private $budget;
-
+     
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="DeletedSince", type="integer", nullable=true)
+     */
+    private $deletedSince = null;
+    
 	/**
      * @ORM\OneToMany(targetEntity="SubProject", mappedBy="project")
      * @ORM\OrderBy({"name" = "ASC"})
