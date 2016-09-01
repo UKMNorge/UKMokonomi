@@ -6,7 +6,7 @@
 	{% endif %}
 	
 	
-	{% if type == 'subproject' or type == 'transaction' %}
+	{% if type == 'subproject' or type == 'transaction' or type == 'transactionEdit' %}
 		<li><a href="{{ url( 'UKMeco_project_homepage', {'budget': budget.getID()} ) }}">{{ budget.getCode() }} {{ budget.getName() }}</a></li>
 	{% endif %}
 	
@@ -23,6 +23,11 @@
 		<li class="active">{{ project.getName() }}{# :: Alle prosjekt#}</li>
 	{% elseif type == 'transaction' %}
 		<li class="active">{{ subproject.getName() }}{# :: Alle transaksjoner#}</li>
+	{% elseif type == 'transactionEdit' %}
+		<li>
+			<a href="{{ url( 'UKMeco_transaction_homepage', {'budget': transaction.getBudget(), 'project': transaction.getProject(), 'subproject': transaction.getSubProject()} ) }}">{{ subproject.getName() }}</a>
+		</li>
+		<li class="active">Redigerer transaksjon</li>
 	{% endif %}
 	
 	

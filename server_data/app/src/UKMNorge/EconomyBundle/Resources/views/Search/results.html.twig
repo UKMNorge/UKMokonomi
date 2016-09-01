@@ -75,7 +75,7 @@
 				{% for transaction in transactions %}
 					<li class="list-group-item">
 						Bilag {{ transaction.getBilag() }}:
-						<a href="#">
+						<a href="{{ url('UKMeco_transaction_edit', {'budget': transaction.getBudget(), 'project': transaction.getProject(), 'subproject': transaction.getSubProject(), 'id': transaction.getId() }) }}">
 							{{ transaction.getName() }}
 						</a>
 						kr. {{ transaction.getAmount()|kroner }},-

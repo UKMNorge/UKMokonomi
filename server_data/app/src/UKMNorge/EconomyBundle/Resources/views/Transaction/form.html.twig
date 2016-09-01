@@ -2,6 +2,10 @@
 
 {% block title %}{% if transaction == false %}Legg til ny transaksjon{% else %}Rediger "{{ transaction.getName() }}"{% endif %}{% endblock %}
 
+{% block breadcrumbs %}
+	{% embed "breadcrumbs.html.twig" with {'type': 'transactionEdit'} %}{% endembed %}	
+{% endblock %}
+
 {% block body %}
 	<form role="form" method="post" action="{{ transaction == false ? url( 'UKMeco_transaction_doCreate', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId()} ) :  url( 'UKMeco_transaction_doEdit', {'id': transaction.getId(), 'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId(), 'id': transaction.getId() } ) }}">
 		<input type="hidden" id="transaction_id" name="transaction_id" value="{{ transaction == false ? 'new' : transaction.getId() }}" />
