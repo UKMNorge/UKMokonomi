@@ -13,9 +13,10 @@
 		</small>
 	</h1>
 
-		
+	<p>{{ subproject.getDescription() }}</p>
 	<div class="clearfix"></div>
-	<p class="lead">
+	
+	<p class="lead well">
 		{% if subproject.getAllocatedAmount( current_year ) < transactionServ.getTotalBySubProject( subproject, current_year ) %}
 			Overforbruk 
 			<label class="text-danger">

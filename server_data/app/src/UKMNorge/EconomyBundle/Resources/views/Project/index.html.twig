@@ -12,8 +12,10 @@
 			<a href="{{ url('UKMeco_budget_edit', {'id': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
 		</small>
 	</h1>
+	<p>{{ budget.getDescription() }}</p>
+
 	
-	<p class="lead">
+	<p class="lead well">
 		{% if budget.getSubProjectsAllocatedTotal( current_year ) < transactionServ.getTotalByBudget( budget, current_year ) %}
 			Overforbruk 
 			<label class="text-danger">

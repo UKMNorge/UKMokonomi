@@ -42,7 +42,7 @@
 					<td class="col-xs-7 col-sm-5">
 						<div class="UKMeco_nameCircle" title="{{ budget.getOwnerObject().getName() }}">{{ budget.getOwnerObject().getUsername()|first }}</div>
 						<b>{{ budget.getCode() }}</b> 
-						<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}">{{ budget.getName() }}</a>
+						<a href="{{ url('UKMeco_project_homepage', {'budget': budget.getId() } ) }}" title="{{ budget.getDescription() }} &nbsp; ">{{ budget.getName() }}</a>
 					</td>
 					<td class="col-xs-2 col-sm-2 kroner">{{ budget.getAllocatedAmount( "now"|date("Y") )|kroner }},-</td>
 					<td class="col-xs-2 col-sm-2 kroner">{{ budget.getSubProjectsAllocatedTotal( "now"|date("Y") )|kroner }},-</td>

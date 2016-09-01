@@ -10,8 +10,10 @@
 			<a href="{{ url('UKMeco_project_edit', {'id': project.getId(), 'budget': budget.getId() } ) }}"><img src="//ico.ukm.no/pencil-256.png" width="18" /></a>
 		</small>
 	</h1>
+	<p>{{ project.getDescription() }}</p>
 
-	<p class="lead">
+	
+	<p class="lead well">
 		{% if project.getSubProjectsAllocatedTotal( "now"|date("Y") ) < transactionServ.getTotalByProject( project, "now"|date("Y") ) %}
 			Overforbruk 
 			<label class="text-danger">
