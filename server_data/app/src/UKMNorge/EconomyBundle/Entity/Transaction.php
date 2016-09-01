@@ -75,7 +75,13 @@ class Transaction
      * @ORM\Column(name="Date", type="date")
      */
     private $date;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Bilag", type="integer")
+     */
+    private $bilag;
 
     /**
      * Get id
@@ -269,5 +275,28 @@ class Transaction
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set bilag
+     *
+     * @param integer $bilag
+     * @return Transaction
+     */
+    public function setBilag($bilag)
+    {
+        $this->bilag = $bilag;
+
+        return $this;
+    }
+
+    /**
+     * Get bilag
+     *
+     * @return integer 
+     */
+    public function getBilag()
+    {
+        return $this->bilag;
     }
 }

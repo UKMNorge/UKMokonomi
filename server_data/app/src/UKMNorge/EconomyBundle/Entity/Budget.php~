@@ -374,4 +374,27 @@ class Budget
 	    // If none allocated, zero it is
 	    return 0;
     }
+
+    /**
+     * Set code
+     *
+     * @param integer $code
+     * @return Budget
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return integer 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
 }

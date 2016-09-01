@@ -93,7 +93,7 @@ class TransactionService
 	 *
 	 * @return Transaction
 	*/
-    public function create( $name, $type, $amount, $subProject, $description='', $date=false ) {
+    public function create( $name, $type, $amount, $subProject, $description='', $bilag='', $date=false ) {
 	    
 		if( empty( $name ) ) {
 			throw new Exception('SubProject name cannot be empty!', 2000);
@@ -129,6 +129,7 @@ class TransactionService
 		$transaction->setProject( $project->getId() );
 		$transaction->setBudget( $budget->getId() );
 		$transaction->setDate( $date );
+		$transaction->setBilag( $bilag );
 		$this->_persistAndFlush( $transaction );
 
 		return $transaction;
@@ -150,13 +151,14 @@ class TransactionService
 	 *
 	 * @return Transaction
 	*/
-	public function setData( $transaction, $name, $type, $amount, $subProject, $description='', $date=false ) {
+	public function setData( $transaction, $name, $type, $amount, $subProject, $description='', $bilag='', $date=false ) {
 		$this->setName( $transaction, $name );
 		$this->setType( $transaction, $type );
 		$this->setAmount( $transaction, $amount );
 		$this->setSubProject( $transaction, $subProject );
 		$this->setDescription( $transaction, $description );
 		$this->setDate( $transaction, $date );
+		$this->setBilag( $transaction, $bilag );
 		
 		$projectRepo = $this->doctrine->getRepository('UKMecoBundle:Project');
 		$project = $projectRepo->findOneById( $subProject->getProject() );
@@ -290,6 +292,21 @@ class TransactionService
 	    $this->_persistAndFlush( $transaction );
 	    return $transaction;
     } 
+   
+    /**
+	 * Set Transaction bilag
+	 *
+	 * @param Transaction
+	 * @param string bilag
+	 *
+	 * @return Transaction
+	*/
+    public function setBilag( $transaction, $bilag ) {
+	    $this->_validate( $transaction );	    
+		$transaction->setBilag( $bilag );
+	    $this->_persistAndFlush( $transaction );
+	    return $transaction;
+    } 
     
     /**
 	 * Set Transaction date
@@ -323,6 +340,22 @@ class TransactionService
 		return true;
 	}
 	
+	
+    /**
+	 * Destroy Transaction
+	 *
+	 * @param Transaction
+	 *
+	 * @return Transaction
+	*/
+    public function destroy( $transaction ) {
+	    $this->_validate( $transaction );
+	    
+	    $this->em->remove( $transaction );
+	    $this->em->flush();
+
+	    return true;
+    }
 	
     /** **************************************************************************************** **/
 	/** CLASS INTERNALS AND HELPERS

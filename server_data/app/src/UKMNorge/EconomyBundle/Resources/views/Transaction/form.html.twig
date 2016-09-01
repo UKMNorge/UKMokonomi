@@ -21,7 +21,11 @@
 				<label for="description">Beskrivelse/kommentar</label>
 				<input value="{{ transaction == false ? '': transaction.getDescription()}}" type="text" class="form-control" id="description" name="description" placeholder="Eventuell beskrivelse / utfyllende kommentar" />
 			</div>
-
+			
+			<div class="form-group">
+				<label for="bilag">Bilagsnummer fra Agresso</label>
+				<input value="{{ transaction == false ? '': transaction.getBilag()}}" type="text" class="form-control" id="bilag" name="bilag" placeholder="Bilagsnummer, ikke fakturanummer..." />
+			</div>
 			<div class="form-group">
 				<label for="type">Type</label>
 				<div class="radio">
@@ -55,6 +59,13 @@
 		eller <a href=" {{ url('UKMeco_transaction_homepage', {'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId()}) }}">avbryt</a>
 		<p>&nbsp;</p>
 				
+		
+		{% if transaction != false %}
+			<div class="clearfix"></div>
+			<p>&nbsp;</p>
+			
+			<a href="{{ url( 'UKMeco_transaction_doDelete', {'id': transaction.getId(), 'subproject': subproject.getId(), 'project': project.getId(), 'budget': budget.getId(), 'id': transaction.getId() } ) }}" onClick="return confirm('Er du sikker på at du vil slette denne transaksjonen?');" class="btn btn-danger btn-small">Slett transaksjon</a>
+		{% endif %}
 		<div class="clearfix"></div>
 
 	</form>

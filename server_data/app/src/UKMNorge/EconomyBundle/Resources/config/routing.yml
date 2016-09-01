@@ -101,6 +101,10 @@ UKMeco_transaction_doEdit:
     path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/transaction/edit/{id}/
     defaults: { _controller: UKMecoBundle:Transaction:doEdit }
     methods: [POST]
+UKMeco_transaction_doDelete:
+    path: /admin/budget/{budget}/project-{project}/subproject-{subproject}/transaction/delete/{id}/
+    defaults: { _controller: UKMecoBundle:Transaction:doDelete }
+    methods: [GET]
 
 
 UKMeco_users_homepage:

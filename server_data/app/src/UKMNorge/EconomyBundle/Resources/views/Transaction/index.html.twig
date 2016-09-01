@@ -54,7 +54,7 @@
 			<tbody>
 			{% for transaction in transactions %}
 				<tr>
-					<td>{{ transaction.getName() }}</td>
+					<td title="BILAG: {{ transaction.getBilag() }}">{{ transaction.getName() }}</td>
 					<td>{{ transaction.getType() == 'Budget' ? transaction.getAmount() : 0 }},-</td>
 					<td>{{ transaction.getType() != 'Budget' ? transaction.getAmount() : 0 }},-</td>
 					

@@ -75,7 +75,13 @@ class Transaction
      * @ORM\Column(name="Date", type="date")
      */
     private $date;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Bilag", type="integer")
+     */
+    private $bilag;
 
     /**
      * Get id

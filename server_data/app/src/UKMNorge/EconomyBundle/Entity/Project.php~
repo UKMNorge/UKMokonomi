@@ -305,7 +305,8 @@ class Project
      *
      * @return integer $amount
      */
-
+	 
+	/*
     public function getAllocatedAmount( $year ) {
 
 	    $this->_reloadAllocatedAmountArray();
@@ -327,7 +328,7 @@ class Project
 			}
 		}
     }
-    
+    */
     private function _reloadSubProjectAllocatedAmountArray() {
 	    // If not loaded, load now
 	    if( $this->subProjectsAllocatedAmountsArray == false ) {
