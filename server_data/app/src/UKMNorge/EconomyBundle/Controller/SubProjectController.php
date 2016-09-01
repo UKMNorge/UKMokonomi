@@ -36,6 +36,7 @@ class SubProjectController extends Controller
 	    $budgetServ = $this->get('UKMeco.budget');
 	    $projectServ = $this->get('UKMeco.project');
 		$subProjectServ = $this->get('UKMeco.subproject');
+		$transactionServ = $this->get('UKMeco.transaction');
 	    $session = new Session();
 
 		$budget = $budgetServ->get( $budget );
@@ -43,7 +44,7 @@ class SubProjectController extends Controller
 		$subproject = $subProjectServ->get( $id );
 
 		try {
-			$subProjectServ->destroy( $subproject );
+			$subProjectServ->destroy( $subproject, $transactionServ );
 			$session->getFlashBag()->set('success', 'Utgiftsgruppen er slettet!');
 		} catch( Exception $e ) {
 			$session->getFlashBag()->set('danger', 'Utgiftsgruppen ble ikke slettet pga følgende feilmelding: '. $e->getMessage() );

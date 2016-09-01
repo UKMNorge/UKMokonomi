@@ -207,9 +207,31 @@ class SubProjectService
 	 *
 	 * @return SubProject
 	*/
-    public function destroy( $subProject ) {
+    public function destroy( $subProject, $transactionService ) {
 	    $this->_validate( $subProject );
-	    	    
+
+		$error = '';
+
+		$transactionAmount = $transactionService->getTotalBySubProject( $subProject, date('Y') );
+		if( $transactionAmount != 0 ) {
+			$error = '<br />Utgiftsgruppen har registrert transaksjoner for kr. '. $transactionAmount .'. Transaksjonene må flyttes før sletting kan gjennomføres.';
+		}
+		
+		$allocatedAmounts = $this->getAllocatedAmounts( $subProject, date('Y'), date('Y') );
+		$errorAllocated = '';
+		foreach( $allocatedAmounts as $year => $allocatedAmount ) {
+			if( $year >= date('Y') && $allocatedAmount != 0) {
+				$errorAllocated .= $year .': kr. '. $allocatedAmount .'<br />';
+			}
+		}
+		if( !empty( $errorAllocated ) ) {
+			$error .= '<br />Utgiftsgruppen har blitt tildelt budsjett for følgende år. Disse pengene må flyttes før sletting kan gjennomføres!<br />' . $errorAllocated;
+		}
+		
+		if( !empty( $error ) ) {
+			throw new Exception( $error );
+		}
+
 	    $subProject->setDeletedSince( date('Y') );
 	    $this->_persistAndFlush( $subProject );
 

@@ -33,13 +33,14 @@ class ProjectController extends Controller
     public function deleteAction( $budget, $id ) {
 		$projectServ = $this->get('UKMeco.project');
 	    $budgetServ = $this->get('UKMeco.budget');
+	    $transactionServ = $this->get('UKMeco.transaction');
 		$budget = $budgetServ->get( $budget );
 	    $project = $projectServ->get( $id );
 
 	    $session = new Session();
 	    		
 		try {
-			$projectServ->destroy( $project );
+			$projectServ->destroy( $project, $transactionServ );
 			$session->getFlashBag()->set('success', 'Prosjektet er slettet!');
 		} catch( Exception $e ) {
 			$session->getFlashBag()->set('danger', 'Prosjektet ble ikke slettet pga følgende feilmelding: '. $e->getMessage() );

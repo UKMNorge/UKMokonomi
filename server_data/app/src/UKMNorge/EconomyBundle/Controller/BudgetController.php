@@ -27,11 +27,12 @@ class BudgetController extends Controller
     public function deleteAction( $id ) {
 	    $session = new Session();
 	    $budgetServ = $this->get('UKMeco.budget');
+	    $transactionServ = $this->get('UKMeco.transaction');
 	    
 	    $budget = $budgetServ->get( $id );
 		
 		try {
-			$budgetServ->destroy( $budget );
+			$budgetServ->destroy( $budget, $transactionServ );
 			$session->getFlashBag()->set('success', 'Formål slettet!');
 		} catch( Exception $e ) {
 			$session->getFlashBag()->set('danger', 'Formål ble ikke slettet pga følgende feilmelding: '. $e->getMessage() );

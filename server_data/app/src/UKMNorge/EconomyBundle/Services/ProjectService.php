@@ -281,8 +281,25 @@ class ProjectService
 	 *
 	 * @return Project
 	*/
-    public function destroy( $project ) {
+    public function destroy( $project, $transactionService ) {
 	    $this->_validate( $project );
+
+		$error = '';
+
+		$transactionAmount = $transactionService->getTotalByProject( $project, date('Y') );
+		if( $transactionAmount != 0 ) {
+			$error = '<br />Prosjektet har registrert transaksjoner for kr. '. $transactionAmount .'. Transaksjonene må flyttes før sletting kan gjennomføres.';
+		}
+		
+		$allocatedAmount = $project->getSubProjectsAllocatedTotal( date('Y') );
+		if( 0 != $allocatedAmount ) {
+			$error .= '<br />Prosjektet har blitt tildelt kr. '. $allocatedAmount .',- som må flyttes før sletting kan gjennomføres';
+		}
+		
+		if( !empty( $error ) ) {
+			throw new Exception( $error );
+		}
+	    
 	    	    
 	    $project->setDeletedSince( date('Y') );
 	    $this->_persistAndFlush( $project );
