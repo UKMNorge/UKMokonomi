@@ -4,16 +4,9 @@
 
 {% block body %}
 <h1>Velg rapport</h1>
+{% for year in 2015..now|date('Y') %}
 <p>
-  <a href="{{ url('UKMeco_report_year', {'year': 2015}) }}" class="btn btn-primary">2015</a>
+  <a href="{{ url('UKMeco_report_year', {'year': year}) }}" class="btn btn-primary">{{ year }}</a>
 </p>
-<p>
- <a href="{{ url('UKMeco_report_year', {'year': 2016}) }}" class="btn btn-primary">2016</a>
-</p>
-<p>
- <a href="{{ url('UKMeco_report_year', {'year': 2017}) }}" class="btn btn-primary">2017</a>
-</p>
-<p>
- <a href="{{ url('UKMeco_report_year', {'year': 2018}) }}" class="btn btn-primary">2018</a>
-</p>
+{% endfor %}
 {% endblock %}
